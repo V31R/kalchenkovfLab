@@ -56,4 +56,14 @@ public class PaymentAccount {
     public void setSum(BigDecimal sum) {
         this.sum = sum;
     }
+
+    @Override
+    public String toString() {
+        return "PaymentAccount{" +
+                "id=" + id +
+                ", user=" + user +
+                ", bankName='" + bankName + '\'' +
+                ", sum=" + sum +
+                '}';
+    }
 }

@@ -107,4 +107,20 @@ public class Bank {
     public void setInterestRate(BigDecimal interestRate) {
         this.interestRate = interestRate;
     }
+
+    @Override
+    public String toString() {
+        return "Bank{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", officesNumber=" + officesNumber +
+                ", atmNumber=" + atmNumber +
+                ", employeeNumber=" + employeeNumber +
+                ", userNumber=" + userNumber +
+                ", bankRate=" + bankRate +
+                ", moneyAmount=" + moneyAmount +
+                ", interestRate=" + interestRate +
+                '}';
+    }
+
 }

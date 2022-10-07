@@ -125,4 +125,19 @@ public class CreditAccount {
         this.employee = employee;
     }
 
+    @Override
+    public String toString() {
+        return "CreditAccount{" +
+                "id=" + id +
+                ", user=" + user +
+                ", bankName='" + bankName + '\'' +
+                ", start=" + start +
+                ", end=" + end +
+                ", monthNumber=" + monthNumber +
+                ", sum=" + sum +
+                ", monthPayment=" + monthPayment +
+                ", interestRate=" + interestRate +
+                ", employee=" + employee +
+                '}';
+    }
 }

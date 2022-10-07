@@ -91,4 +91,17 @@ public class User {
     public void setCreditRate(int creditRate) {
         this.creditRate = creditRate;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", fullName='" + fullName + '\'' +
+                ", birthDate=" + birthDate +
+                ", salary=" + salary +
+                ", job='" + job + '\'' +
+                ", bank=" + bank +
+                ", creditRate=" + creditRate +
+                '}';
+    }
 }

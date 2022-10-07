@@ -130,4 +130,20 @@ public class BankAtm {
     public void setMaintenance(BigDecimal maintenance) {
         this.maintenance = maintenance;
     }
+
+    @Override
+    public String toString() {
+        return "BankAtm{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", status=" + status +
+                ", bankOffice=" + bankOffice +
+                ", place='" + place + '\'' +
+                ", employee=" + employee +
+                ", canPaymentOfMoney=" + canPaymentOfMoney +
+                ", canDepositMoney=" + canDepositMoney +
+                ", moneyAmount=" + moneyAmount +
+                ", maintenance=" + maintenance +
+                '}';
+    }
 }

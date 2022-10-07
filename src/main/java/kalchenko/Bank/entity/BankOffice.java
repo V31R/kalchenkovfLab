@@ -145,4 +145,22 @@ public class BankOffice {
     public void setRent(BigDecimal rent) {
         this.rent = rent;
     }
+
+    @Override
+    public String toString() {
+        return "BankOffice{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", address='" + address + '\'' +
+                ", bank=" + bank +
+                ", isWorking=" + isWorking +
+                ", isPossiblePlaceAtm=" + isPossiblePlaceAtm +
+                ", atmNumber=" + atmNumber +
+                ", canApplyLoan=" + canApplyLoan +
+                ", canPaymentOfMoney=" + canPaymentOfMoney +
+                ", canDepositMoney=" + canDepositMoney +
+                ", moneyAmount=" + moneyAmount +
+                ", rent=" + rent +
+                '}';
+    }
 }
