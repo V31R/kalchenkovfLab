@@ -6,7 +6,7 @@ public class PaymentAccountRepository {
 
     PaymentAccount bank = null;
 
-    PaymentAccountRepository(){}
+    public PaymentAccountRepository(){}
 
     public boolean add(PaymentAccount paymentAccount){
         var isEmpty = this.bank == null;

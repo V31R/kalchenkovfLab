@@ -6,7 +6,7 @@ public class BankAtmRepository {
 
     BankAtm bankAtm = null;
 
-    BankAtmRepository(){}
+    public BankAtmRepository(){}
 
     public boolean add(BankAtm bankAtm){
         var isEmpty = this.bankAtm == null;
@@ -21,8 +21,8 @@ public class BankAtmRepository {
     }
 
 
-    public boolean deleteById(Long id){
-        if(this.bankAtm == null || !this.bankAtm.getId().equals(id)){
+    public boolean delete(){
+        if(this.bankAtm == null){
 
             return false;
 
@@ -32,18 +32,12 @@ public class BankAtmRepository {
         return true;
     }
 
-    public BankAtm findById(Long id){
-        if(this.bankAtm == null || !this.bankAtm.getId().equals(id)){
-
-            return null;
-
-        }
-
+    public BankAtm findAll(){
         return this.bankAtm;
     }
 
     public boolean update(BankAtm bankAtm){
-        if(this.bankAtm == null || !this.bankAtm.getId().equals(bankAtm.getId())){
+        if(this.bankAtm == null){
 
             return false;
 

@@ -7,7 +7,7 @@ public class CreditAccountRepository {
 
     CreditAccount creditAccount = null;
 
-    CreditAccountRepository(){}
+    public CreditAccountRepository(){}
 
     public boolean add(CreditAccount creditAccount){
         var isEmpty = this.creditAccount == null;

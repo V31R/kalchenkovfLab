@@ -6,7 +6,7 @@ public class EmployeeRepository {
 
     Employee employee = null;
 
-    EmployeeRepository(){}
+    public EmployeeRepository(){}
 
     public boolean add(Employee employee){
         var isEmpty = this.employee == null;

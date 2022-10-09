@@ -6,7 +6,7 @@ public class BankOfficeRepository {
 
     BankOffice bankOffice = null;
 
-    BankOfficeRepository(){}
+    public BankOfficeRepository(){}
 
     public boolean add(BankOffice bankOffice){
         var isEmpty = this.bankOffice == null;
@@ -21,8 +21,8 @@ public class BankOfficeRepository {
     }
 
 
-    public boolean deleteById(Long id){
-        if(this.bankOffice == null || !this.bankOffice.getId().equals(id)){
+    public boolean delete(){
+        if(this.bankOffice == null){
 
             return false;
 
@@ -32,8 +32,8 @@ public class BankOfficeRepository {
         return true;
     }
 
-    public BankOffice findById(Long id){
-        if(this.bankOffice == null || !this.bankOffice.getId().equals(id)){
+    public BankOffice getBankOffice(){
+        if(this.bankOffice == null){
 
             return null;
 
@@ -43,7 +43,7 @@ public class BankOfficeRepository {
     }
 
     public boolean update(BankOffice bankOffice){
-        if(this.bankOffice == null || !this.bankOffice.getId().equals(bankOffice.getId())){
+        if(this.bankOffice == null){
 
             return false;
 

@@ -6,7 +6,7 @@ public class BankRepository {
 
     Bank bank = null;
 
-    BankRepository(){}
+    public BankRepository(){}
 
     public boolean add(Bank bank){
         var isEmpty = this.bank == null;
@@ -21,8 +21,8 @@ public class BankRepository {
     }
 
 
-    public boolean deleteById(Long id){
-        if(this.bank == null || !this.bank.getId().equals(id)){
+    public boolean delete(){
+        if(this.bank == null){
 
             return false;
 
@@ -32,18 +32,12 @@ public class BankRepository {
         return true;
     }
 
-    public Bank findById(Long id){
-        if(this.bank == null || !this.bank.getId().equals(id)){
-
-            return null;
-
-        }
-
+    public Bank getBank(){
         return this.bank;
     }
 
     public boolean update(Bank bank){
-        if(this.bank == null || !this.bank.getId().equals(bank.getId())){
+        if(this.bank == null){
 
             return false;
 

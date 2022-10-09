@@ -6,7 +6,7 @@ public class UserRepository {
 
     User bank = null;
 
-    UserRepository(){}
+    public UserRepository(){}
 
     public boolean add(User user){
         var isEmpty = this.bank == null;

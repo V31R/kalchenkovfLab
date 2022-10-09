@@ -119,8 +119,7 @@ public class Bank {
                 ", userNumber=" + userNumber +
                 ", bankRate=" + bankRate +
                 ", moneyAmount=" + moneyAmount +
-                ", interestRate=" + interestRate +
-                '}';
+                ", interestRate=" + interestRate + "%}";
     }
 
 }
