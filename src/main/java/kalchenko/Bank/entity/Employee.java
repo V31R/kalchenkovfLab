@@ -8,7 +8,6 @@ public class Employee {
     String fullName;
     Date birthDate;
     String job;
-    Bank bank;
     boolean inOffice;
     BankOffice bankOffice;
     boolean canApplyLoan;
@@ -16,13 +15,12 @@ public class Employee {
 
     public Employee() {}
 
-    public Employee(Long id, String fullName, Date birthDate, String job, Bank bank, boolean inOffice,
+    public Employee(Long id, String fullName, Date birthDate, String job, boolean inOffice,
                     BankOffice bankOffice, boolean canApplyLoan, BigDecimal salary) {
         this.id = id;
         this.fullName = fullName;
         this.birthDate = birthDate;
         this.job = job;
-        this.bank = bank;
         this.inOffice = inOffice;
         this.bankOffice = bankOffice;
         this.canApplyLoan = canApplyLoan;
@@ -34,7 +32,6 @@ public class Employee {
         this.fullName = employee.getFullName();
         this.birthDate = employee.getBirthDate();
         this.job = employee.getJob();
-        this.bank = employee.getBank();
         this.inOffice = employee.inOffice;
         this.bankOffice = employee.getBankOffice();
         this.canApplyLoan = employee.canApplyLoan;
@@ -71,14 +68,6 @@ public class Employee {
 
     public void setJob(String job) {
         this.job = job;
-    }
-
-    public Bank getBank() {
-        return bank;
-    }
-
-    public void setBank(Bank bank) {
-        this.bank = bank;
     }
 
     public boolean isInOffice() {
@@ -120,7 +109,6 @@ public class Employee {
                 ", fullName='" + fullName + '\'' +
                 ", birthDate=" + birthDate +
                 ", job='" + job + '\'' +
-                ", bank=" + bank +
                 ", inOffice=" + inOffice +
                 ", bankOffice=" + bankOffice +
                 ", canApplyLoan=" + canApplyLoan +

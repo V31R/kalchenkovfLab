@@ -21,8 +21,8 @@ public class UserRepository {
     }
 
 
-    public boolean deleteById(Long id){
-        if(this.bank == null || !this.bank.getId().equals(id)){
+    public boolean delete(){
+        if(this.bank == null){
 
             return false;
 
@@ -32,18 +32,12 @@ public class UserRepository {
         return true;
     }
 
-    public User findById(Long id){
-        if(this.bank == null || !this.bank.getId().equals(id)){
-
-            return null;
-
-        }
-
+    public User getUser(){
         return this.bank;
     }
 
     public boolean update(User user){
-        if(this.bank == null || !this.bank.getId().equals(user.getId())){
+        if(this.bank == null){
 
             return false;
 

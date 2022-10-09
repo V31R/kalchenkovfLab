@@ -32,7 +32,7 @@ public class BankAtmRepository {
         return true;
     }
 
-    public BankAtm findAll(){
+    public BankAtm getBankAtm(){
         return this.bankAtm;
     }
 

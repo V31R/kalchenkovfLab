@@ -3,10 +3,13 @@ package kalchenko.Bank;
 
 import kalchenko.Bank.entity.Bank;
 import kalchenko.Bank.entity.BankOffice;
+import kalchenko.Bank.entity.Employee;
 import kalchenko.Bank.services.impl.BankOfficeServiceImpl;
 import kalchenko.Bank.services.impl.BankServiceImpl;
+import kalchenko.Bank.services.impl.EmployeeServiceImpl;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.Random;
 
 public class Main {
@@ -25,8 +28,13 @@ public class Main {
                 bankService.getBank(), true, true, true,
                 true, true,bankService.getBank().getMoneyAmount(), BigDecimal.valueOf(10.5d)));
 
+        EmployeeServiceImpl employeeService = new EmployeeServiceImpl(bankOfficeService);
+        employeeService.addEmployee(new Employee(1L, "Ivanov Ivan Ivanovich", new Date(), "job",
+                true, bankOfficeService.getBankOffice(), true, BigDecimal.ONE));
+
         System.out.println(bankService.getBank());
         System.out.println(bankOfficeService.getBankOffice());
+        System.out.println(employeeService.getEmployee());
 
     }
 

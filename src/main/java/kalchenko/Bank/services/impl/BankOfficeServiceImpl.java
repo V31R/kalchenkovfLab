@@ -8,7 +8,6 @@ import java.math.BigDecimal;
 
 public class BankOfficeServiceImpl implements BankOfficeService {
 
-
     BankServiceImpl bankService;
 
     BankOfficeRepository bankOfficeRepository = new BankOfficeRepository();

@@ -21,8 +21,8 @@ public class EmployeeRepository {
     }
 
 
-    public boolean deleteById(Long id){
-        if(this.employee == null || !this.employee.getId().equals(id)){
+    public boolean delete(){
+        if(this.employee == null){
 
             return false;
 
@@ -32,8 +32,8 @@ public class EmployeeRepository {
         return true;
     }
 
-    public Employee findById(Long id){
-        if(this.employee == null || !this.employee.getId().equals(id)){
+    public Employee getEmployee(){
+        if(this.employee == null){
 
             return null;
 
@@ -43,7 +43,7 @@ public class EmployeeRepository {
     }
 
     public boolean update(Employee employee){
-        if(this.employee == null || !this.employee.getId().equals(employee.getId())){
+        if(this.employee == null){
 
             return false;
 
