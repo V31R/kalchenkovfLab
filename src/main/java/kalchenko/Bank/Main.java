@@ -2,11 +2,14 @@ package kalchenko.Bank;
 
 
 import kalchenko.Bank.entity.Bank;
+import kalchenko.Bank.entity.BankAtm;
 import kalchenko.Bank.entity.BankOffice;
 import kalchenko.Bank.entity.Employee;
+import kalchenko.Bank.services.impl.BankAtmServiceImpl;
 import kalchenko.Bank.services.impl.BankOfficeServiceImpl;
 import kalchenko.Bank.services.impl.BankServiceImpl;
 import kalchenko.Bank.services.impl.EmployeeServiceImpl;
+import kalchenko.Bank.utils.AtmStatus;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -32,9 +35,15 @@ public class Main {
         employeeService.addEmployee(new Employee(1L, "Ivanov Ivan Ivanovich", new Date(), "job",
                 true, bankOfficeService.getBankOffice(), true, BigDecimal.ONE));
 
+        BankAtmServiceImpl bankAtmService = new BankAtmServiceImpl(bankOfficeService);
+        bankAtmService.addBankAtm(new BankAtm(1L, "atm_1", AtmStatus.WORKING, bankOfficeService.getBankOffice(),
+                "next to exit", employeeService.getEmployee(), true, true,
+                bankOfficeService.getBankOffice().getMoneyAmount(), BigDecimal.TEN));
+
         System.out.println(bankService.getBank());
         System.out.println(bankOfficeService.getBankOffice());
         System.out.println(employeeService.getEmployee());
+        System.out.println(bankAtmService.getBankAtm());
 
     }
 
