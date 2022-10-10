@@ -11,19 +11,18 @@ public class User {
     BigDecimal salary;
     String job;
     Bank bank;
-    int creditRate;
+    int creditRate = 0;
 
     public User() {}
 
     public User(Long id, String fullName, Date birthDate, BigDecimal salary,
-                String job, Bank bank, int creditRate) {
+                String job, Bank bank) {
         this.id = id;
         this.fullName = fullName;
         this.birthDate = birthDate;
         this.salary = salary;
         this.job = job;
         this.bank = bank;
-        this.creditRate = creditRate;
     }
 
     public User(User user) {

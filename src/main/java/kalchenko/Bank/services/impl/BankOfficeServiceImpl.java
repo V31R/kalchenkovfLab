@@ -3,16 +3,17 @@ package kalchenko.Bank.services.impl;
 import kalchenko.Bank.entity.BankOffice;
 import kalchenko.Bank.repositories.BankOfficeRepository;
 import kalchenko.Bank.services.BankOfficeService;
+import kalchenko.Bank.services.BankService;
 
 import java.math.BigDecimal;
 
 public class BankOfficeServiceImpl implements BankOfficeService {
 
-    BankServiceImpl bankService;
+    BankService bankService;
 
     BankOfficeRepository bankOfficeRepository = new BankOfficeRepository();
 
-    public BankOfficeServiceImpl(BankServiceImpl bankService) {
+    public BankOfficeServiceImpl(BankService bankService) {
         this.bankService = bankService;
     }
 
@@ -36,7 +37,7 @@ public class BankOfficeServiceImpl implements BankOfficeService {
 
     @Override
     public boolean deleteBankOffice() {
-        return bankOfficeRepository.delete();
+        return bankOfficeRepository.delete() && bankService.deleteOffice();
     }
 
     @Override

@@ -18,16 +18,14 @@ public class CreditAccount {
 
     public CreditAccount() {}
 
-    public CreditAccount(Long id, User user, String bankName, Date start, Date end, int monthNumber, BigDecimal sum,
-                         BigDecimal monthPayment, BigDecimal interestRate, Employee employee) {
+    public CreditAccount(Long id, User user, String bankName, Date start, int monthNumber, BigDecimal sum,
+                          BigDecimal interestRate, Employee employee) {
         this.id = id;
         this.user = user;
         this.bankName = bankName;
         this.start = start;
-        this.end = end;
         this.monthNumber = monthNumber;
         this.sum = sum;
-        this.monthPayment = monthPayment;
         this.interestRate = interestRate;
         this.employee = employee;
     }

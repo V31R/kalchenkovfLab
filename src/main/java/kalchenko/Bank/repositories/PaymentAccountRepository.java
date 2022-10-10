@@ -21,8 +21,8 @@ public class PaymentAccountRepository {
     }
 
 
-    public boolean deleteById(Long id){
-        if(this.bank == null || !this.bank.getId().equals(id)){
+    public boolean delete(){
+        if(this.bank == null){
 
             return false;
 
@@ -32,8 +32,8 @@ public class PaymentAccountRepository {
         return true;
     }
 
-    public PaymentAccount findById(Long id){
-        if(this.bank == null || !this.bank.getId().equals(id)){
+    public PaymentAccount getPaymentAccount(){
+        if(this.bank == null){
 
             return null;
 
@@ -43,7 +43,7 @@ public class PaymentAccountRepository {
     }
 
     public boolean update(PaymentAccount paymentAccount){
-        if(this.bank == null || !this.bank.getId().equals(paymentAccount.getId())){
+        if(this.bank == null){
 
             return false;
 

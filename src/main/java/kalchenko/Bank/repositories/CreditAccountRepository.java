@@ -22,8 +22,8 @@ public class CreditAccountRepository {
     }
 
 
-    public boolean deleteById(Long id){
-        if(this.creditAccount == null || !this.creditAccount.getId().equals(id)){
+    public boolean delete(){
+        if(this.creditAccount == null){
 
             return false;
 
@@ -33,8 +33,8 @@ public class CreditAccountRepository {
         return true;
     }
 
-    public CreditAccount findById(Long id){
-        if(this.creditAccount == null || !this.creditAccount.getId().equals(id)){
+    public CreditAccount getCreditAccount(){
+        if(this.creditAccount == null ){
 
             return null;
 
@@ -44,7 +44,7 @@ public class CreditAccountRepository {
     }
 
     public boolean update(CreditAccount creditAccount){
-        if(this.creditAccount == null || !this.creditAccount.getId().equals(creditAccount.getId())){
+        if(this.creditAccount == null){
 
             return false;
 

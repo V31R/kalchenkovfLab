@@ -7,15 +7,14 @@ public class PaymentAccount {
     Long id;
     User user;
     String bankName;
-    BigDecimal sum;
+    BigDecimal sum = BigDecimal.ZERO;
 
     public PaymentAccount() {}
 
-    public PaymentAccount(Long id, User user, String bankName, BigDecimal sum) {
+    public PaymentAccount(Long id, User user, String bankName) {
         this.id = id;
         this.user = user;
         this.bankName = bankName;
-        this.sum = sum;
     }
 
     public PaymentAccount(PaymentAccount paymentAccount) {
