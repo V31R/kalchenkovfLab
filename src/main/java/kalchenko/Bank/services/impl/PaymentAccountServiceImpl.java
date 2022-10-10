@@ -10,6 +10,9 @@ public class PaymentAccountServiceImpl implements PaymentAccountService {
 
     public PaymentAccountServiceImpl() {}
 
+    /*
+     * Добавляет paymentAccount в репозиторий.
+     */
     @Override
     public PaymentAccount addPaymentAccount(PaymentAccount paymentAccount) {
 
@@ -22,6 +25,9 @@ public class PaymentAccountServiceImpl implements PaymentAccountService {
         return null;
     }
 
+    /*
+     * Возвращает объект, который хранится в репозитории.
+     */
     @Override
     public PaymentAccount getPaymentAccount() {
         return paymentAccountRepository.getPaymentAccount();

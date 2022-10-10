@@ -8,6 +8,11 @@ public class PaymentAccountRepository {
 
     public PaymentAccountRepository(){}
 
+    /*
+     * Если до этого там не находилось другого объекта PaymentAccount
+     * добавляет paymentAccount в репозиторий и возвращает добаленный объект,
+     * иначе возвращает null.
+     */
     public boolean add(PaymentAccount paymentAccount){
         var isEmpty = this.bank == null;
 
@@ -20,18 +25,22 @@ public class PaymentAccountRepository {
         return isEmpty;
     }
 
-
+    /*
+     * Возвращает истину, если при удалении объект был не null,
+     * иначе возвращает ложь.
+     */
     public boolean delete(){
         if(this.bank == null){
-
             return false;
-
         }
 
         this.bank = null;
         return true;
     }
 
+    /*
+     * Возвращает объект, который хранится в репозитории.
+     */
     public PaymentAccount getPaymentAccount(){
         if(this.bank == null){
 
@@ -42,6 +51,10 @@ public class PaymentAccountRepository {
         return this.bank;
     }
 
+    /*
+     * Если объект существует, то обновляет его и возвращает истину,
+     * иначе возвращает ложь.
+     */
     public boolean update(PaymentAccount paymentAccount){
         if(this.bank == null){
 

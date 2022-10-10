@@ -16,16 +16,27 @@ public class UserServiceImpl implements UserService {
         this.bankService = bankService;
     }
 
+    /*
+     * Возвращает объект, который хранится в репозитории.
+     */
     @Override
     public User getUser() {
         return userRepository.getUser();
     }
 
+    /*
+     * Удаляет объект, извещает об этом связанный Bank.
+     */
     @Override
     public boolean deleteUser() {
         return userRepository.delete() && bankService.deleteUser();
     }
 
+    /*
+     * Добавляет user в репозиторий, извещает об этом связанный bank.
+     * При добавлении вычисляет кредитный рейтинг пользователя,
+     * если такового раньше не было.
+     */
     @Override
     public User addUser(User user) {
 

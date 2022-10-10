@@ -16,16 +16,26 @@ public class EmployeeServiceImpl implements EmployeeService {
         this.bankOfficeService = bankOfficeService;
     }
 
+    /*
+     * Списывает деньги из связанного объекта bankOffice.
+     */
     @Override
     public boolean withdrawMoney(BigDecimal money) {
         return bankOfficeService.withdrawMoney(money);
     }
 
+    /*
+     * Вносит деньги в связанный объекта bankOffice.
+     */
     @Override
     public boolean depositMoney(BigDecimal money) {
         return bankOfficeService.depositMoney(money);
     }
 
+    /*
+     * Добавляет employee в репозиторий, если добавление было успешно
+     * извещает об этом связанный bankOffice.
+     */
     @Override
     public Employee addEmployee(Employee employee) {
         if(employeeRepository.add(employee)){
@@ -38,6 +48,9 @@ public class EmployeeServiceImpl implements EmployeeService {
         return null;
     }
 
+    /*
+     * Удаляет объект, извещает об этом связанный BankOffice.
+     */
     @Override
     public boolean deleteEmployee() {
         if(bankOfficeService.deleteEmployee()){
@@ -46,6 +59,9 @@ public class EmployeeServiceImpl implements EmployeeService {
         return false;
     }
 
+    /*
+     * Возвращает объект, который хранится в репозитории.
+     */
     @Override
     public Employee getEmployee() {
         return employeeRepository.getEmployee();

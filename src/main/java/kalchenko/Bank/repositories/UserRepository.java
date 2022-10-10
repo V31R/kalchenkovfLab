@@ -8,6 +8,11 @@ public class UserRepository {
 
     public UserRepository(){}
 
+    /*
+     * Если до этого там не находилось другого объекта User
+     * добавляет user в репозиторий и возвращает добаленный объект,
+     * иначе возвращает null.
+     */
     public boolean add(User user){
         var isEmpty = this.bank == null;
 
@@ -20,22 +25,30 @@ public class UserRepository {
         return isEmpty;
     }
 
-
+    /*
+     * Возвращает истину, если при удалении объект был не null,
+     * иначе возвращает ложь.
+     */
     public boolean delete(){
         if(this.bank == null){
-
             return false;
-
         }
 
         this.bank = null;
         return true;
     }
 
+    /*
+     * Возвращает объект, который хранится в репозитории.
+     */
     public User getUser(){
         return this.bank;
     }
 
+    /*
+     * Если объект существует, то обновляет его и возвращает истину,
+     * иначе возвращает ложь.
+     */
     public boolean update(User user){
         if(this.bank == null){
 

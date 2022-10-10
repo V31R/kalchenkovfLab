@@ -11,7 +11,9 @@ public class BankServiceImpl implements BankService {
     BankRepository bankRepository = new BankRepository();
 
     public BankServiceImpl() {}
-
+    /*
+    * Добавляет bank в репозиторий
+    */
     @Override
     public Bank addBank(Bank bank) {
         if(bankRepository.add(bank)){
@@ -23,11 +25,17 @@ public class BankServiceImpl implements BankService {
         return null;
     }
 
+    /*
+     * Возвращает объект, который хранится в репозитории.
+     */
     @Override
     public Bank getBank() {
         return bankRepository.getBank();
     }
 
+    /*
+     * Списывает деньги со счёта банка.
+     */
     @Override
     public boolean withdrawMoney(BigDecimal money) {
         var bank = bankRepository.getBank();
@@ -41,6 +49,9 @@ public class BankServiceImpl implements BankService {
         return false;
     }
 
+    /*
+     * Вносит деньги на счёт банка.
+     */
     @Override
     public boolean depositMoney(BigDecimal money) {
         var bank = bankRepository.getBank();
@@ -54,6 +65,9 @@ public class BankServiceImpl implements BankService {
         return false;
     }
 
+    /*
+     * Увеличивает число офисов.
+     */
     @Override
     public boolean addOffice() {
         var bank = bankRepository.getBank();
@@ -67,6 +81,9 @@ public class BankServiceImpl implements BankService {
         return false;
     }
 
+    /*
+     * Уменьшает число офисов.
+     */
     @Override
     public boolean deleteOffice() {
         var bank = bankRepository.getBank();
@@ -80,6 +97,9 @@ public class BankServiceImpl implements BankService {
         return false;
     }
 
+    /*
+     * Увеличивает число банкоматов.
+     */
     @Override
     public boolean addAtm() {
         var bank = bankRepository.getBank();
@@ -93,6 +113,9 @@ public class BankServiceImpl implements BankService {
         return false;
     }
 
+    /*
+     * Уменьшает число банкоматов.
+     */
     @Override
     public boolean deleteAtm() {
         var bank = bankRepository.getBank();
@@ -106,6 +129,9 @@ public class BankServiceImpl implements BankService {
         return false;
     }
 
+    /*
+     * Увеличивает число работников.
+     */
     @Override
     public boolean addEmployee() {
         var bank = bankRepository.getBank();
@@ -119,6 +145,9 @@ public class BankServiceImpl implements BankService {
         return false;
     }
 
+    /*
+     * Уменьшает число работников.
+     */
     @Override
     public boolean deleteEmployee() {
         var bank = bankRepository.getBank();
@@ -132,6 +161,9 @@ public class BankServiceImpl implements BankService {
         return false;
     }
 
+    /*
+     * Увеличивает число пользователей.
+     */
     @Override
     public boolean addUser() {
         var bank = bankRepository.getBank();
@@ -145,6 +177,9 @@ public class BankServiceImpl implements BankService {
         return false;
     }
 
+    /*
+     * Уменьшает число пользователей.
+     */
     @Override
     public boolean deleteUser() {
         var bank = bankRepository.getBank();
