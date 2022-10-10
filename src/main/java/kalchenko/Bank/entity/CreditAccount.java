@@ -15,11 +15,12 @@ public class CreditAccount {
     BigDecimal monthPayment;
     BigDecimal interestRate;
     Employee employee;
+    PaymentAccount paymentAccount;
 
     public CreditAccount() {}
 
     public CreditAccount(Long id, User user, String bankName, Date start, int monthNumber, BigDecimal sum,
-                          BigDecimal interestRate, Employee employee) {
+                          BigDecimal interestRate, Employee employee, PaymentAccount paymentAccount) {
         this.id = id;
         this.user = user;
         this.bankName = bankName;
@@ -28,6 +29,7 @@ public class CreditAccount {
         this.sum = sum;
         this.interestRate = interestRate;
         this.employee = employee;
+        this.paymentAccount = paymentAccount;
     }
 
     public CreditAccount(CreditAccount creditAccount) {
@@ -41,6 +43,7 @@ public class CreditAccount {
         this.monthPayment = creditAccount.getMonthPayment();
         this.interestRate = creditAccount.getInterestRate();
         this.employee = creditAccount.getEmployee();
+        this.paymentAccount = creditAccount.getPaymentAccount();
     }
 
     public Long getId() {
@@ -123,6 +126,14 @@ public class CreditAccount {
         this.employee = employee;
     }
 
+    public PaymentAccount getPaymentAccount() {
+        return paymentAccount;
+    }
+
+    public void setPaymentAccount(PaymentAccount paymentAccount) {
+        this.paymentAccount = paymentAccount;
+    }
+
     @Override
     public String toString() {
         return "CreditAccount{" +
@@ -135,7 +146,8 @@ public class CreditAccount {
                 ", sum=" + sum +
                 ", monthPayment=" + monthPayment +
                 ", interestRate=" + interestRate +
-                ", employee=" + employee +
+                "%, employee=" + employee +
+                ", paymentAccount=" + paymentAccount +
                 '}';
     }
 }

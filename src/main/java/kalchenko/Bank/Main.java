@@ -46,7 +46,8 @@ public class Main {
         CreditAccountService creditAccountService = new CreditAccountServiceImpl();
         creditAccountService.addCreditAccount(new CreditAccount(1L, userService.getUser(),
                 bankService.getBank().getName(), new Date(), 12, BigDecimal.valueOf(1000L),
-                bankService.getBank().getInterestRate(), employeeService.getEmployee()));
+                bankService.getBank().getInterestRate(), employeeService.getEmployee(),
+                paymentAccountService.getPaymentAccount()));
 
         System.out.println(bankService.getBank());
         System.out.println(bankOfficeService.getBankOffice());
