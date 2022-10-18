@@ -4,7 +4,14 @@ import kalchenko.bank.entity.PaymentAccount;
 
 public interface PaymentAccountService {
 
-    public PaymentAccount addPaymentAccount(PaymentAccount paymentAccount);
-    public PaymentAccount getPaymentAccount();
+    /**
+     * Добавляет paymentAccount в репозиторий.
+     */
+    PaymentAccount addPaymentAccount(PaymentAccount paymentAccount);
+
+    /**
+     * Возвращает объект, который хранится в репозитории.
+     */
+    PaymentAccount getPaymentAccount();
 
 }

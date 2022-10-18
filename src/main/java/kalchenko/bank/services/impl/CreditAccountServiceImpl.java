@@ -13,10 +13,6 @@ public class CreditAccountServiceImpl implements CreditAccountService {
 
     public CreditAccountServiceImpl() {}
 
-    /*
-     * Добавляет creditAccount в репозиторий.
-     * При добавлении вычисляет дату окончания кредита и ежемесячный платёж.
-     */
     @Override
     public CreditAccount addCreditAccount(CreditAccount creditAccount) {
 
@@ -40,9 +36,6 @@ public class CreditAccountServiceImpl implements CreditAccountService {
         return null;
     }
 
-    /*
-     * Возвращает объект, который хранится в репозитории.
-     */
     @Override
     public CreditAccount getCreditAccount() {
         return creditAccountRepository.getCreditAccount();

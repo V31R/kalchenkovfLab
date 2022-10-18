@@ -8,9 +8,9 @@ public class BankOfficeRepository {
 
     public BankOfficeRepository(){}
 
-    /*
+    /**
      * Если до этого там не находилось другого объекта BankOffice
-     * добавляет bankOffice в репозиторий и возвращает добаленный объект,
+     * добавляет bankOffice в репозиторий и возвращает добавленный объект,
      * иначе возвращает null.
      */
     public boolean add(BankOffice bankOffice){
@@ -25,7 +25,7 @@ public class BankOfficeRepository {
         return isEmpty;
     }
 
-    /*
+    /**
      * Возвращает истину, если при удалении объект был не null,
      * иначе возвращает ложь.
      */
@@ -38,7 +38,7 @@ public class BankOfficeRepository {
         return true;
     }
 
-    /*
+    /**
      * Возвращает объект, который хранится в репозитории.
      */
     public BankOffice getBankOffice(){
@@ -51,7 +51,7 @@ public class BankOfficeRepository {
         return this.bankOffice;
     }
 
-    /*
+    /**
      * Если объект существует, то обновляет его и возвращает истину,
      * иначе возвращает ложь.
      */

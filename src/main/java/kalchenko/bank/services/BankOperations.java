@@ -4,7 +4,13 @@ import java.math.BigDecimal;
 
 public interface BankOperations {
 
-    public boolean withdrawMoney(BigDecimal money);
-    public boolean depositMoney(BigDecimal money);
+    /**
+     * Списывает деньги.
+     */
+    boolean withdrawMoney(BigDecimal money);
+    /**
+     * Вносит деньги.
+     */
+    boolean depositMoney(BigDecimal money);
 
 }

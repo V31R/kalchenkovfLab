@@ -17,10 +17,7 @@ public class BankOfficeServiceImpl implements BankOfficeService {
         this.bankService = bankService;
     }
 
-    /*
-     * Добавляет bankOffice в репозиторий, если добавление было успешно
-     * извещает об этом связанный bank.
-     */
+
     @Override
     public BankOffice addBankOffice(BankOffice bankOffice) {
 
@@ -33,25 +30,19 @@ public class BankOfficeServiceImpl implements BankOfficeService {
         return null;
     }
 
-    /*
-     * Возвращает объект, который хранится в репозитории.
-     */
+
     @Override
     public BankOffice getBankOffice() {
         return bankOfficeRepository.getBankOffice();
     }
 
-    /*
-     * Удаляет объект, извещает об этом связанный Bank.
-     */
+
     @Override
     public boolean deleteBankOffice() {
         return bankOfficeRepository.delete() && bankService.deleteOffice();
     }
 
-    /*
-     * Увеличивает число банкоматов, при добавлении, извещает об этом связанный bank.
-     */
+
     @Override
     public boolean addAtm() {
         var bankOffice = bankOfficeRepository.getBankOffice();
@@ -65,7 +56,7 @@ public class BankOfficeServiceImpl implements BankOfficeService {
         return false;
     }
 
-    /*
+    /**
      * Уменьшает число банкоматов, при добавлении, извещает об этом связанный bank.
      */
     @Override
@@ -81,25 +72,18 @@ public class BankOfficeServiceImpl implements BankOfficeService {
         return false;
     }
 
-    /*
-     * Извещает связанный bank об увеличении числа пользоваталей.
-     */
+
     @Override
     public boolean addEmployee() {
         return bankService.addEmployee();
     }
 
-    /*
-     * Извещает связанный bank об уменьшении числа пользоваталей.
-     */
+
     @Override
     public boolean deleteEmployee() {
         return bankService.deleteEmployee();
     }
 
-    /*
-     * Списывает деньги из связанного объекта bank.
-     */
     @Override
     public boolean withdrawMoney(BigDecimal money) {
         if(bankOfficeRepository.getBankOffice().isCanPaymentOfMoney()){
@@ -109,9 +93,6 @@ public class BankOfficeServiceImpl implements BankOfficeService {
         return false;
     }
 
-    /*
-     * Вносит деньги в связанный объекта bank.
-     */
     @Override
     public boolean depositMoney(BigDecimal money) {
         if(bankOfficeRepository.getBankOffice().isCanDepositMoney()){

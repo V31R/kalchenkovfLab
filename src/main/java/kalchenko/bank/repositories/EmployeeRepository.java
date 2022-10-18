@@ -8,9 +8,9 @@ public class EmployeeRepository {
 
     public EmployeeRepository(){}
 
-    /*
+    /**
      * Если до этого там не находилось другого объекта Employee
-     * добавляет employee в репозиторий и возвращает добаленный объект,
+     * добавляет employee в репозиторий и возвращает добавленный объект,
      * иначе возвращает null.
      */
     public boolean add(Employee employee){
@@ -25,7 +25,7 @@ public class EmployeeRepository {
         return isEmpty;
     }
 
-    /*
+    /**
      * Возвращает истину, если при удалении объект был не null,
      * иначе возвращает ложь.
      */
@@ -38,7 +38,7 @@ public class EmployeeRepository {
         return true;
     }
 
-    /*
+    /**
      * Возвращает объект, который хранится в репозитории.
      */
     public Employee getEmployee(){
@@ -51,7 +51,7 @@ public class EmployeeRepository {
         return this.employee;
     }
 
-    /*
+    /**
      * Если объект существует, то обновляет его и возвращает истину,
      * иначе возвращает ложь.
      */

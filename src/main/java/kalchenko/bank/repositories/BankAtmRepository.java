@@ -8,9 +8,9 @@ public class BankAtmRepository {
 
     public BankAtmRepository(){}
 
-    /*
+    /**
     * Если до этого там не находилось другого объекта BankAtm
-    * добавляет bankAtm в репозиторий и возвращает добаленный объект,
+    * добавляет bankAtm в репозиторий и возвращает добавленный объект,
     * иначе возвращает null.
     */
     public boolean add(BankAtm bankAtm){
@@ -25,7 +25,7 @@ public class BankAtmRepository {
         return isEmpty;
     }
 
-    /*
+    /**
      * Возвращает истину, если при удалении объект был не null,
      * иначе возвращает ложь.
      */
@@ -38,13 +38,14 @@ public class BankAtmRepository {
         return true;
     }
 
-    /*
+    /**
      * Возвращает объект, который хранится в репозитории.
      */
     public BankAtm getBankAtm(){
         return this.bankAtm;
     }
-    /*
+
+    /**
      * Если объект существует, то обновляет его и возвращает истину,
      * иначе возвращает ложь.
      */

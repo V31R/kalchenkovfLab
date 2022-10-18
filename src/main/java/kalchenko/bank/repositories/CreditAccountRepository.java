@@ -8,9 +8,9 @@ public class CreditAccountRepository {
 
     public CreditAccountRepository(){}
 
-    /*
+    /**
      * Если до этого там не находилось другого объекта CreditAccount
-     * добавляет creditAccount в репозиторий и возвращает добаленный объект,
+     * добавляет creditAccount в репозиторий и возвращает добавленный объект,
      * иначе возвращает null.
      */
     public boolean add(CreditAccount creditAccount){
@@ -25,7 +25,7 @@ public class CreditAccountRepository {
         return isEmpty;
     }
 
-    /*
+    /**
      * Возвращает истину, если при удалении объект был не null,
      * иначе возвращает ложь.
      */
@@ -40,7 +40,7 @@ public class CreditAccountRepository {
         return true;
     }
 
-    /*
+    /**
      * Возвращает объект, который хранится в репозитории.
      */
     public CreditAccount getCreditAccount(){
@@ -53,7 +53,7 @@ public class CreditAccountRepository {
         return this.creditAccount;
     }
 
-    /*
+    /**
      * Если объект существует, то обновляет его и возвращает истину,
      * иначе возвращает ложь.
      */

@@ -4,9 +4,20 @@ import kalchenko.bank.entity.Employee;
 
 public interface EmployeeService extends BankOperations {
 
-    public Employee addEmployee(Employee employee);
-    public boolean deleteEmployee();
+    /**
+     * Добавляет employee в репозиторий, если добавление было успешно
+     * извещает об этом связанный bankOffice.
+     */
+    Employee addEmployee(Employee employee);
 
-    public Employee getEmployee();
+    /**
+     * Удаляет объект, извещает об этом связанный BankOffice.
+     */
+    boolean deleteEmployee();
+
+    /**
+     * Возвращает объект, который хранится в репозитории.
+     */
+    Employee getEmployee();
 
 }

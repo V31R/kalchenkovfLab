@@ -4,20 +4,53 @@ import kalchenko.bank.entity.Bank;
 
 public interface BankService extends BankOperations {
 
-    public Bank getBank();
-    public Bank addBank(Bank bank);
+    /**
+     * Возвращает объект, который хранится в репозитории.
+     */
+    Bank getBank();
+    /**
+     * Добавляет bank в репозиторий
+     */
+    Bank addBank(Bank bank);
 
-    public boolean addOffice();
-    public boolean deleteOffice();
+    /**
+     * Увеличивает число офисов.
+     */
+    boolean addOffice();
 
-    public boolean addAtm();
-    public boolean deleteAtm();
+    /**
+     * Уменьшает число офисов.
+     */
+    boolean deleteOffice();
 
-    public boolean addEmployee();
-    public boolean deleteEmployee();
+    /**
+     * Увеличивает число банкоматов.
+     */
+    boolean addAtm();
 
-    public boolean addUser();
-    public boolean deleteUser();
+    /**
+     * Уменьшает число банкоматов.
+     */
+    boolean deleteAtm();
 
+    /**
+     * Увеличивает число работников.
+     */
+    boolean addEmployee();
+
+    /**
+     * Уменьшает число работников.
+     */
+    boolean deleteEmployee();
+
+    /**
+     * Увеличивает число пользователей.
+     */
+    boolean addUser();
+
+    /**
+     * Уменьшает число пользователей.
+     */
+    boolean deleteUser();
 
 }
