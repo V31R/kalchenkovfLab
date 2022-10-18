@@ -4,7 +4,7 @@ import kalchenko.Bank.entity.PaymentAccount;
 
 public class PaymentAccountRepository {
 
-    PaymentAccount bank = null;
+    private PaymentAccount bank = null;
 
     public PaymentAccountRepository(){}
 
@@ -16,7 +16,7 @@ public class PaymentAccountRepository {
     public boolean add(PaymentAccount paymentAccount){
         var isEmpty = this.bank == null;
 
-        if (isEmpty){
+        if (isEmpty && paymentAccount != null){
 
             this.bank = new PaymentAccount(paymentAccount);
 
@@ -56,7 +56,7 @@ public class PaymentAccountRepository {
      * иначе возвращает ложь.
      */
     public boolean update(PaymentAccount paymentAccount){
-        if(this.bank == null){
+        if(this.bank == null && paymentAccount != null){
 
             return false;
 

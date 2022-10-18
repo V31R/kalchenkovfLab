@@ -9,8 +9,8 @@ import java.math.BigDecimal;
 
 public class UserServiceImpl implements UserService {
 
-    UserRepository userRepository = new UserRepository();
-    BankService bankService;
+    private UserRepository userRepository = new UserRepository();
+    private BankService bankService;
 
     public UserServiceImpl(BankService bankService) {
         this.bankService = bankService;

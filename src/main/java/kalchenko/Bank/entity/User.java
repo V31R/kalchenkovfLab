@@ -5,13 +5,13 @@ import java.util.Date;
 
 public class User {
 
-    Long id;
-    String fullName;
-    Date birthDate;
-    BigDecimal salary;
-    String job;
-    Bank bank;
-    int creditRate = 0;
+    private Long id;
+    private String fullName;
+    private Date birthDate;
+    private BigDecimal salary;
+    private String job;
+    private Bank bank;
+    private int creditRate = 0;
 
     public User() {}
 

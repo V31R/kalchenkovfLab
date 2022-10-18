@@ -4,14 +4,14 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 public class Employee {
-    Long id;
-    String fullName;
-    Date birthDate;
-    String job;
-    boolean inOffice;
-    BankOffice bankOffice;
-    boolean canApplyLoan;
-    BigDecimal salary;
+    private Long id;
+    private String fullName;
+    private Date birthDate;
+    private String job;
+    private boolean inOffice;
+    private BankOffice bankOffice;
+    private boolean canApplyLoan;
+    private BigDecimal salary;
 
     public Employee() {}
 

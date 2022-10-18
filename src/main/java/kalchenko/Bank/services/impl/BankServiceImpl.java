@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 
 public class BankServiceImpl implements BankService {
 
-    BankRepository bankRepository = new BankRepository();
+    private BankRepository bankRepository = new BankRepository();
 
     public BankServiceImpl() {}
     /*

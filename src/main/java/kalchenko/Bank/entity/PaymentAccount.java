@@ -4,10 +4,10 @@ import java.math.BigDecimal;
 
 public class PaymentAccount {
 
-    Long id;
-    User user;
-    String bankName;
-    BigDecimal sum = BigDecimal.ZERO;
+    private Long id;
+    private User user;
+    private String bankName;
+    private BigDecimal sum = BigDecimal.ZERO;
 
     public PaymentAccount() {}
 

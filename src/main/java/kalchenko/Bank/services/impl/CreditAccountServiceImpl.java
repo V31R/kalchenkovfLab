@@ -9,7 +9,7 @@ import java.util.Calendar;
 
 public class CreditAccountServiceImpl implements CreditAccountService {
 
-    CreditAccountRepository creditAccountRepository = new CreditAccountRepository();
+    private CreditAccountRepository creditAccountRepository = new CreditAccountRepository();
 
     public CreditAccountServiceImpl() {}
 

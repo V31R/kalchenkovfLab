@@ -9,9 +9,9 @@ import java.math.BigDecimal;
 
 public class BankOfficeServiceImpl implements BankOfficeService {
 
-    BankService bankService;
+    private BankService bankService;
 
-    BankOfficeRepository bankOfficeRepository = new BankOfficeRepository();
+    private BankOfficeRepository bankOfficeRepository = new BankOfficeRepository();
 
     public BankOfficeServiceImpl(BankService bankService) {
         this.bankService = bankService;

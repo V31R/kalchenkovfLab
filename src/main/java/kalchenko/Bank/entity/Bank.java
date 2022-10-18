@@ -4,15 +4,15 @@ import java.math.BigDecimal;
 
 public class Bank {
 
-    Long id;
-    String name;
-    int officesNumber = 0;
-    int atmNumber = 0;
-    int employeeNumber = 0;
-    int userNumber = 0;
-    int bankRate;
-    BigDecimal moneyAmount;
-    BigDecimal interestRate;
+    private Long id;
+    private String name;
+    private int officesNumber = 0;
+    private int atmNumber = 0;
+    private int employeeNumber = 0;
+    private int userNumber = 0;
+    private int bankRate;
+    private BigDecimal moneyAmount;
+    private BigDecimal interestRate;
 
     public Bank() {}
 

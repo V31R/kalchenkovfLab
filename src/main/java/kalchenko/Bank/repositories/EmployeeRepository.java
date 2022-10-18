@@ -4,7 +4,7 @@ import kalchenko.Bank.entity.Employee;
 
 public class EmployeeRepository {
 
-    Employee employee = null;
+    private Employee employee = null;
 
     public EmployeeRepository(){}
 
@@ -16,7 +16,7 @@ public class EmployeeRepository {
     public boolean add(Employee employee){
         var isEmpty = this.employee == null;
 
-        if (isEmpty){
+        if (isEmpty && employee != null){
 
             this.employee = new Employee(employee);
 
@@ -56,7 +56,7 @@ public class EmployeeRepository {
      * иначе возвращает ложь.
      */
     public boolean update(Employee employee){
-        if(this.employee == null){
+        if(this.employee == null && employee != null){
 
             return false;
 

@@ -4,8 +4,7 @@ import kalchenko.Bank.entity.CreditAccount;
 
 public class CreditAccountRepository {
 
-
-    CreditAccount creditAccount = null;
+    private CreditAccount creditAccount = null;
 
     public CreditAccountRepository(){}
 
@@ -17,7 +16,7 @@ public class CreditAccountRepository {
     public boolean add(CreditAccount creditAccount){
         var isEmpty = this.creditAccount == null;
 
-        if (isEmpty){
+        if (isEmpty && creditAccount != null){
 
             this.creditAccount = new CreditAccount(creditAccount);
 
@@ -59,7 +58,7 @@ public class CreditAccountRepository {
      * иначе возвращает ложь.
      */
     public boolean update(CreditAccount creditAccount){
-        if(this.creditAccount == null){
+        if(this.creditAccount == null && creditAccount != null){
 
             return false;
 

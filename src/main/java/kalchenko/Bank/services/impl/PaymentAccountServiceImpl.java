@@ -6,7 +6,7 @@ import kalchenko.Bank.services.PaymentAccountService;
 
 public class PaymentAccountServiceImpl implements PaymentAccountService {
 
-    PaymentAccountRepository paymentAccountRepository = new PaymentAccountRepository();
+    private PaymentAccountRepository paymentAccountRepository = new PaymentAccountRepository();
 
     public PaymentAccountServiceImpl() {}
 

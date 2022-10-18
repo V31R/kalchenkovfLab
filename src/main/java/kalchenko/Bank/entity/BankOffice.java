@@ -4,18 +4,18 @@ import java.math.BigDecimal;
 
 public class BankOffice {
 
-    Long id;
-    String name;
-    String address;
-    Bank bank;
-    boolean isWorking;
-    boolean isPossiblePlaceAtm;
-    int atmNumber=0;
-    boolean canApplyLoan;
-    boolean canPaymentOfMoney;
-    boolean canDepositMoney;
-    BigDecimal moneyAmount;
-    BigDecimal rent;
+    private Long id;
+    private String name;
+    private String address;
+    private Bank bank;
+    private boolean isWorking;
+    private boolean isPossiblePlaceAtm;
+    private int atmNumber=0;
+    private boolean canApplyLoan;
+    private boolean canPaymentOfMoney;
+    private boolean canDepositMoney;
+    private BigDecimal moneyAmount;
+    private BigDecimal rent;
 
     public BankOffice() {}
 

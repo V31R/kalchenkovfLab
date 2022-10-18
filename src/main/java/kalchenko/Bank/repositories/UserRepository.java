@@ -4,7 +4,7 @@ import kalchenko.Bank.entity.User;
 
 public class UserRepository {
 
-    User bank = null;
+    private User bank = null;
 
     public UserRepository(){}
 
@@ -16,7 +16,7 @@ public class UserRepository {
     public boolean add(User user){
         var isEmpty = this.bank == null;
 
-        if (isEmpty){
+        if (isEmpty && user != null){
 
             this.bank = new User(user);
 
@@ -50,7 +50,7 @@ public class UserRepository {
      * иначе возвращает ложь.
      */
     public boolean update(User user){
-        if(this.bank == null){
+        if(this.bank == null && user != null){
 
             return false;
 

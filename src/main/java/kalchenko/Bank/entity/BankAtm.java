@@ -6,16 +6,16 @@ import java.math.BigDecimal;
 
 public class BankAtm {
 
-    Long id;
-    String name;
-    AtmStatus status;
-    BankOffice bankOffice;
-    String place;
-    Employee employee;
-    boolean canPaymentOfMoney;
-    boolean canDepositMoney;
-    BigDecimal moneyAmount;
-    BigDecimal maintenance;
+    private Long id;
+    private String name;
+    private AtmStatus status;
+    private BankOffice bankOffice;
+    private String place;
+    private Employee employee;
+    private boolean canPaymentOfMoney;
+    private boolean canDepositMoney;
+    private BigDecimal moneyAmount;
+    private BigDecimal maintenance;
 
     public BankAtm() {}
 

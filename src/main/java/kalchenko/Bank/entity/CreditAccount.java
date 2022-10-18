@@ -5,17 +5,17 @@ import java.util.Date;
 
 public class CreditAccount {
 
-    Long id;
-    User user;
-    String bankName;
-    Date start;
-    Date end;
-    int monthNumber;
-    BigDecimal sum;
-    BigDecimal monthPayment;
-    BigDecimal interestRate;
-    Employee employee;
-    PaymentAccount paymentAccount;
+    private Long id;
+    private User user;
+    private String bankName;
+    private Date start;
+    private Date end;
+    private int monthNumber;
+    private BigDecimal sum;
+    private BigDecimal monthPayment;
+    private BigDecimal interestRate;
+    private Employee employee;
+    private PaymentAccount paymentAccount;
 
     public CreditAccount() {}
 
