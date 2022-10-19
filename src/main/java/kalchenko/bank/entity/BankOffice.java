@@ -11,9 +11,9 @@ public class BankOffice {
     private boolean isWorking;
     private boolean isPossiblePlaceAtm;
     private int atmNumber=0;
-    private boolean canApplyLoan;
-    private boolean canPaymentOfMoney;
-    private boolean canDepositMoney;
+    private boolean loansAvailable;
+    private boolean paymentAvailable;
+    private boolean depositAvailable;
     private BigDecimal moneyAmount;
     private BigDecimal rent;
 
@@ -28,9 +28,9 @@ public class BankOffice {
         this.bank = bank;
         this.isWorking = isWorking;
         this.isPossiblePlaceAtm = isPossiblePlaceAtm;
-        this.canApplyLoan = canApplyLoan;
-        this.canPaymentOfMoney = canPaymentOfMoney;
-        this.canDepositMoney = canDepositMoney;
+        this.loansAvailable = canApplyLoan;
+        this.paymentAvailable = canPaymentOfMoney;
+        this.depositAvailable = canDepositMoney;
         this.moneyAmount = moneyAmount;
         this.rent = rent;
     }
@@ -43,9 +43,9 @@ public class BankOffice {
         this.isWorking = bankOffice.isWorking();
         this.isPossiblePlaceAtm = bankOffice.isPossiblePlaceAtm();
         this.atmNumber = bankOffice.getAtmNumber();
-        this.canApplyLoan = bankOffice.isCanApplyLoan();
-        this.canPaymentOfMoney = bankOffice.isCanPaymentOfMoney();
-        this.canDepositMoney = bankOffice.isCanDepositMoney();
+        this.loansAvailable = bankOffice.isLoansAvailable();
+        this.paymentAvailable = bankOffice.isPaymentAvailable();
+        this.depositAvailable = bankOffice.isDepositAvailable();
         this.moneyAmount = bankOffice.getMoneyAmount();
         this.rent = bankOffice.getRent();
     }
@@ -106,28 +106,28 @@ public class BankOffice {
         this.atmNumber = atmNumber;
     }
 
-    public boolean isCanApplyLoan() {
-        return canApplyLoan;
+    public boolean isLoansAvailable() {
+        return loansAvailable;
     }
 
-    public void setCanApplyLoan(boolean canApplyLoan) {
-        this.canApplyLoan = canApplyLoan;
+    public void setLoansAvailable(boolean loansAvailable) {
+        this.loansAvailable = loansAvailable;
     }
 
-    public boolean isCanPaymentOfMoney() {
-        return canPaymentOfMoney;
+    public boolean isPaymentAvailable() {
+        return paymentAvailable;
     }
 
-    public void setCanPaymentOfMoney(boolean canPaymentOfMoney) {
-        this.canPaymentOfMoney = canPaymentOfMoney;
+    public void setPaymentAvailable(boolean paymentAvailable) {
+        this.paymentAvailable = paymentAvailable;
     }
 
-    public boolean isCanDepositMoney() {
-        return canDepositMoney;
+    public boolean isDepositAvailable() {
+        return depositAvailable;
     }
 
-    public void setCanDepositMoney(boolean canDepositMoney) {
-        this.canDepositMoney = canDepositMoney;
+    public void setDepositAvailable(boolean depositAvailable) {
+        this.depositAvailable = depositAvailable;
     }
 
     public BigDecimal getMoneyAmount() {
@@ -156,9 +156,9 @@ public class BankOffice {
                 ", isWorking=" + isWorking +
                 ", isPossiblePlaceAtm=" + isPossiblePlaceAtm +
                 ", atmNumber=" + atmNumber +
-                ", canApplyLoan=" + canApplyLoan +
-                ", canPaymentOfMoney=" + canPaymentOfMoney +
-                ", canDepositMoney=" + canDepositMoney +
+                ", canApplyLoan=" + loansAvailable +
+                ", canPaymentOfMoney=" + paymentAvailable +
+                ", canDepositMoney=" + depositAvailable +
                 ", moneyAmount=" + moneyAmount +
                 ", rent=" + rent +
                 '}';

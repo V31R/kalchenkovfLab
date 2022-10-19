@@ -86,7 +86,7 @@ public class BankOfficeServiceImpl implements BankOfficeService {
 
     @Override
     public boolean withdrawMoney(BigDecimal money) {
-        if(bankOfficeRepository.getBankOffice().isCanPaymentOfMoney()){
+        if(bankOfficeRepository.getBankOffice().isPaymentAvailable()){
             return bankService.withdrawMoney(money);
         }
 
@@ -95,7 +95,7 @@ public class BankOfficeServiceImpl implements BankOfficeService {
 
     @Override
     public boolean depositMoney(BigDecimal money) {
-        if(bankOfficeRepository.getBankOffice().isCanDepositMoney()){
+        if(bankOfficeRepository.getBankOffice().isDepositAvailable()){
             return bankService.depositMoney(money);
         }
 

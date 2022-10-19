@@ -1,6 +1,7 @@
 package kalchenko.bank.entity;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Date;
 
 public class CreditAccount {
@@ -8,8 +9,8 @@ public class CreditAccount {
     private Long id;
     private User user;
     private String bankName;
-    private Date start;
-    private Date end;
+    private LocalDate start;
+    private LocalDate end;
     private int monthNumber;
     private BigDecimal sum;
     private BigDecimal monthPayment;
@@ -19,8 +20,8 @@ public class CreditAccount {
 
     public CreditAccount() {}
 
-    public CreditAccount(Long id, User user, String bankName, Date start, int monthNumber, BigDecimal sum,
-                          BigDecimal interestRate, Employee employee, PaymentAccount paymentAccount) {
+    public CreditAccount(Long id, User user, String bankName, LocalDate start, int monthNumber, BigDecimal sum,
+                         BigDecimal interestRate, Employee employee, PaymentAccount paymentAccount) {
         this.id = id;
         this.user = user;
         this.bankName = bankName;
@@ -70,19 +71,19 @@ public class CreditAccount {
         this.bankName = bankName;
     }
 
-    public Date getStart() {
+    public LocalDate getStart() {
         return start;
     }
 
-    public void setStart(Date start) {
+    public void setStart(LocalDate start) {
         this.start = start;
     }
 
-    public Date getEnd() {
+    public LocalDate getEnd() {
         return end;
     }
 
-    public void setEnd(Date end) {
+    public void setEnd(LocalDate end) {
         this.end = end;
     }
 

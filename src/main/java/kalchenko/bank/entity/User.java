@@ -1,13 +1,13 @@
 package kalchenko.bank.entity;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 
 public class User {
 
     private Long id;
     private String fullName;
-    private Date birthDate;
+    private LocalDate birthDate;
     private BigDecimal salary;
     private String job;
     private Bank bank;
@@ -15,7 +15,7 @@ public class User {
 
     public User() {}
 
-    public User(Long id, String fullName, Date birthDate, BigDecimal salary,
+    public User(Long id, String fullName, LocalDate birthDate, BigDecimal salary,
                 String job, Bank bank) {
         this.id = id;
         this.fullName = fullName;
@@ -51,11 +51,11 @@ public class User {
         this.fullName = fullName;
     }
 
-    public Date getBirthDate() {
+    public LocalDate getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(Date birthDate) {
+    public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
     }
 

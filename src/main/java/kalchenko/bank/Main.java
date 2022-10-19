@@ -7,6 +7,7 @@ import kalchenko.bank.services.impl.*;
 import kalchenko.bank.utils.AtmStatus;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Random;
 
@@ -27,7 +28,7 @@ public class Main {
                 true, true,bankService.getBank().getMoneyAmount(), BigDecimal.valueOf(10.5d)));
 
         EmployeeService employeeService = new EmployeeServiceImpl(bankOfficeService);
-        employeeService.addEmployee(new Employee(1L, "Ivanov Ivan Ivanovich", new Date(), "job",
+        employeeService.addEmployee(new Employee(1L, "Ivanov Ivan Ivanovich", LocalDate.now(), "job",
                 true, bankOfficeService.getBankOffice(), true, BigDecimal.ONE));
 
         BankAtmService bankAtmService = new BankAtmServiceImpl(bankOfficeService);
@@ -36,8 +37,8 @@ public class Main {
                 bankOfficeService.getBankOffice().getMoneyAmount(), BigDecimal.TEN));
 
         UserService userService = new UserServiceImpl(bankService);
-        userService.addUser(new User(1L, "Ivanov Ivan Ivanovich", new Date(),
-                BigDecimal.valueOf(random.nextDouble()*10_000), "job", bankService.getBank()));
+        userService.addUser(new User(1L, "Ivanov Ivan Ivanovich", LocalDate.now(),
+                BigDecimal.valueOf(random.nextDouble()*9_999 +1), "job", bankService.getBank()));
 
         PaymentAccountService paymentAccountService = new PaymentAccountServiceImpl();
         paymentAccountService.addPaymentAccount(new PaymentAccount(1L, userService.getUser(),
@@ -45,7 +46,7 @@ public class Main {
 
         CreditAccountService creditAccountService = new CreditAccountServiceImpl();
         creditAccountService.addCreditAccount(new CreditAccount(1L, userService.getUser(),
-                bankService.getBank().getName(), new Date(), 12, BigDecimal.valueOf(1000L),
+                bankService.getBank().getName(), LocalDate.now(), 12, BigDecimal.valueOf(1000L),
                 bankService.getBank().getInterestRate(), employeeService.getEmployee(),
                 paymentAccountService.getPaymentAccount()));
 

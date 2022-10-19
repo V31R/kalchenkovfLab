@@ -44,7 +44,7 @@ public class BankAtmServiceImpl implements BankAtmService {
 
     @Override
     public boolean withdrawMoney(BigDecimal money) {
-        if(bankAtmRepository.getBankAtm().isCanPaymentOfMoney()) {
+        if(bankAtmRepository.getBankAtm().isPaymentAvailable()) {
             return bankOfficeService.withdrawMoney(money);
         }
         return false;
@@ -52,7 +52,7 @@ public class BankAtmServiceImpl implements BankAtmService {
 
     @Override
     public boolean depositMoney(BigDecimal money) {
-        if(bankAtmRepository.getBankAtm().isCanDepositMoney()){
+        if(bankAtmRepository.getBankAtm().isDepositAvailable()){
             return bankOfficeService.depositMoney(money);
         }
         return false;

@@ -12,8 +12,8 @@ public class BankAtm {
     private BankOffice bankOffice;
     private String place;
     private Employee employee;
-    private boolean canPaymentOfMoney;
-    private boolean canDepositMoney;
+    private boolean paymentAvailable;
+    private boolean depositAvailable;
     private BigDecimal moneyAmount;
     private BigDecimal maintenance;
 
@@ -28,8 +28,8 @@ public class BankAtm {
         this.bankOffice = bankOffice;
         this.place = place;
         this.employee = employee;
-        this.canPaymentOfMoney = canPaymentOfMoney;
-        this.canDepositMoney = canDepositMoney;
+        this.paymentAvailable = canPaymentOfMoney;
+        this.depositAvailable = canDepositMoney;
         this.moneyAmount = moneyAmount;
         this.maintenance = maintenance;
     }
@@ -41,8 +41,8 @@ public class BankAtm {
         this.bankOffice = bankAtm.getBankOffice();
         this.place = bankAtm.getPlace();
         this.employee = bankAtm.getEmployee();
-        this.canPaymentOfMoney = bankAtm.isCanPaymentOfMoney();
-        this.canDepositMoney = bankOffice.isCanDepositMoney();
+        this.paymentAvailable = bankAtm.isPaymentAvailable();
+        this.depositAvailable = bankOffice.isDepositAvailable();
         this.moneyAmount = bankAtm.getMoneyAmount();
         this.maintenance = bankAtm.getMaintenance();
     }
@@ -99,20 +99,20 @@ public class BankAtm {
         this.employee = employee;
     }
 
-    public boolean isCanPaymentOfMoney() {
-        return canPaymentOfMoney;
+    public boolean isPaymentAvailable() {
+        return paymentAvailable;
     }
 
-    public void setCanPaymentOfMoney(boolean canPaymentOfMoney) {
-        this.canPaymentOfMoney = canPaymentOfMoney;
+    public void setPaymentAvailable(boolean paymentAvailable) {
+        this.paymentAvailable = paymentAvailable;
     }
 
-    public boolean isCanDepositMoney() {
-        return canDepositMoney;
+    public boolean isDepositAvailable() {
+        return depositAvailable;
     }
 
-    public void setCanDepositMoney(boolean canDepositMoney) {
-        this.canDepositMoney = canDepositMoney;
+    public void setDepositAvailable(boolean depositAvailable) {
+        this.depositAvailable = depositAvailable;
     }
 
     public BigDecimal getMoneyAmount() {
@@ -140,8 +140,8 @@ public class BankAtm {
                 ", bankOffice=" + bankOffice +
                 ", place='" + place + '\'' +
                 ", employee=" + employee +
-                ", canPaymentOfMoney=" + canPaymentOfMoney +
-                ", canDepositMoney=" + canDepositMoney +
+                ", canPaymentOfMoney=" + paymentAvailable +
+                ", canDepositMoney=" + depositAvailable +
                 ", moneyAmount=" + moneyAmount +
                 ", maintenance=" + maintenance +
                 '}';

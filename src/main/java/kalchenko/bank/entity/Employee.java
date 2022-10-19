@@ -1,21 +1,21 @@
 package kalchenko.bank.entity;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 
 public class Employee {
     private Long id;
     private String fullName;
-    private Date birthDate;
+    private LocalDate birthDate;
     private String job;
     private boolean inOffice;
     private BankOffice bankOffice;
-    private boolean canApplyLoan;
+    private boolean loansAvailable;
     private BigDecimal salary;
 
     public Employee() {}
 
-    public Employee(Long id, String fullName, Date birthDate, String job, boolean inOffice,
+    public Employee(Long id, String fullName, LocalDate birthDate, String job, boolean inOffice,
                     BankOffice bankOffice, boolean canApplyLoan, BigDecimal salary) {
         this.id = id;
         this.fullName = fullName;
@@ -23,7 +23,7 @@ public class Employee {
         this.job = job;
         this.inOffice = inOffice;
         this.bankOffice = bankOffice;
-        this.canApplyLoan = canApplyLoan;
+        this.loansAvailable = canApplyLoan;
         this.salary = salary;
     }
 
@@ -34,7 +34,7 @@ public class Employee {
         this.job = employee.getJob();
         this.inOffice = employee.inOffice;
         this.bankOffice = employee.getBankOffice();
-        this.canApplyLoan = employee.canApplyLoan;
+        this.loansAvailable = employee.loansAvailable;
         this.salary = employee.getSalary();
     }
 
@@ -54,11 +54,11 @@ public class Employee {
         this.fullName = fullName;
     }
 
-    public Date getBirthDate() {
+    public LocalDate getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(Date birthDate) {
+    public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
     }
 
@@ -86,12 +86,12 @@ public class Employee {
         this.bankOffice = bankOffice;
     }
 
-    public boolean isCanApplyLoan() {
-        return canApplyLoan;
+    public boolean isLoansAvailable() {
+        return loansAvailable;
     }
 
-    public void setCanApplyLoan(boolean canApplyLoan) {
-        this.canApplyLoan = canApplyLoan;
+    public void setLoansAvailable(boolean loansAvailable) {
+        this.loansAvailable = loansAvailable;
     }
 
     public BigDecimal getSalary() {
@@ -111,7 +111,7 @@ public class Employee {
                 ", job='" + job + '\'' +
                 ", inOffice=" + inOffice +
                 ", bankOffice=" + bankOffice +
-                ", canApplyLoan=" + canApplyLoan +
+                ", canApplyLoan=" + loansAvailable +
                 ", salary=" + salary +
                 '}';
     }
