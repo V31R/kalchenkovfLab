@@ -3,7 +3,7 @@ package kalchenko.bank.entity;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-public class User {
+public class User implements Entity{
 
     private Long id;
     private String fullName;
@@ -15,9 +15,8 @@ public class User {
 
     public User() {}
 
-    public User(Long id, String fullName, LocalDate birthDate, BigDecimal salary,
+    public User(String fullName, LocalDate birthDate, BigDecimal salary,
                 String job, Bank bank) {
-        this.id = id;
         this.fullName = fullName;
         this.birthDate = birthDate;
         this.salary = salary;
@@ -35,10 +34,12 @@ public class User {
         this.creditRate = user.getCreditRate();
     }
 
+    @Override
     public Long getId() {
         return id;
     }
 
+    @Override
     public void setId(Long id) {
         this.id = id;
     }

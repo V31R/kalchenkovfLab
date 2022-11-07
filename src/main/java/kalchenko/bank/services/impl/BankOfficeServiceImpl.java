@@ -6,6 +6,7 @@ import kalchenko.bank.services.BankOfficeService;
 import kalchenko.bank.services.BankService;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public class BankOfficeServiceImpl implements BankOfficeService {
 
@@ -27,34 +28,35 @@ public class BankOfficeServiceImpl implements BankOfficeService {
 
     @Override
     public BankOffice addBankOffice(BankOffice bankOffice) {
+        var newBankOffice = bankOfficeRepository.add(bankOffice);
 
-        if(bankOfficeRepository.add(bankOffice)){
-            var bank = bankService.getBankById(bankOffice.getBank().getId());
+        var bank = bankService.getBankById(bankOffice.getBank().getId());
 
-            if(bank != null){
-                bank.setOfficesNumber(bank.getOfficesNumber() + 1);
-                bankService.update(bank);
-            }
-
-            return bankOfficeRepository.getBankOffice();
-
+        if(bank != null){
+            bank.setOfficesNumber(bank.getOfficesNumber() + 1);
+            bankService.update(bank);
         }
-        return null;
+
+        return newBankOffice;
     }
 
 
     @Override
-    public BankOffice getBankOffice() {
-        return bankOfficeRepository.getBankOffice();
+    public BankOffice getBankOfficeById(Long id) {
+        return bankOfficeRepository.findById(id);
     }
 
+    @Override
+    public List<BankOffice> getAllBanks() {
+        return bankOfficeRepository.findAll();
+    }
 
     @Override
-    public boolean deleteBankOffice() {
+    public boolean deleteBankOfficeById(Long id) {
 
-        var bankId = bankOfficeRepository.getBankOffice().getId();
+        var bankId = bankOfficeRepository.findById(id).getId();
 
-        if(!bankOfficeRepository.delete()) {
+        if(!bankOfficeRepository.deleteById(id)) {
             return false;
         }
         var bank =bankService.getBankById(bankId);
@@ -71,8 +73,8 @@ public class BankOfficeServiceImpl implements BankOfficeService {
 
 
     @Override
-    public boolean addAtm() {
-        var bankOffice = bankOfficeRepository.getBankOffice();
+    public boolean addAtm(Long bankOfficeId) {
+        var bankOffice = bankOfficeRepository.findById(bankOfficeId);
         if(bankOffice == null){
             return false;
         }
@@ -93,8 +95,8 @@ public class BankOfficeServiceImpl implements BankOfficeService {
      * Уменьшает число банкоматов, при добавлении, извещает об этом связанный bank.
      */
     @Override
-    public boolean deleteAtm() {
-        var bankOffice = bankOfficeRepository.getBankOffice();
+    public boolean deleteAtm(Long bankOfficeId) {
+        var bankOffice = bankOfficeRepository.findById(bankOfficeId);
         if(bankOffice == null){
             return false;
         }
@@ -114,9 +116,9 @@ public class BankOfficeServiceImpl implements BankOfficeService {
 
 
     @Override
-    public boolean addEmployee() {
+    public boolean addEmployee(Long bankOfficeId) {
 
-        var bankOffice = bankOfficeRepository.getBankOffice();
+        var bankOffice = bankOfficeRepository.findById(bankOfficeId);
         if(bankOffice == null){
             return false;
         }
@@ -134,8 +136,8 @@ public class BankOfficeServiceImpl implements BankOfficeService {
 
 
     @Override
-    public boolean deleteEmployee() {
-        var bankOffice = bankOfficeRepository.getBankOffice();
+    public boolean deleteEmployee(Long bankOfficeId) {
+        var bankOffice = bankOfficeRepository.findById(bankOfficeId);
         if(bankOffice == null){
             return false;
         }
@@ -153,7 +155,7 @@ public class BankOfficeServiceImpl implements BankOfficeService {
 
     @Override
     public boolean withdrawMoney(Long id, BigDecimal money) {
-        var bankOffice = bankOfficeRepository.getBankOffice();
+        var bankOffice = bankOfficeRepository.findById(id);
         if(bankOffice.isPaymentAvailable()){
             return bankService.withdrawMoney(bankOffice.getBank().getId(), money);
         }
@@ -163,7 +165,7 @@ public class BankOfficeServiceImpl implements BankOfficeService {
 
     @Override
     public boolean depositMoney(Long id, BigDecimal money) {
-        var bankOffice = bankOfficeRepository.getBankOffice();
+        var bankOffice = bankOfficeRepository.findById(id);
         if(bankOffice.isDepositAvailable()){
             return bankService.depositMoney(bankOffice.getBank().getId(), money);
         }

@@ -2,6 +2,8 @@ package kalchenko.bank.repositories;
 
 import kalchenko.bank.entity.PaymentAccount;
 
+import java.util.List;
+
 public class PaymentAccountRepository {
 
     private static PaymentAccountRepository INSTANCE;
@@ -16,65 +18,47 @@ public class PaymentAccountRepository {
         return INSTANCE;
     }
 
-    private PaymentAccount bank = null;
-
+    private final EntityRepository repository = new EntityRepository();
 
     /**
      * Если до этого там не находилось другого объекта PaymentAccount
      * добавляет paymentAccount в репозиторий и возвращает добавленный объект,
      * иначе возвращает null.
      */
-    public boolean add(PaymentAccount paymentAccount){
-        var isEmpty = this.bank == null;
-
-        if (isEmpty && paymentAccount != null){
-
-            this.bank = new PaymentAccount(paymentAccount);
-
-        }
-
-        return isEmpty;
+    public PaymentAccount add(PaymentAccount paymentAccount){
+       return (PaymentAccount) repository.add(paymentAccount);
     }
 
     /**
      * Возвращает истину, если при удалении объект был не null,
      * иначе возвращает ложь.
      */
-    public boolean delete(){
-        if(this.bank == null){
-            return false;
-        }
-
-        this.bank = null;
-        return true;
+    public boolean deleteById(Long id){
+        return repository.deleteById(id);
     }
 
     /**
      * Возвращает объект, который хранится в репозитории.
      */
-    public PaymentAccount getPaymentAccount(){
-        if(this.bank == null){
+    public PaymentAccount findById(Long id){
+       return (PaymentAccount) repository.findById(id);
+    }
 
-            return null;
+    /**
+     * Возвращает список аккаунтов, которые хранятся в репозитории.
+     */
+    public List<PaymentAccount> findAll(){
 
-        }
+        return repository.findAll().stream().map(entity -> (PaymentAccount) entity).toList();
 
-        return this.bank;
     }
 
     /**
      * Если объект существует, то обновляет его и возвращает истину,
      * иначе возвращает ложь.
      */
-    public boolean update(PaymentAccount paymentAccount){
-        if(this.bank == null && paymentAccount != null){
-
-            return false;
-
-        }
-
-        this.bank = paymentAccount;
-        return true;
+    public PaymentAccount update(PaymentAccount paymentAccount){
+        return (PaymentAccount) repository.update(paymentAccount);
     }
 
 }

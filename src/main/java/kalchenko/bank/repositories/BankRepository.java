@@ -2,9 +2,7 @@ package kalchenko.bank.repositories;
 
 import kalchenko.bank.entity.Bank;
 
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  *  Класс-одиночка
@@ -23,23 +21,16 @@ public class BankRepository {
         return INSTANCE;
     }
 
-    private final Map<Long, Bank> banks = new LinkedHashMap<>();
-    private long currentId = 1L;
+    private final EntityRepository repository = new EntityRepository();
+
 
     /**
-     * Если до этого там не находилось другого объекта Bank
-     * добавляет bank в репозиторий и возвращает добавленный объект,
-     * иначе возвращает null.
+     * Добавляет bank в репозиторий и возвращает добавленный объект,
+     * если bank не был равен null, иначе возвращает null.
      */
     public Bank add(Bank bank){
 
-        if(bank == null){
-            return null;
-        }
-
-        bank.setId(currentId++);
-        this.banks.put(bank.getId(), bank);
-        return bank;
+        return (Bank) repository.add(bank);
 
     }
 
@@ -48,12 +39,8 @@ public class BankRepository {
      * иначе возвращает ложь.
      */
     public boolean deleteById(Long id){
-        if(!this.banks.containsKey(id)){
-            return false;
-        }
 
-        banks.remove(id);
-        return true;
+        return repository.deleteById(id);
 
     }
 
@@ -62,7 +49,7 @@ public class BankRepository {
      */
     public Bank findById(Long id){
 
-        return this.banks.get(id);
+        return (Bank) repository.findById(id);
 
     }
 
@@ -71,7 +58,7 @@ public class BankRepository {
      */
     public List<Bank> findAll(){
 
-        return this.banks.values().stream().toList();
+        return repository.findAll().stream().map(entity -> (Bank) entity).toList();
 
     }
 
@@ -81,12 +68,7 @@ public class BankRepository {
      */
     public Bank update(Bank bank){
 
-        if(bank == null || !this.banks.containsKey(bank.getId())){
-            return null;
-        }
-
-        this.banks.replace(bank.getId(), bank);
-        return findById(bank.getId());
+        return (Bank) repository.update(bank);
 
     }
 

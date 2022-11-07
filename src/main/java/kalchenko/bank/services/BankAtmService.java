@@ -2,6 +2,8 @@ package kalchenko.bank.services;
 
 import kalchenko.bank.entity.BankAtm;
 
+import java.util.List;
+
 public interface BankAtmService extends BankOperations{
 
     /**
@@ -13,10 +15,15 @@ public interface BankAtmService extends BankOperations{
     /**
      * Возвращает объект, который хранится в репозитории.
      */
-    BankAtm getBankAtm();
+    BankAtm getBankAtmById(Long id);
+
+    /**
+     * Возвращает все банки, которые хранятся в репозитории.
+     */
+    List<BankAtm> getAllBankAtms();
 
     /**
      * Удаляет объект, извещает об этом связанный BankOffice.
      */
-    boolean deleteBankAtm();
+    boolean deleteBankAtmById(Long id);
 }

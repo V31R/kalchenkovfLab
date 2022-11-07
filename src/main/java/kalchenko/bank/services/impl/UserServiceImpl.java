@@ -1,12 +1,12 @@
 package kalchenko.bank.services.impl;
 
 import kalchenko.bank.entity.User;
-import kalchenko.bank.repositories.BankRepository;
 import kalchenko.bank.repositories.UserRepository;
 import kalchenko.bank.services.BankService;
 import kalchenko.bank.services.UserService;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public class UserServiceImpl implements UserService {
 
@@ -23,22 +23,27 @@ public class UserServiceImpl implements UserService {
     }
 
     private final UserRepository userRepository = UserRepository.getInstance();
-    private final BankRepository bankRepository = BankRepository.getInstance();
+    private final BankService bankService = BankServiceImpl.getInstance();
 
     @Override
-    public User getUser() {
-        return userRepository.getUser();
+    public User getUserById(Long id) {
+        return userRepository.findById(id);
     }
 
     @Override
-    public boolean deleteUser() {
-        var user = userRepository.getUser();
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    @Override
+    public boolean deleteUser(Long id) {
+        var user = userRepository.findById(id);
 
         if(user!= null){
-            userRepository.delete();
-            var bank = bankRepository.findById(user.getBank().getId());
+            userRepository.deleteById(id);
+            var bank = bankService.getBankById(user.getBank().getId());
             bank.setUserNumber(bank.getUserNumber() - 1);
-            bankRepository.update(bank);
+            bankService.update(bank);
             return true;
         }
 
@@ -60,19 +65,17 @@ public class UserServiceImpl implements UserService {
             user.setCreditRate(rate);
         }
 
-        if(userRepository.add(user)){
-            var bank = bankRepository.findById(user.getBank().getId());
+        var newUser= userRepository.add(user);
 
-            if(bank != null){
-                bank.setUserNumber(bank.getUserNumber() + 1);
-                bankRepository.update(bank);
-            }
+        var bank = bankService.getBankById(user.getBank().getId());
 
-            return userRepository.getUser();
-
+        if(bank != null){
+            bank.setUserNumber(bank.getUserNumber() + 1);
+            bankService.update(bank);
         }
 
-        return null;
+        return newUser;
+
 
     }
 }

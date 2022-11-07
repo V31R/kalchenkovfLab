@@ -2,6 +2,8 @@ package kalchenko.bank.repositories;
 
 import kalchenko.bank.entity.User;
 
+import java.util.List;
+
 public class UserRepository {
 
     private static UserRepository INSTANCE;
@@ -16,58 +18,53 @@ public class UserRepository {
         return INSTANCE;
     }
 
-    private User bank = null;
+    private final EntityRepository repository = new EntityRepository();
 
     /**
-     * Если до этого там не находилось другого объекта User
-     * добавляет user в репозиторий и возвращает добавленный объект,
-     * иначе возвращает null.
+     * Добавляет user в репозиторий и возвращает добавленный объект,
+     * если user не был равен null, иначе возвращает null.
      */
-    public boolean add(User user){
-        var isEmpty = this.bank == null;
+    public User add(User user){
 
-        if (isEmpty && user != null){
+        return (User) repository.add(user);
 
-            this.bank = new User(user);
-
-        }
-
-        return isEmpty;
     }
 
     /**
      * Возвращает истину, если при удалении объект был не null,
      * иначе возвращает ложь.
      */
-    public boolean delete(){
-        if(this.bank == null){
-            return false;
-        }
+    public boolean deleteById(Long id){
 
-        this.bank = null;
-        return true;
+        return repository.deleteById(id);
+
     }
 
     /**
      * Возвращает объект, который хранится в репозитории.
      */
-    public User getUser(){
-        return this.bank;
+    public User findById(Long id){
+
+        return (User) repository.findById(id);
+
     }
 
     /**
-     * Если объект существует, то обновляет его и возвращает истину,
-     * иначе возвращает ложь.
+     * Возвращает список клиентов, которые хранятся в репозитории.
      */
-    public boolean update(User user){
-        if(this.bank == null && user != null){
+    public List<User> findAll(){
 
-            return false;
+        return repository.findAll().stream().map(entity -> (User) entity).toList();
 
-        }
+    }
 
-        this.bank = user;
-        return true;
+
+    /**
+     * Если объект существует, то обновляет его и возвращает его,
+     * иначе возвращает null.
+     */
+    public User update(User user){
+        return (User) repository.update(user);
     }
 
 }

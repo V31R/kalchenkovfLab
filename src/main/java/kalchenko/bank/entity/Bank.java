@@ -2,7 +2,7 @@ package kalchenko.bank.entity;
 
 import java.math.BigDecimal;
 
-public class Bank {
+public class Bank implements Entity {
 
     private Long id;
     private String name;
@@ -35,10 +35,12 @@ public class Bank {
         this.userNumber = bank.getUserNumber();
     }
 
+    @Override
     public Long getId() {
         return id;
     }
 
+    @Override
     public void setId(Long id) {
         this.id = id;
     }

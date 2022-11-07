@@ -2,6 +2,8 @@ package kalchenko.bank.services;
 
 import kalchenko.bank.entity.CreditAccount;
 
+import java.util.List;
+
 public interface CreditAccountService {
 
     /**
@@ -13,6 +15,10 @@ public interface CreditAccountService {
     /**
      * Возвращает объект, который хранится в репозитории.
      */
-    CreditAccount getCreditAccount();
+    CreditAccount getCreditAccountById(Long id);
 
+    /**
+     * Возвращает всех пользователей, которые хранятся в репозитории.
+     */
+    List<CreditAccount> getAllCreditAccount();
 }

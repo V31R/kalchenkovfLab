@@ -4,6 +4,8 @@ import kalchenko.bank.entity.PaymentAccount;
 import kalchenko.bank.repositories.PaymentAccountRepository;
 import kalchenko.bank.services.PaymentAccountService;
 
+import java.util.List;
+
 public class PaymentAccountServiceImpl implements PaymentAccountService {
 
     private static PaymentAccountServiceImpl INSTANCE;
@@ -23,18 +25,17 @@ public class PaymentAccountServiceImpl implements PaymentAccountService {
     @Override
     public PaymentAccount addPaymentAccount(PaymentAccount paymentAccount) {
 
-        if(paymentAccountRepository.add(paymentAccount)){
+        return paymentAccountRepository.add(paymentAccount);
 
-            return paymentAccountRepository.getPaymentAccount();
-
-        }
-
-        return null;
     }
 
     @Override
-    public PaymentAccount getPaymentAccount() {
-        return paymentAccountRepository.getPaymentAccount();
+    public PaymentAccount getPaymentAccountById(Long id) {
+        return paymentAccountRepository.findById(id);
     }
 
+    @Override
+    public List<PaymentAccount> getAllPaymentAccount() {
+        return paymentAccountRepository.findAll();
+    }
 }

@@ -2,6 +2,8 @@ package kalchenko.bank.repositories;
 
 import kalchenko.bank.entity.Employee;
 
+import java.util.List;
+
 public class EmployeeRepository {
 
     private static EmployeeRepository INSTANCE;
@@ -16,64 +18,47 @@ public class EmployeeRepository {
         return INSTANCE;
     }
 
-    private Employee employee = null;
+    private final EntityRepository repository = new EntityRepository();
 
     /**
      * Если до этого там не находилось другого объекта Employee
      * добавляет employee в репозиторий и возвращает добавленный объект,
      * иначе возвращает null.
      */
-    public boolean add(Employee employee){
-        var isEmpty = this.employee == null;
-
-        if (isEmpty && employee != null){
-
-            this.employee = new Employee(employee);
-
-        }
-
-        return isEmpty;
+    public Employee add(Employee employee){
+       return (Employee) repository.add(employee);
     }
 
     /**
      * Возвращает истину, если при удалении объект был не null,
      * иначе возвращает ложь.
      */
-    public boolean delete(){
-        if(this.employee == null){
-            return false;
-        }
-
-        this.employee = null;
-        return true;
+    public boolean deleteById(Long id){
+        return repository.deleteById(id);
     }
 
     /**
      * Возвращает объект, который хранится в репозитории.
      */
-    public Employee getEmployee(){
-        if(this.employee == null){
+    public Employee findById(Long id){
+        return (Employee) repository.findById(id);
+    }
 
-            return null;
+    /**
+     * Возвращает список клиентов, которые хранятся в репозитории.
+     */
+    public List<Employee> findAll(){
 
-        }
+        return repository.findAll().stream().map(entity -> (Employee) entity).toList();
 
-        return this.employee;
     }
 
     /**
      * Если объект существует, то обновляет его и возвращает истину,
      * иначе возвращает ложь.
      */
-    public boolean update(Employee employee){
-        if(this.employee == null && employee != null){
-
-            return false;
-
-        }
-
-        this.employee = employee;
-        return true;
+    public Employee update(Employee employee){
+        return (Employee) repository.update(employee);
     }
 
 }

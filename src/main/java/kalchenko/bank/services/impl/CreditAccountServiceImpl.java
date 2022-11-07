@@ -6,6 +6,7 @@ import kalchenko.bank.services.CreditAccountService;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.List;
 
 public class CreditAccountServiceImpl implements CreditAccountService {
 
@@ -34,17 +35,17 @@ public class CreditAccountServiceImpl implements CreditAccountService {
 
         creditAccount.setMonthPayment(monthPayment);
 
-        if(creditAccountRepository.add(creditAccount)){
+        return creditAccountRepository.add(creditAccount);
 
-            return creditAccountRepository.getCreditAccount();
-
-        }
-
-        return null;
     }
 
     @Override
-    public CreditAccount getCreditAccount() {
-        return creditAccountRepository.getCreditAccount();
+    public CreditAccount getCreditAccountById(Long id) {
+        return creditAccountRepository.findById(id);
+    }
+
+    @Override
+    public List<CreditAccount> getAllCreditAccount() {
+        return creditAccountRepository.findAll();
     }
 }

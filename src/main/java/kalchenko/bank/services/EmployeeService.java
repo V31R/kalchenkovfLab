@@ -2,6 +2,8 @@ package kalchenko.bank.services;
 
 import kalchenko.bank.entity.Employee;
 
+import java.util.List;
+
 public interface EmployeeService extends BankOperations {
 
     /**
@@ -13,11 +15,17 @@ public interface EmployeeService extends BankOperations {
     /**
      * Удаляет объект, извещает об этом связанный BankOffice.
      */
-    boolean deleteEmployee();
+    boolean deleteEmployeeById(Long id);
 
     /**
      * Возвращает объект, который хранится в репозитории.
      */
-    Employee getEmployee();
+    Employee getEmployeeById(Long id);
+
+    /**
+     * Возвращает все банки, которые хранятся в репозитории.
+     */
+    List<Employee> getAllEmployees();
+
 
 }

@@ -2,6 +2,8 @@ package kalchenko.bank.repositories;
 
 import kalchenko.bank.entity.BankOffice;
 
+import java.util.List;
+
 public class BankOfficeRepository {
 
     private static BankOfficeRepository INSTANCE;
@@ -16,64 +18,47 @@ public class BankOfficeRepository {
         return INSTANCE;
     }
 
-    private BankOffice bankOffice = null;
+    private final EntityRepository repository = new EntityRepository();
 
     /**
      * Если до этого там не находилось другого объекта BankOffice
      * добавляет bankOffice в репозиторий и возвращает добавленный объект,
      * иначе возвращает null.
      */
-    public boolean add(BankOffice bankOffice){
-        var isEmpty = this.bankOffice == null;
-
-        if (isEmpty && bankOffice != null){
-
-            this.bankOffice = new BankOffice(bankOffice);
-
-        }
-
-        return isEmpty;
+    public BankOffice add(BankOffice bankOffice){
+        return (BankOffice) repository.add(bankOffice);
     }
 
     /**
      * Возвращает истину, если при удалении объект был не null,
      * иначе возвращает ложь.
      */
-    public boolean delete(){
-        if(this.bankOffice == null){
-            return false;
-        }
-
-        this.bankOffice = null;
-        return true;
+    public boolean deleteById(Long id){
+       return repository.deleteById(id);
     }
 
     /**
      * Возвращает объект, который хранится в репозитории.
      */
-    public BankOffice getBankOffice(){
-        if(this.bankOffice == null){
+    public BankOffice findById(Long id){
+        return (BankOffice) repository.findById(id);
+    }
 
-            return null;
+    /**
+     * Возвращает список банков, которые хранятся в репозитории.
+     */
+    public List<BankOffice> findAll(){
 
-        }
+        return repository.findAll().stream().map(entity -> (BankOffice) entity).toList();
 
-        return this.bankOffice;
     }
 
     /**
      * Если объект существует, то обновляет его и возвращает истину,
      * иначе возвращает ложь.
      */
-    public boolean update(BankOffice bankOffice){
-        if(this.bankOffice == null && bankOffice != null){
-
-            return false;
-
-        }
-
-        this.bankOffice = bankOffice;
-        return true;
+    public BankOffice update(BankOffice bankOffice){
+        return (BankOffice) repository.update(bankOffice);
     }
 
 }

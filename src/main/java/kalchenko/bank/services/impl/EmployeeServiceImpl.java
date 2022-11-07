@@ -6,6 +6,7 @@ import kalchenko.bank.services.BankOfficeService;
 import kalchenko.bank.services.EmployeeService;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public class EmployeeServiceImpl implements EmployeeService {
 
@@ -26,38 +27,48 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public boolean withdrawMoney(Long id, BigDecimal money) {
-        var employee = employeeRepository.getEmployee();
+        var employee = employeeRepository.findById(id);
         return bankOfficeService.withdrawMoney(employee.getBankOffice().getId(), money);
     }
 
     @Override
     public boolean depositMoney(Long id, BigDecimal money) {
-        var employee = employeeRepository.getEmployee();
+        var employee = employeeRepository.findById(id);
         return bankOfficeService.depositMoney(employee.getBankOffice().getId(), money);
     }
 
     @Override
     public Employee addEmployee(Employee employee) {
-        if(employeeRepository.add(employee)){
 
-            bankOfficeService.addEmployee();
-            return employeeRepository.getEmployee();
+       var newEmployee = employeeRepository.add(employee);
+       var office = newEmployee.getBankOffice();
 
+        if(office != null){
+            bankOfficeService.addEmployee(office.getId());
         }
 
-        return null;
+       return newEmployee;
+
     }
 
     @Override
-    public boolean deleteEmployee() {
-        if(bankOfficeService.deleteEmployee()){
-            return employeeRepository.delete();
+    public boolean deleteEmployeeById(Long id) {
+
+        var officeId = employeeRepository.findById(id).getBankOffice().getId();
+
+        if(bankOfficeService.deleteEmployee(officeId)){
+            return employeeRepository.deleteById(id);
         }
         return false;
     }
 
     @Override
-    public Employee getEmployee() {
-        return employeeRepository.getEmployee();
+    public Employee getEmployeeById(Long id) {
+        return employeeRepository.findById(id);
+    }
+
+    @Override
+    public List<Employee> getAllEmployees() {
+        return employeeRepository.findAll();
     }
 }

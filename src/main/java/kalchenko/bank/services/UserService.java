@@ -2,6 +2,8 @@ package kalchenko.bank.services;
 
 import kalchenko.bank.entity.User;
 
+import java.util.List;
+
 public interface UserService {
 
     /**
@@ -14,11 +16,16 @@ public interface UserService {
     /**
      * Возвращает объект, который хранится в репозитории.
      */
-    User getUser();
+    User getUserById(Long id);
+
+    /**
+     * Возвращает всех пользователей, которые хранятся в репозитории.
+     */
+    List<User> getAllUsers();
 
     /**
      * Удаляет объект, извещает об этом связанный Bank.
      */
-    boolean deleteUser();
+    boolean deleteUser(Long id);
 
 }

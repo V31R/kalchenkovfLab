@@ -6,6 +6,7 @@ import kalchenko.bank.services.BankAtmService;
 import kalchenko.bank.services.BankOfficeService;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public class BankAtmServiceImpl implements BankAtmService {
 
@@ -18,25 +19,36 @@ public class BankAtmServiceImpl implements BankAtmService {
 
     @Override
     public BankAtm addBankAtm(BankAtm bankAtm) {
-        if(bankAtmRepository.add(bankAtm)){
-            bankOfficeService.addAtm();
-            return  bankAtmRepository.getBankAtm();
+
+        var newBankAtm = bankAtmRepository.add(bankAtm);
+        var office = newBankAtm.getBankOffice();
+
+        if(office != null){
+            bankOfficeService.addAtm(office.getId());
         }
+        return  newBankAtm;
 
-        return null;
     }
 
 
     @Override
-    public BankAtm getBankAtm() {
-        return bankAtmRepository.getBankAtm();
+    public BankAtm getBankAtmById(Long id) {
+        return bankAtmRepository.findById(id);
     }
 
     @Override
-    public boolean deleteBankAtm() {
-        if(bankAtmRepository.delete()){
+    public List<BankAtm> getAllBankAtms() {
+        return bankAtmRepository.findAll();
+    }
 
-            return bankOfficeService.deleteAtm();
+    @Override
+    public boolean deleteBankAtmById(Long id) {
+
+        var officeId = bankAtmRepository.findById(id).getId();
+
+        if(bankAtmRepository.deleteById(id)){
+
+            return bankOfficeService.deleteAtm(officeId);
 
         }
         return false;
@@ -44,7 +56,7 @@ public class BankAtmServiceImpl implements BankAtmService {
 
     @Override
     public boolean withdrawMoney(Long id, BigDecimal money) {
-        var bankAtm = bankAtmRepository.getBankAtm();
+        var bankAtm = bankAtmRepository.findById(id);
         if(bankAtm.isPaymentAvailable()) {
             return bankOfficeService.withdrawMoney(bankAtm.getBankOffice().getId(),money);
         }
@@ -53,7 +65,7 @@ public class BankAtmServiceImpl implements BankAtmService {
 
     @Override
     public boolean depositMoney(Long id, BigDecimal money) {
-        var bankAtm = bankAtmRepository.getBankAtm();
+        var bankAtm = bankAtmRepository.findById(id);
         if(bankAtm.isDepositAvailable()){
             return bankOfficeService.depositMoney(bankAtm.getBankOffice().getId(),money);
         }

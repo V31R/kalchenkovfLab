@@ -2,6 +2,8 @@ package kalchenko.bank.repositories;
 
 import kalchenko.bank.entity.CreditAccount;
 
+import java.util.List;
+
 public class CreditAccountRepository {
 
     private static CreditAccountRepository INSTANCE;
@@ -16,66 +18,45 @@ public class CreditAccountRepository {
         return INSTANCE;
     }
 
-    private CreditAccount creditAccount = null;
+    private final EntityRepository repository = new EntityRepository();
+
 
     /**
      * Если до этого там не находилось другого объекта CreditAccount
      * добавляет creditAccount в репозиторий и возвращает добавленный объект,
      * иначе возвращает null.
      */
-    public boolean add(CreditAccount creditAccount){
-        var isEmpty = this.creditAccount == null;
-
-        if (isEmpty && creditAccount != null){
-
-            this.creditAccount = new CreditAccount(creditAccount);
-
-        }
-
-        return isEmpty;
+    public CreditAccount add(CreditAccount creditAccount){
+        return (CreditAccount) repository.add(creditAccount);
     }
 
     /**
      * Возвращает истину, если при удалении объект был не null,
      * иначе возвращает ложь.
      */
-    public boolean delete(){
-        if(this.creditAccount == null){
-
-            return false;
-
-        }
-
-        this.creditAccount = null;
-        return true;
+    public boolean deleteById(Long id){
+        return repository.deleteById(id);
     }
 
     /**
      * Возвращает объект, который хранится в репозитории.
      */
-    public CreditAccount getCreditAccount(){
-        if(this.creditAccount == null ){
+    public CreditAccount findById(Long id){
+        return (CreditAccount) repository.findById(id);
+    }
 
-            return null;
+    public List<CreditAccount> findAll(){
 
-        }
+        return repository.findAll().stream().map(entity -> (CreditAccount) entity).toList();
 
-        return this.creditAccount;
     }
 
     /**
      * Если объект существует, то обновляет его и возвращает истину,
      * иначе возвращает ложь.
      */
-    public boolean update(CreditAccount creditAccount){
-        if(this.creditAccount == null && creditAccount != null){
-
-            return false;
-
-        }
-
-        this.creditAccount = creditAccount;
-        return true;
+    public CreditAccount update(CreditAccount creditAccount){
+        return (CreditAccount) repository.update(creditAccount);
     }
 
 
