@@ -22,43 +22,8 @@ public interface BankService extends BankOperations {
     Bank addBank(Bank bank);
 
     /**
-     * Увеличивает число офисов.
+     * Если объект существует, то обновляет его.
      */
-    boolean addOffice(Long bankId);
-
-    /**
-     * Уменьшает число офисов.
-     */
-    boolean deleteOffice(Long bankId);
-
-    /**
-     * Увеличивает число банкоматов.
-     */
-    boolean addAtm(Long bankId);
-
-    /**
-     * Уменьшает число банкоматов.
-     */
-    boolean deleteAtm(Long bankId);
-
-    /**
-     * Увеличивает число работников.
-     */
-    boolean addEmployee(Long bankId);
-
-    /**
-     * Уменьшает число работников.
-     */
-    boolean deleteEmployee(Long bankId);
-
-    /**
-     * Увеличивает число пользователей.
-     */
-    boolean addUser(Long bankId);
-
-    /**
-     * Уменьшает число пользователей.
-     */
-    boolean deleteUser(Long bankId);
+    Bank update(Bank bank);
 
 }

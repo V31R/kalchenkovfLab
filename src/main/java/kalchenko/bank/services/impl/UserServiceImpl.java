@@ -1,6 +1,7 @@
 package kalchenko.bank.services.impl;
 
 import kalchenko.bank.entity.User;
+import kalchenko.bank.repositories.BankRepository;
 import kalchenko.bank.repositories.UserRepository;
 import kalchenko.bank.services.BankService;
 import kalchenko.bank.services.UserService;
@@ -22,7 +23,7 @@ public class UserServiceImpl implements UserService {
     }
 
     private final UserRepository userRepository = UserRepository.getInstance();
-    private final BankService bankService = BankServiceImpl.getInstance();
+    private final BankRepository bankRepository = BankRepository.getInstance();
 
     @Override
     public User getUser() {
@@ -31,7 +32,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean deleteUser() {
-        return userRepository.delete() && bankService.deleteUser(getUser().getBank().getId());
+        var user = userRepository.getUser();
+
+        if(user!= null){
+            userRepository.delete();
+            var bank = bankRepository.findById(user.getBank().getId());
+            bank.setUserNumber(bank.getUserNumber() - 1);
+            bankRepository.update(bank);
+            return true;
+        }
+
+        return false;
+
     }
 
     @Override
@@ -49,8 +61,13 @@ public class UserServiceImpl implements UserService {
         }
 
         if(userRepository.add(user)){
+            var bank = bankRepository.findById(user.getBank().getId());
 
-            bankService.addUser(user.getBank().getId());
+            if(bank != null){
+                bank.setUserNumber(bank.getUserNumber() + 1);
+                bankRepository.update(bank);
+            }
+
             return userRepository.getUser();
 
         }

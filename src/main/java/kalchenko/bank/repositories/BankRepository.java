@@ -76,17 +76,17 @@ public class BankRepository {
     }
 
     /**
-     * Если объект существует, то обновляет его и возвращает истину,
-     * иначе возвращает ложь.
+     * Если объект существует, то обновляет его и возвращает его,
+     * иначе возвращает null.
      */
-    public boolean update(Bank bank){
+    public Bank update(Bank bank){
 
         if(bank == null || !this.banks.containsKey(bank.getId())){
-            return false;
+            return null;
         }
 
         this.banks.replace(bank.getId(), bank);
-        return true;
+        return findById(bank.getId());
 
     }
 

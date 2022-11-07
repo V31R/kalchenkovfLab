@@ -31,14 +31,17 @@ public class BankServiceImpl implements BankService {
 
     @Override
     public Bank getBankById(Long id) {
-
         return bankRepository.findById(id);
-
     }
 
     @Override
     public List<Bank> getAllBanks() {
         return bankRepository.findAll();
+    }
+
+    @Override
+    public Bank update(Bank bank) {
+        return bankRepository.update(bank);
     }
 
     @Override
@@ -67,109 +70,5 @@ public class BankServiceImpl implements BankService {
         return false;
     }
 
-    @Override
-    public boolean addOffice(Long bankId) {
-        var bank = bankRepository.findById(bankId);
 
-        if(bank != null){
-            bank.setOfficesNumber(bank.getOfficesNumber() + 1);
-            bankRepository.update(bank);
-            return true;
-        }
-
-        return false;
-    }
-
-    @Override
-    public boolean deleteOffice(Long bankId) {
-        var bank = bankRepository.findById(bankId);
-
-        if(bank != null && bank.getOfficesNumber() > 0){
-            bank.setOfficesNumber(bank.getOfficesNumber() - 1);
-            bankRepository.update(bank);
-            return true;
-        }
-
-        return false;
-    }
-
-    @Override
-    public boolean addAtm(Long bankId) {
-        var bank = bankRepository.findById(bankId);
-
-        if(bank != null){
-            bank.setAtmNumber(bank.getAtmNumber() + 1);
-            bankRepository.update(bank);
-            return true;
-        }
-
-        return false;
-    }
-
-    @Override
-    public boolean deleteAtm(Long bankId) {
-        var bank = bankRepository.findById(bankId);
-
-        if(bank != null && bank.getAtmNumber() > 0){
-            bank.setAtmNumber(bank.getAtmNumber() - 1);
-            bankRepository.update(bank);
-            return true;
-        }
-
-        return false;
-    }
-
-
-    @Override
-    public boolean addEmployee(Long bankId) {
-        var bank = bankRepository.findById(bankId);
-
-        if(bank != null){
-            bank.setEmployeeNumber(bank.getEmployeeNumber() + 1);
-            bankRepository.update(bank);
-            return true;
-        }
-
-        return false;
-    }
-
-
-    @Override
-    public boolean deleteEmployee(Long bankId) {
-        var bank = bankRepository.findById(bankId);
-
-        if(bank != null && bank.getEmployeeNumber() > 0){
-            bank.setEmployeeNumber(bank.getEmployeeNumber() - 1);
-            bankRepository.update(bank);
-            return true;
-        }
-
-        return false;
-    }
-
-    @Override
-    public boolean addUser(Long bankId) {
-        var bank = bankRepository.findById(bankId);
-
-        if(bank != null){
-            bank.setUserNumber(bank.getUserNumber() + 1);
-            bankRepository.update(bank);
-            return true;
-        }
-
-        return false;
-    }
-
-    @Override
-    public boolean deleteUser(Long bankId) {
-        var bank = bankRepository.findById(bankId);
-
-        if(bank != null && bank.getUserNumber() > 0){
-            bank.setUserNumber(bank.getUserNumber() - 1);
-            bankRepository.update(bank);
-            return true;
-        }
-
-        return false;
-    }
 }

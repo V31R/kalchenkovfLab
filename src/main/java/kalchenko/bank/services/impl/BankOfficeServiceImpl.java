@@ -29,8 +29,13 @@ public class BankOfficeServiceImpl implements BankOfficeService {
     public BankOffice addBankOffice(BankOffice bankOffice) {
 
         if(bankOfficeRepository.add(bankOffice)){
+            var bank = bankService.getBankById(bankOffice.getBank().getId());
 
-            bankService.addOffice(bankOffice.getBank().getId());
+            if(bank != null){
+                bank.setOfficesNumber(bank.getOfficesNumber() + 1);
+                bankService.update(bank);
+            }
+
             return bankOfficeRepository.getBankOffice();
 
         }
@@ -46,16 +51,36 @@ public class BankOfficeServiceImpl implements BankOfficeService {
 
     @Override
     public boolean deleteBankOffice() {
-        var id = bankOfficeRepository.getBankOffice().getId();
-        return bankOfficeRepository.delete() && bankService.deleteOffice(id);
+
+        var bankId = bankOfficeRepository.getBankOffice().getId();
+
+        if(!bankOfficeRepository.delete()) {
+            return false;
+        }
+        var bank =bankService.getBankById(bankId);
+
+        if(bank != null && bank.getOfficesNumber() > 0){
+            bank.setOfficesNumber(bank.getOfficesNumber() - 1);
+            bankService.update(bank);
+            return true;
+        }
+
+        return false;
     }
+
 
 
     @Override
     public boolean addAtm() {
         var bankOffice = bankOfficeRepository.getBankOffice();
+        if(bankOffice == null){
+            return false;
+        }
+        var bank = bankService.getBankById(bankOffice.getBank().getId());
 
-        if(bankOffice != null && bankService.addAtm(bankOffice.getBank().getId())){
+        if(bank != null){
+            bank.setAtmNumber(bank.getAtmNumber() + 1);
+            bankService.update(bank);
             bankOffice.setAtmNumber(bankOffice.getAtmNumber() + 1);
             bankOfficeRepository.update(bankOffice);
             return true;
@@ -70,8 +95,15 @@ public class BankOfficeServiceImpl implements BankOfficeService {
     @Override
     public boolean deleteAtm() {
         var bankOffice = bankOfficeRepository.getBankOffice();
+        if(bankOffice == null){
+            return false;
+        }
 
-        if(bankOffice != null && bankService.deleteAtm(bankOffice.getBank().getId())){
+        var bank = bankService.getBankById(bankOffice.getBank().getId());
+
+        if(bank != null && bank.getAtmNumber() > 0 && bankOffice.getAtmNumber() > 0){
+            bank.setAtmNumber(bank.getAtmNumber() - 1);
+            bankService.update(bank);
             bankOffice.setAtmNumber(bankOffice.getAtmNumber() - 1);
             bankOfficeRepository.update(bankOffice);
             return true;
@@ -83,15 +115,40 @@ public class BankOfficeServiceImpl implements BankOfficeService {
 
     @Override
     public boolean addEmployee() {
-        var id = bankOfficeRepository.getBankOffice().getId();
-        return bankService.addEmployee(id);
+
+        var bankOffice = bankOfficeRepository.getBankOffice();
+        if(bankOffice == null){
+            return false;
+        }
+        var bank = bankService.getBankById(bankOffice.getBank().getId());
+
+        if(bank != null){
+            bank.setEmployeeNumber(bank.getEmployeeNumber() + 1);
+            bankService.update(bank);
+            return true;
+        }
+
+        return false;
+
     }
 
 
     @Override
     public boolean deleteEmployee() {
-        var id = bankOfficeRepository.getBankOffice().getId();
-        return bankService.deleteEmployee(id);
+        var bankOffice = bankOfficeRepository.getBankOffice();
+        if(bankOffice == null){
+            return false;
+        }
+
+        var bank = bankService.getBankById(bankOffice.getBank().getId());
+
+        if(bank != null && bank.getEmployeeNumber() > 0){
+            bank.setEmployeeNumber(bank.getEmployeeNumber() - 1);
+            bankService.update(bank);
+            return true;
+        }
+
+        return false;
     }
 
     @Override
