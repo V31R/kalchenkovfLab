@@ -18,7 +18,7 @@ public class PaymentAccountServiceImpl implements PaymentAccountService {
         return INSTANCE;
     }
 
-    private PaymentAccountRepository paymentAccountRepository = PaymentAccountRepository.getInstance();
+    private final PaymentAccountRepository paymentAccountRepository = PaymentAccountRepository.getInstance();
 
     @Override
     public PaymentAccount addPaymentAccount(PaymentAccount paymentAccount) {

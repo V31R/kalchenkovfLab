@@ -21,7 +21,7 @@ public class CreditAccountServiceImpl implements CreditAccountService {
         return INSTANCE;
     }
 
-    private CreditAccountRepository creditAccountRepository = CreditAccountRepository.getInstance();
+    private final CreditAccountRepository creditAccountRepository = CreditAccountRepository.getInstance();
 
     @Override
     public CreditAccount addCreditAccount(CreditAccount creditAccount) {

@@ -9,8 +9,8 @@ import java.math.BigDecimal;
 
 public class BankAtmServiceImpl implements BankAtmService {
 
-    private BankAtmRepository bankAtmRepository = BankAtmRepository.getInstance();
-    private BankOfficeService bankOfficeService;
+    private final BankAtmRepository bankAtmRepository = BankAtmRepository.getInstance();
+    private final BankOfficeService bankOfficeService;
 
     public BankAtmServiceImpl(BankOfficeService bankOfficeService) {
         this.bankOfficeService = bankOfficeService;
@@ -43,17 +43,19 @@ public class BankAtmServiceImpl implements BankAtmService {
     }
 
     @Override
-    public boolean withdrawMoney(BigDecimal money) {
-        if(bankAtmRepository.getBankAtm().isPaymentAvailable()) {
-            return bankOfficeService.withdrawMoney(money);
+    public boolean withdrawMoney(Long id, BigDecimal money) {
+        var bankAtm = bankAtmRepository.getBankAtm();
+        if(bankAtm.isPaymentAvailable()) {
+            return bankOfficeService.withdrawMoney(bankAtm.getBankOffice().getId(),money);
         }
         return false;
     }
 
     @Override
-    public boolean depositMoney(BigDecimal money) {
-        if(bankAtmRepository.getBankAtm().isDepositAvailable()){
-            return bankOfficeService.depositMoney(money);
+    public boolean depositMoney(Long id, BigDecimal money) {
+        var bankAtm = bankAtmRepository.getBankAtm();
+        if(bankAtm.isDepositAvailable()){
+            return bankOfficeService.depositMoney(bankAtm.getBankOffice().getId(),money);
         }
         return false;
     }

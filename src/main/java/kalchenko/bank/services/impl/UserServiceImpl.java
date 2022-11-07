@@ -21,8 +21,8 @@ public class UserServiceImpl implements UserService {
         return INSTANCE;
     }
 
-    private UserRepository userRepository = UserRepository.getInstance();
-    private BankService bankService = BankServiceImpl.getInstance();
+    private final UserRepository userRepository = UserRepository.getInstance();
+    private final BankService bankService = BankServiceImpl.getInstance();
 
     @Override
     public User getUser() {
@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean deleteUser() {
-        return userRepository.delete() && bankService.deleteUser();
+        return userRepository.delete() && bankService.deleteUser(getUser().getBank().getId());
     }
 
     @Override
@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
 
         if(userRepository.add(user)){
 
-            bankService.addUser();
+            bankService.addUser(user.getBank().getId());
             return userRepository.getUser();
 
         }

@@ -2,6 +2,10 @@ package kalchenko.bank.repositories;
 
 import kalchenko.bank.entity.Bank;
 
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  *  Класс-одиночка
  */
@@ -19,43 +23,56 @@ public class BankRepository {
         return INSTANCE;
     }
 
-    private Bank bank = null;
+    private final Map<Long, Bank> banks = new LinkedHashMap<>();
+    private long currentId = 1L;
 
     /**
      * Если до этого там не находилось другого объекта Bank
      * добавляет bank в репозиторий и возвращает добавленный объект,
      * иначе возвращает null.
      */
-    public boolean add(Bank bank){
-        var isEmpty = this.bank == null;
+    public Bank add(Bank bank){
 
-        if (isEmpty && bank != null){
-
-            this.bank = new Bank(bank);
-
+        if(bank == null){
+            return null;
         }
 
-        return isEmpty;
+        bank.setId(currentId++);
+        this.banks.put(bank.getId(), bank);
+        return bank;
+
     }
 
     /**
      * Возвращает истину, если при удалении объект был не null,
      * иначе возвращает ложь.
      */
-    public boolean delete(){
-        if(this.bank == null){
+    public boolean deleteById(Long id){
+        if(!this.banks.containsKey(id)){
             return false;
         }
 
-        this.bank = null;
+        banks.remove(id);
         return true;
+
     }
 
     /**
      * Возвращает объект, который хранится в репозитории.
      */
-    public Bank getBank(){
-        return this.bank;
+    public Bank findById(Long id){
+
+        return this.banks.get(id);
+
+    }
+
+    /**
+     * Возвращает список банков, которые хранятся в репозитории.
+     */
+    public List<Bank> findAll(){
+
+        return this.banks.values().stream().toList();
+
     }
 
     /**
@@ -63,14 +80,14 @@ public class BankRepository {
      * иначе возвращает ложь.
      */
     public boolean update(Bank bank){
-        if(this.bank == null && bank != null){
 
+        if(bank == null || !this.banks.containsKey(bank.getId())){
             return false;
-
         }
 
-        this.bank = bank;
+        this.banks.replace(bank.getId(), bank);
         return true;
+
     }
 
 }

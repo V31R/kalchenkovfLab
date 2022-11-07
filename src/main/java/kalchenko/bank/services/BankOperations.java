@@ -7,10 +7,10 @@ public interface BankOperations {
     /**
      * Списывает деньги.
      */
-    boolean withdrawMoney(BigDecimal money);
+    boolean withdrawMoney(Long id, BigDecimal money);
     /**
      * Вносит деньги.
      */
-    boolean depositMoney(BigDecimal money);
+    boolean depositMoney(Long id, BigDecimal money);
 
 }

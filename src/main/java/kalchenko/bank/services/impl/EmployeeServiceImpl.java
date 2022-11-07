@@ -21,17 +21,19 @@ public class EmployeeServiceImpl implements EmployeeService {
         return INSTANCE;
     }
 
-    private EmployeeRepository employeeRepository = EmployeeRepository.getInstance();
-    private BankOfficeService bankOfficeService = BankOfficeServiceImpl.getInstance();
+    private final EmployeeRepository employeeRepository = EmployeeRepository.getInstance();
+    private final BankOfficeService bankOfficeService = BankOfficeServiceImpl.getInstance();
 
     @Override
-    public boolean withdrawMoney(BigDecimal money) {
-        return bankOfficeService.withdrawMoney(money);
+    public boolean withdrawMoney(Long id, BigDecimal money) {
+        var employee = employeeRepository.getEmployee();
+        return bankOfficeService.withdrawMoney(employee.getBankOffice().getId(), money);
     }
 
     @Override
-    public boolean depositMoney(BigDecimal money) {
-        return bankOfficeService.depositMoney(money);
+    public boolean depositMoney(Long id, BigDecimal money) {
+        var employee = employeeRepository.getEmployee();
+        return bankOfficeService.depositMoney(employee.getBankOffice().getId(), money);
     }
 
     @Override

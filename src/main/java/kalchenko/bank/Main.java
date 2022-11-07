@@ -20,12 +20,12 @@ public class Main {
         var rate =  random.nextInt(100);
         BigDecimal interestRate =  BigDecimal.valueOf(random.nextDouble()*(20.d - rate/10.d));
         BigDecimal money = BigDecimal.valueOf(random.nextInt(1_000_000));
-        bankService.addBank(new Bank(1L, "Bank_1", rate, money, interestRate ));
+        var bank = bankService.addBank(new Bank("Bank_1", rate, money, interestRate ));
 
         BankOfficeService bankOfficeService = BankOfficeServiceImpl.getInstance();
         bankOfficeService.addBankOffice(new BankOffice(1L,"Office_1","Address_1",
-                bankService.getBank(), true, true, true,
-                true, true,bankService.getBank().getMoneyAmount(), BigDecimal.valueOf(10.5d)));
+                bank, true, true, true,
+                true, true, bank.getMoneyAmount(), BigDecimal.valueOf(10.5d)));
 
         EmployeeService employeeService = EmployeeServiceImpl.getInstance();
         employeeService.addEmployee(new Employee(1L, "Ivanov Ivan Ivanovich", LocalDate.now(), "job",
@@ -38,19 +38,19 @@ public class Main {
 
         UserService userService = UserServiceImpl.getInstance();
         userService.addUser(new User(1L, "Ivanov Ivan Ivanovich", LocalDate.now(),
-                BigDecimal.valueOf(random.nextDouble()*9_999 +1), "job", bankService.getBank()));
+                BigDecimal.valueOf(random.nextDouble()*9_999 +1), "job", bank));
 
         PaymentAccountService paymentAccountService =PaymentAccountServiceImpl.getInstance();
         paymentAccountService.addPaymentAccount(new PaymentAccount(1L, userService.getUser(),
-                bankService.getBank().getName()));
+                bank.getName()));
 
         CreditAccountService creditAccountService = CreditAccountServiceImpl.getInstance();
         creditAccountService.addCreditAccount(new CreditAccount(1L, userService.getUser(),
-                bankService.getBank().getName(), LocalDate.now(), 12, BigDecimal.valueOf(1000L),
-                bankService.getBank().getInterestRate(), employeeService.getEmployee(),
+                bank.getName(), LocalDate.now(), 12, BigDecimal.valueOf(1000L),
+                bank.getInterestRate(), employeeService.getEmployee(),
                 paymentAccountService.getPaymentAccount()));
 
-        System.out.println(bankService.getBank());
+        System.out.println(bank);
         System.out.println(bankOfficeService.getBankOffice());
         System.out.println(employeeService.getEmployee());
         System.out.println(bankAtmService.getBankAtm());

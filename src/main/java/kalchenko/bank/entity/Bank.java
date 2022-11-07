@@ -16,8 +16,7 @@ public class Bank {
 
     public Bank() {}
 
-    public Bank(Long id, String name, int bankRate, BigDecimal moneyAmount, BigDecimal interestRate) {
-        this.id = id;
+    public Bank(String name, int bankRate, BigDecimal moneyAmount, BigDecimal interestRate) {
         this.name = name;
         this.bankRate = bankRate;
         this.moneyAmount = moneyAmount;
