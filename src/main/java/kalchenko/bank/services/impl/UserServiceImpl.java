@@ -9,12 +9,20 @@ import java.math.BigDecimal;
 
 public class UserServiceImpl implements UserService {
 
-    private UserRepository userRepository = new UserRepository();
-    private BankService bankService;
+    private static UserServiceImpl INSTANCE;
 
-    public UserServiceImpl(BankService bankService) {
-        this.bankService = bankService;
+    private UserServiceImpl(){}
+
+    public static UserServiceImpl getInstance() {
+        if(INSTANCE == null) {
+            INSTANCE = new UserServiceImpl();
+        }
+
+        return INSTANCE;
     }
+
+    private UserRepository userRepository = UserRepository.getInstance();
+    private BankService bankService = BankServiceImpl.getInstance();
 
     @Override
     public User getUser() {

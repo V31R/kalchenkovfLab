@@ -9,12 +9,20 @@ import java.math.BigDecimal;
 
 public class EmployeeServiceImpl implements EmployeeService {
 
-    private EmployeeRepository employeeRepository = new EmployeeRepository();
-    private BankOfficeService bankOfficeService;
+    private static EmployeeServiceImpl INSTANCE;
 
-    public EmployeeServiceImpl(BankOfficeService bankOfficeService) {
-        this.bankOfficeService = bankOfficeService;
+    private EmployeeServiceImpl(){}
+
+    public static EmployeeServiceImpl getInstance() {
+        if(INSTANCE == null) {
+            INSTANCE = new EmployeeServiceImpl();
+        }
+
+        return INSTANCE;
     }
+
+    private EmployeeRepository employeeRepository = EmployeeRepository.getInstance();
+    private BankOfficeService bankOfficeService = BankOfficeServiceImpl.getInstance();
 
     @Override
     public boolean withdrawMoney(BigDecimal money) {

@@ -4,9 +4,19 @@ import kalchenko.bank.entity.User;
 
 public class UserRepository {
 
-    private User bank = null;
+    private static UserRepository INSTANCE;
 
-    public UserRepository(){}
+    private UserRepository(){}
+
+    public static UserRepository getInstance() {
+        if(INSTANCE == null) {
+            INSTANCE = new UserRepository();
+        }
+
+        return INSTANCE;
+    }
+
+    private User bank = null;
 
     /**
      * Если до этого там не находилось другого объекта User

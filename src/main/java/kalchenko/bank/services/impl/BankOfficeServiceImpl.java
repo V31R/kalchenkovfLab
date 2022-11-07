@@ -9,14 +9,21 @@ import java.math.BigDecimal;
 
 public class BankOfficeServiceImpl implements BankOfficeService {
 
-    private BankService bankService;
+    private static BankOfficeServiceImpl INSTANCE;
 
-    private BankOfficeRepository bankOfficeRepository = new BankOfficeRepository();
+    private BankOfficeServiceImpl(){}
 
-    public BankOfficeServiceImpl(BankService bankService) {
-        this.bankService = bankService;
+    public static BankOfficeServiceImpl getInstance() {
+        if(INSTANCE == null) {
+            INSTANCE = new BankOfficeServiceImpl();
+        }
+
+        return INSTANCE;
     }
 
+    private BankService bankService = BankServiceImpl.getInstance();
+
+    private BankOfficeRepository bankOfficeRepository = BankOfficeRepository.getInstance();
 
     @Override
     public BankOffice addBankOffice(BankOffice bankOffice) {

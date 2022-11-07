@@ -4,9 +4,20 @@ import kalchenko.bank.entity.PaymentAccount;
 
 public class PaymentAccountRepository {
 
+    private static PaymentAccountRepository INSTANCE;
+
+    private PaymentAccountRepository(){}
+
+    public static PaymentAccountRepository getInstance() {
+        if(INSTANCE == null) {
+            INSTANCE = new PaymentAccountRepository();
+        }
+
+        return INSTANCE;
+    }
+
     private PaymentAccount bank = null;
 
-    public PaymentAccountRepository(){}
 
     /**
      * Если до этого там не находилось другого объекта PaymentAccount

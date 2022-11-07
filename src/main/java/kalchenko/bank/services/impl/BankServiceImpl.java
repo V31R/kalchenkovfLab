@@ -8,9 +8,20 @@ import java.math.BigDecimal;
 
 public class BankServiceImpl implements BankService {
 
-    private BankRepository bankRepository = new BankRepository();
+    private static BankServiceImpl INSTANCE;
 
-    public BankServiceImpl() {}
+    private BankServiceImpl(){}
+
+    public static BankServiceImpl getInstance() {
+        if(INSTANCE == null) {
+            INSTANCE = new BankServiceImpl();
+        }
+
+        return INSTANCE;
+    }
+
+    private BankRepository bankRepository = BankRepository.getInstance();
+
 
     @Override
     public Bank addBank(Bank bank) {

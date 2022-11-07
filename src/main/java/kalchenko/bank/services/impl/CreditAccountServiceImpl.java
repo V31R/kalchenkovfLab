@@ -9,9 +9,19 @@ import java.math.RoundingMode;
 
 public class CreditAccountServiceImpl implements CreditAccountService {
 
-    private CreditAccountRepository creditAccountRepository = new CreditAccountRepository();
+    private static CreditAccountServiceImpl INSTANCE;
 
-    public CreditAccountServiceImpl() {}
+    private CreditAccountServiceImpl(){}
+
+    public static CreditAccountServiceImpl getInstance() {
+        if(INSTANCE == null) {
+            INSTANCE = new CreditAccountServiceImpl();
+        }
+
+        return INSTANCE;
+    }
+
+    private CreditAccountRepository creditAccountRepository = CreditAccountRepository.getInstance();
 
     @Override
     public CreditAccount addCreditAccount(CreditAccount creditAccount) {

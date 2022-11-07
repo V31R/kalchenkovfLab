@@ -2,11 +2,24 @@ package kalchenko.bank.repositories;
 
 import kalchenko.bank.entity.Bank;
 
+/**
+ *  Класс-одиночка
+ */
 public class BankRepository {
 
-    private Bank bank = null;
+    private static BankRepository INSTANCE;
 
-    public BankRepository(){}
+    private BankRepository(){}
+
+    public static BankRepository getInstance() {
+        if(INSTANCE == null) {
+            INSTANCE = new BankRepository();
+        }
+
+        return INSTANCE;
+    }
+
+    private Bank bank = null;
 
     /**
      * Если до этого там не находилось другого объекта Bank

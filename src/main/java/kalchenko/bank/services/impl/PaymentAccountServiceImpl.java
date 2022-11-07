@@ -6,9 +6,19 @@ import kalchenko.bank.services.PaymentAccountService;
 
 public class PaymentAccountServiceImpl implements PaymentAccountService {
 
-    private PaymentAccountRepository paymentAccountRepository = new PaymentAccountRepository();
+    private static PaymentAccountServiceImpl INSTANCE;
 
-    public PaymentAccountServiceImpl() {}
+    private PaymentAccountServiceImpl(){}
+
+    public static PaymentAccountServiceImpl getInstance() {
+        if(INSTANCE == null) {
+            INSTANCE = new PaymentAccountServiceImpl();
+        }
+
+        return INSTANCE;
+    }
+
+    private PaymentAccountRepository paymentAccountRepository = PaymentAccountRepository.getInstance();
 
     @Override
     public PaymentAccount addPaymentAccount(PaymentAccount paymentAccount) {

@@ -4,9 +4,19 @@ import kalchenko.bank.entity.BankAtm;
 
 public class BankAtmRepository {
 
-    private BankAtm bankAtm = null;
+    private static BankAtmRepository INSTANCE;
 
-    public BankAtmRepository(){}
+    private BankAtmRepository(){}
+
+    public static BankAtmRepository getInstance() {
+        if(INSTANCE == null) {
+            INSTANCE = new BankAtmRepository();
+        }
+
+        return INSTANCE;
+    }
+
+    private BankAtm bankAtm = null;
 
     /**
     * Если до этого там не находилось другого объекта BankAtm

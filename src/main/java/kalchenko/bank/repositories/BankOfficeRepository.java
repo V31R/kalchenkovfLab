@@ -4,9 +4,19 @@ import kalchenko.bank.entity.BankOffice;
 
 public class BankOfficeRepository {
 
-    private BankOffice bankOffice = null;
+    private static BankOfficeRepository INSTANCE;
 
-    public BankOfficeRepository(){}
+    private BankOfficeRepository(){}
+
+    public static BankOfficeRepository getInstance() {
+        if(INSTANCE == null) {
+            INSTANCE = new BankOfficeRepository();
+        }
+
+        return INSTANCE;
+    }
+
+    private BankOffice bankOffice = null;
 
     /**
      * Если до этого там не находилось другого объекта BankOffice

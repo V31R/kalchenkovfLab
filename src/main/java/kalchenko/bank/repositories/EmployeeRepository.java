@@ -4,9 +4,19 @@ import kalchenko.bank.entity.Employee;
 
 public class EmployeeRepository {
 
-    private Employee employee = null;
+    private static EmployeeRepository INSTANCE;
 
-    public EmployeeRepository(){}
+    private EmployeeRepository(){}
+
+    public static EmployeeRepository getInstance() {
+        if(INSTANCE == null) {
+            INSTANCE = new EmployeeRepository();
+        }
+
+        return INSTANCE;
+    }
+
+    private Employee employee = null;
 
     /**
      * Если до этого там не находилось другого объекта Employee

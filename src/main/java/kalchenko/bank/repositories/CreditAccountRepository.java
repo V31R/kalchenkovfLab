@@ -4,9 +4,19 @@ import kalchenko.bank.entity.CreditAccount;
 
 public class CreditAccountRepository {
 
-    private CreditAccount creditAccount = null;
+    private static CreditAccountRepository INSTANCE;
 
-    public CreditAccountRepository(){}
+    private CreditAccountRepository(){}
+
+    public static CreditAccountRepository getInstance() {
+        if(INSTANCE == null) {
+            INSTANCE = new CreditAccountRepository();
+        }
+
+        return INSTANCE;
+    }
+
+    private CreditAccount creditAccount = null;
 
     /**
      * Если до этого там не находилось другого объекта CreditAccount
