@@ -2,6 +2,7 @@ package kalchenko.bank.services;
 
 import kalchenko.bank.entity.User;
 
+import java.io.OutputStream;
 import java.util.List;
 
 public interface UserService {
@@ -27,5 +28,7 @@ public interface UserService {
      * Удаляет объект, извещает об этом связанный Bank.
      */
     boolean deleteUser(Long id);
+
+    void outputUserAccounts(Long userId, OutputStream outputStream);
 
 }

@@ -61,7 +61,7 @@ public class PaymentAccount implements Entity{
     public String toString() {
         return "PaymentAccount{" +
                 "id=" + id +
-                ", user=" + user +
+                ", user=" + user.getFullName() +
                 ", bankName='" + bankName + '\'' +
                 ", sum=" + sum +
                 '}';

@@ -138,9 +138,9 @@ public class BankAtm implements Entity{
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", status=" + status +
-                ", bankOffice=" + bankOffice +
+                ", bankOffice=" + bankOffice.getName() +
                 ", place='" + place + '\'' +
-                ", employee=" + employee +
+                ", employee=" + employee.getFullName() +
                 ", canPaymentOfMoney=" + paymentAvailable +
                 ", canDepositMoney=" + depositAvailable +
                 ", moneyAmount=" + moneyAmount +

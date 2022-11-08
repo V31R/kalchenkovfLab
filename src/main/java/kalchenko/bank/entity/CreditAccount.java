@@ -139,7 +139,7 @@ public class CreditAccount implements Entity{
     public String toString() {
         return "CreditAccount{" +
                 "id=" + id +
-                ", user=" + user +
+                ", user=" + user.getFullName() +
                 ", bankName='" + bankName + '\'' +
                 ", start=" + start +
                 ", end=" + end +
@@ -147,8 +147,8 @@ public class CreditAccount implements Entity{
                 ", sum=" + sum +
                 ", monthPayment=" + monthPayment +
                 ", interestRate=" + interestRate +
-                "%, employee=" + employee +
-                ", paymentAccount=" + paymentAccount +
+                "%, employee=" + employee.getFullName() +
+                ", paymentAccount=" + paymentAccount.getId() +
                 '}';
     }
 }

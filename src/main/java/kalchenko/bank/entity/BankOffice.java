@@ -153,7 +153,7 @@ public class BankOffice implements Entity{
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", address='" + address + '\'' +
-                ", bank=" + bank +
+                ", bank=" + bank.getName() +
                 ", isWorking=" + isWorking +
                 ", isPossiblePlaceAtm=" + isPossiblePlaceAtm +
                 ", atmNumber=" + atmNumber +

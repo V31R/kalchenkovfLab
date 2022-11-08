@@ -102,7 +102,7 @@ public class User implements Entity{
                 ", birthDate=" + birthDate +
                 ", salary=" + salary +
                 ", job='" + job + '\'' +
-                ", bank=" + banks +
+                ", bank=" + banks.stream().map(Bank::getName).toList() +
                 ", creditRate=" + creditRate +
                 '}';
     }

@@ -1,10 +1,15 @@
 package kalchenko.bank.services.impl;
 
 import kalchenko.bank.entity.User;
+import kalchenko.bank.repositories.CreditAccountRepository;
+import kalchenko.bank.repositories.PaymentAccountRepository;
 import kalchenko.bank.repositories.UserRepository;
 import kalchenko.bank.services.BankService;
+import kalchenko.bank.services.PaymentAccountService;
 import kalchenko.bank.services.UserService;
 
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -79,6 +84,45 @@ public class UserServiceImpl implements UserService {
         }
 
         return newUser;
+
+    }
+
+    @Override
+    public void outputUserAccounts(Long userId, OutputStream outputStream) {
+
+        PrintStream printStream = new PrintStream(outputStream);
+
+        printStream.printf("User data about %s\n", userRepository.findById(userId).getFullName());
+
+        PaymentAccountRepository paymentAccountRepository = PaymentAccountRepository.getInstance();
+        CreditAccountRepository creditAccountRepository = CreditAccountRepository.getInstance();
+        var paymentAccounts = paymentAccountRepository.findAll().stream()
+                .filter(paymentAccount -> paymentAccount.getUser().getId().compareTo(userId) == 0)
+                .toList();
+        if(paymentAccounts.size() > 0) {
+            printStream.println("Payment accounts:");
+            for (var paymentAccount : paymentAccounts) {
+                printStream.println(paymentAccount);
+
+            }
+        }else{
+            printStream.println("User does not have payment accounts");
+        }
+
+        var creditAccounts = creditAccountRepository.findAll().stream()
+                .filter(creditAccount -> creditAccount.getUser().getId().compareTo(userId) == 0)
+                .toList();
+
+        if(creditAccounts.size() > 0) {
+            printStream.println("Credit accounts:");
+            for (var creditAccount : creditAccounts) {
+
+                printStream.println(creditAccount);
+
+            }
+        }else{
+            printStream.println("User does not have credit accounts");
+        }
 
     }
 }

@@ -111,7 +111,7 @@ public class Employee implements Entity{
                 ", birthDate=" + birthDate +
                 ", job='" + job + '\'' +
                 ", inOffice=" + inOffice +
-                ", bankOffice=" + bankOffice +
+                ", bankOffice=" + bankOffice.getName() +
                 ", canApplyLoan=" + loansAvailable +
                 ", salary=" + salary +
                 '}';

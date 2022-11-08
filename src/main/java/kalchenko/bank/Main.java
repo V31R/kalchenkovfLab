@@ -45,6 +45,10 @@ public class Main {
         System.out.println(paymentAccount);
         System.out.println(creditAccount);
 
+        //userService.outputUserAccounts(user.getId(), System.out);
+        bankService.outputBankInfo(bank.getId(), System.out);
+        userService.outputUserAccounts(user.getId(), System.out);
+
     }
 
     static Bank createBank(){

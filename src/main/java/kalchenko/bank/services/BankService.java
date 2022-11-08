@@ -2,6 +2,7 @@ package kalchenko.bank.services;
 
 import kalchenko.bank.entity.Bank;
 
+import java.io.OutputStream;
 import java.util.List;
 
 public interface BankService extends BankOperations {
@@ -25,5 +26,7 @@ public interface BankService extends BankOperations {
      * Если объект существует, то обновляет его.
      */
     Bank update(Bank bank);
+
+    void outputBankInfo(Long bankId, OutputStream outputStream);
 
 }
