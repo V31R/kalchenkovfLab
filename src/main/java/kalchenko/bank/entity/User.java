@@ -2,6 +2,8 @@ package kalchenko.bank.entity;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class User implements Entity{
 
@@ -10,7 +12,7 @@ public class User implements Entity{
     private LocalDate birthDate;
     private BigDecimal salary;
     private String job;
-    private Bank bank;
+    private List<Bank> banks = new ArrayList<>();
     private int creditRate = 0;
 
     public User() {}
@@ -21,7 +23,7 @@ public class User implements Entity{
         this.birthDate = birthDate;
         this.salary = salary;
         this.job = job;
-        this.bank = bank;
+        this.banks.add(bank);
     }
 
     public User(User user) {
@@ -30,7 +32,7 @@ public class User implements Entity{
         this.birthDate = user.getBirthDate();
         this.salary = user.getSalary();
         this.job = user.getJob();
-        this.bank = user.getBank();
+        this.banks = user.getBanks();
         this.creditRate = user.getCreditRate();
     }
 
@@ -76,12 +78,12 @@ public class User implements Entity{
         this.job = job;
     }
 
-    public Bank getBank() {
-        return bank;
+    public List<Bank> getBanks() {
+        return banks;
     }
 
-    public void setBank(Bank bank) {
-        this.bank = bank;
+    public void addBank(Bank bank) {
+        this.banks.add(bank);
     }
 
     public int getCreditRate() {
@@ -100,7 +102,7 @@ public class User implements Entity{
                 ", birthDate=" + birthDate +
                 ", salary=" + salary +
                 ", job='" + job + '\'' +
-                ", bank=" + bank +
+                ", bank=" + banks +
                 ", creditRate=" + creditRate +
                 '}';
     }

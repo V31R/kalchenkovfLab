@@ -41,9 +41,13 @@ public class UserServiceImpl implements UserService {
 
         if(user!= null){
             userRepository.deleteById(id);
-            var bank = bankService.getBankById(user.getBank().getId());
-            bank.setUserNumber(bank.getUserNumber() - 1);
-            bankService.update(bank);
+            var banks = user.getBanks();
+            for(var bank : banks){
+                var tempBank = bankService.getBankById(bank.getId());
+                tempBank.setUserNumber(tempBank.getUserNumber() - 1);
+                bankService.update(tempBank);
+            }
+
             return true;
         }
 
@@ -67,15 +71,14 @@ public class UserServiceImpl implements UserService {
 
         var newUser= userRepository.add(user);
 
-        var bank = bankService.getBankById(user.getBank().getId());
-
-        if(bank != null){
-            bank.setUserNumber(bank.getUserNumber() + 1);
-            bankService.update(bank);
+        var banks = user.getBanks();
+        for(var bank : banks){
+            var tempBank = bankService.getBankById(bank.getId());
+            tempBank.setUserNumber(tempBank.getUserNumber() + 1);
+            bankService.update(tempBank);
         }
 
         return newUser;
-
 
     }
 }
