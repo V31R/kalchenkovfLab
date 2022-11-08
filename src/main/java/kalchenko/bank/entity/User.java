@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class User implements Entity{
+public class User implements Entity {
 
     private Long id;
     private String fullName;
@@ -15,7 +15,8 @@ public class User implements Entity{
     private List<Bank> banks = new ArrayList<>();
     private int creditRate = 0;
 
-    public User() {}
+    public User() {
+    }
 
     public User(String fullName, LocalDate birthDate, BigDecimal salary,
                 String job, Bank bank) {

@@ -4,14 +4,18 @@ import kalchenko.bank.entity.BankOffice;
 
 import java.util.List;
 
+/**
+ * Класс-одиночка
+ */
 public class BankOfficeRepository {
 
     private static BankOfficeRepository INSTANCE;
 
-    private BankOfficeRepository(){}
+    private BankOfficeRepository() {
+    }
 
     public static BankOfficeRepository getInstance() {
-        if(INSTANCE == null) {
+        if (INSTANCE == null) {
             INSTANCE = new BankOfficeRepository();
         }
 
@@ -21,33 +25,31 @@ public class BankOfficeRepository {
     private final EntityRepository repository = new EntityRepository();
 
     /**
-     * Если до этого там не находилось другого объекта BankOffice
-     * добавляет bankOffice в репозиторий и возвращает добавленный объект,
-     * иначе возвращает null.
+     * Добавляет bankOffice в репозиторий и возвращает добавленный объект,
+     * если bank не был равен null, иначе возвращает null.
      */
-    public BankOffice add(BankOffice bankOffice){
+    public BankOffice add(BankOffice bankOffice) {
         return (BankOffice) repository.add(bankOffice);
     }
 
     /**
-     * Возвращает истину, если при удалении объект был не null,
-     * иначе возвращает ложь.
+     * Удаляет офис по id.
      */
-    public boolean deleteById(Long id){
-       return repository.deleteById(id);
+    public boolean deleteById(Long id) {
+        return repository.deleteById(id);
     }
 
     /**
-     * Возвращает объект, который хранится в репозитории.
+     * Возвращает офис по id, который хранится в репозитории.
      */
-    public BankOffice findById(Long id){
+    public BankOffice findById(Long id) {
         return (BankOffice) repository.findById(id);
     }
 
     /**
-     * Возвращает список банков, которые хранятся в репозитории.
+     * Возвращает список офисов, которые хранятся в репозитории.
      */
-    public List<BankOffice> findAll(){
+    public List<BankOffice> findAll() {
 
         return repository.findAll().stream().map(entity -> (BankOffice) entity).toList();
 
@@ -57,7 +59,7 @@ public class BankOfficeRepository {
      * Если объект существует, то обновляет его и возвращает истину,
      * иначе возвращает ложь.
      */
-    public BankOffice update(BankOffice bankOffice){
+    public BankOffice update(BankOffice bankOffice) {
         return (BankOffice) repository.update(bankOffice);
     }
 

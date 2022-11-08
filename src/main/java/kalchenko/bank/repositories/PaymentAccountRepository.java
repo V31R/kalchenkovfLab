@@ -4,14 +4,18 @@ import kalchenko.bank.entity.PaymentAccount;
 
 import java.util.List;
 
+/**
+ * Класс-одиночка
+ */
 public class PaymentAccountRepository {
 
     private static PaymentAccountRepository INSTANCE;
 
-    private PaymentAccountRepository(){}
+    private PaymentAccountRepository() {
+    }
 
     public static PaymentAccountRepository getInstance() {
-        if(INSTANCE == null) {
+        if (INSTANCE == null) {
             INSTANCE = new PaymentAccountRepository();
         }
 
@@ -21,33 +25,31 @@ public class PaymentAccountRepository {
     private final EntityRepository repository = new EntityRepository();
 
     /**
-     * Если до этого там не находилось другого объекта PaymentAccount
-     * добавляет paymentAccount в репозиторий и возвращает добавленный объект,
-     * иначе возвращает null.
+     * Добавляет paymentAccount в репозиторий и возвращает добавленный объект,
+     * если bank не был равен null, иначе возвращает null.
      */
-    public PaymentAccount add(PaymentAccount paymentAccount){
-       return (PaymentAccount) repository.add(paymentAccount);
+    public PaymentAccount add(PaymentAccount paymentAccount) {
+        return (PaymentAccount) repository.add(paymentAccount);
     }
 
     /**
-     * Возвращает истину, если при удалении объект был не null,
-     * иначе возвращает ложь.
+     * Удаляет платёжный счёт по id.
      */
-    public boolean deleteById(Long id){
+    public boolean deleteById(Long id) {
         return repository.deleteById(id);
     }
 
     /**
-     * Возвращает объект, который хранится в репозитории.
+     * Возвращает счёт, который хранится в репозитории.
      */
-    public PaymentAccount findById(Long id){
-       return (PaymentAccount) repository.findById(id);
+    public PaymentAccount findById(Long id) {
+        return (PaymentAccount) repository.findById(id);
     }
 
     /**
-     * Возвращает список аккаунтов, которые хранятся в репозитории.
+     * Возвращает список счетов, которые хранятся в репозитории.
      */
-    public List<PaymentAccount> findAll(){
+    public List<PaymentAccount> findAll() {
 
         return repository.findAll().stream().map(entity -> (PaymentAccount) entity).toList();
 
@@ -57,7 +59,7 @@ public class PaymentAccountRepository {
      * Если объект существует, то обновляет его и возвращает истину,
      * иначе возвращает ложь.
      */
-    public PaymentAccount update(PaymentAccount paymentAccount){
+    public PaymentAccount update(PaymentAccount paymentAccount) {
         return (PaymentAccount) repository.update(paymentAccount);
     }
 

@@ -7,8 +7,7 @@ import java.util.List;
 public interface EmployeeService extends BankOperations {
 
     /**
-     * Добавляет employee в репозиторий, если добавление было успешно
-     * извещает об этом связанный bankOffice.
+     * Добавляет employee в репозиторий, извещает об этом связанный bankOffice.
      */
     Employee addEmployee(Employee employee);
 
@@ -23,7 +22,7 @@ public interface EmployeeService extends BankOperations {
     Employee getEmployeeById(Long id);
 
     /**
-     * Возвращает все банки, которые хранятся в репозитории.
+     * Возвращает все работников, которые хранятся в репозитории.
      */
     List<Employee> getAllEmployees();
 

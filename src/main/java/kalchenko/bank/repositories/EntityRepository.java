@@ -13,11 +13,11 @@ public class EntityRepository {
 
     /**
      * @param object Добавляет object в репозиторий и возвращает добавленный объект,
-     * если object не был равен null, иначе возвращает null.
+     *               если object не был равен null, иначе возвращает null.
      */
-    public Entity add(Entity object){
+    public Entity add(Entity object) {
 
-        if(object == null){
+        if (object == null) {
             return null;
         }
 
@@ -31,9 +31,9 @@ public class EntityRepository {
      * @return Возвращает истину, если при удалении объект был не null,
      * иначе возвращает ложь.
      */
-    public boolean deleteById(Long id){
+    public boolean deleteById(Long id) {
 
-        if(!this.objects.containsKey(id)){
+        if (!this.objects.containsKey(id)) {
             return false;
         }
 
@@ -43,9 +43,9 @@ public class EntityRepository {
     }
 
     /**
-     * Возвращает объект, который хранится в репозитории.
+     * Возвращает объект по id, который хранится в репозитории.
      */
-    public Entity findById(Long id){
+    public Entity findById(Long id) {
 
         return this.objects.get(id);
 
@@ -54,7 +54,7 @@ public class EntityRepository {
     /**
      * Возвращает список объектов, которые хранятся в репозитории.
      */
-    public List<Entity> findAll(){
+    public List<Entity> findAll() {
 
         return this.objects.values().stream().toList();
 
@@ -64,9 +64,9 @@ public class EntityRepository {
      * Если объект существует, то обновляет его и возвращает его,
      * иначе возвращает null.
      */
-    public Entity update(Entity object){
+    public Entity update(Entity object) {
 
-        if(object == null || !this.objects.containsKey(object.getId())){
+        if (object == null || !this.objects.containsKey(object.getId())) {
             return null;
         }
 

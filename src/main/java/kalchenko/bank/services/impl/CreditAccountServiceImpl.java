@@ -8,14 +8,18 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
 
+/**
+ * Класс-одиночка
+ */
 public class CreditAccountServiceImpl implements CreditAccountService {
 
     private static CreditAccountServiceImpl INSTANCE;
 
-    private CreditAccountServiceImpl(){}
+    private CreditAccountServiceImpl() {
+    }
 
     public static CreditAccountServiceImpl getInstance() {
-        if(INSTANCE == null) {
+        if (INSTANCE == null) {
             INSTANCE = new CreditAccountServiceImpl();
         }
 

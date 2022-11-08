@@ -14,7 +14,8 @@ public class Bank implements Entity {
     private BigDecimal moneyAmount;
     private BigDecimal interestRate;
 
-    public Bank() {}
+    public Bank() {
+    }
 
     public Bank(String name, int bankRate, BigDecimal moneyAmount, BigDecimal interestRate) {
         this.name = name;
@@ -25,10 +26,10 @@ public class Bank implements Entity {
 
     public Bank(Bank bank) {
         this.id = bank.getId();
-        this.name =  bank.getName();
-        this.bankRate =  bank.getBankRate();
-        this.moneyAmount =  bank.getMoneyAmount();
-        this.interestRate =  bank.getInterestRate();
+        this.name = bank.getName();
+        this.bankRate = bank.getBankRate();
+        this.moneyAmount = bank.getMoneyAmount();
+        this.interestRate = bank.getInterestRate();
         this.officesNumber = bank.getOfficesNumber();
         this.atmNumber = bank.getAtmNumber();
         this.employeeNumber = bank.getEmployeeNumber();

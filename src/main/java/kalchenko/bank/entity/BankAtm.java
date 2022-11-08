@@ -4,7 +4,7 @@ import kalchenko.bank.utils.AtmStatus;
 
 import java.math.BigDecimal;
 
-public class BankAtm implements Entity{
+public class BankAtm implements Entity {
 
     private Long id;
     private String name;
@@ -17,7 +17,8 @@ public class BankAtm implements Entity{
     private BigDecimal moneyAmount;
     private BigDecimal maintenance;
 
-    public BankAtm() {}
+    public BankAtm() {
+    }
 
     public BankAtm(String name, AtmStatus status, BankOffice bankOffice,
                    String place, Employee employee, boolean canPaymentOfMoney, boolean canDepositMoney,

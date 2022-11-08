@@ -4,14 +4,18 @@ import kalchenko.bank.entity.BankAtm;
 
 import java.util.List;
 
+/**
+ * Класс-одиночка
+ */
 public class BankAtmRepository {
 
     private static BankAtmRepository INSTANCE;
 
-    private BankAtmRepository(){}
+    private BankAtmRepository() {
+    }
 
     public static BankAtmRepository getInstance() {
-        if(INSTANCE == null) {
+        if (INSTANCE == null) {
             INSTANCE = new BankAtmRepository();
         }
 
@@ -21,33 +25,31 @@ public class BankAtmRepository {
     private final EntityRepository repository = new EntityRepository();
 
     /**
-    * Если до этого там не находилось другого объекта BankAtm
-    * добавляет bankAtm в репозиторий и возвращает добавленный объект,
-    * иначе возвращает null.
-    */
-    public BankAtm add(BankAtm bankAtm){
+     * Добавляет bankAtm в репозиторий и возвращает добавленный объект,
+     * если bank не был равен null, иначе возвращает null.
+     */
+    public BankAtm add(BankAtm bankAtm) {
         return (BankAtm) repository.add(bankAtm);
     }
 
     /**
-     * Возвращает истину, если при удалении объект был не null,
-     * иначе возвращает ложь.
+     * Удаляет банкомат по id.
      */
-    public boolean deleteById(Long id){
+    public boolean deleteById(Long id) {
         return repository.deleteById(id);
     }
 
     /**
-     * Возвращает объект, который хранится в репозитории.
+     * Возвращает банкомат по id, который хранится в репозитории.
      */
-    public BankAtm findById(Long id){
+    public BankAtm findById(Long id) {
         return (BankAtm) repository.findById(id);
     }
 
     /**
-     * Возвращает список банков, которые хранятся в репозитории.
+     * Возвращает список банкоматов, которые хранятся в репозитории.
      */
-    public List<BankAtm> findAll(){
+    public List<BankAtm> findAll() {
 
         return repository.findAll().stream().map(entity -> (BankAtm) entity).toList();
 
@@ -57,8 +59,8 @@ public class BankAtmRepository {
      * Если объект существует, то обновляет его и возвращает истину,
      * иначе возвращает ложь.
      */
-    public BankAtm update(BankAtm bankAtm){
-       return (BankAtm) repository.update(bankAtm);
+    public BankAtm update(BankAtm bankAtm) {
+        return (BankAtm) repository.update(bankAtm);
     }
 
 }

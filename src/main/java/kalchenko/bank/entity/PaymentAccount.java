@@ -2,14 +2,15 @@ package kalchenko.bank.entity;
 
 import java.math.BigDecimal;
 
-public class PaymentAccount implements Entity{
+public class PaymentAccount implements Entity {
 
     private Long id;
     private User user;
     private String bankName;
     private BigDecimal sum = BigDecimal.ZERO;
 
-    public PaymentAccount() {}
+    public PaymentAccount() {
+    }
 
     public PaymentAccount(User user, String bankName) {
         this.user = user;

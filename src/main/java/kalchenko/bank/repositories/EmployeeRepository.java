@@ -4,14 +4,18 @@ import kalchenko.bank.entity.Employee;
 
 import java.util.List;
 
+/**
+ * Класс-одиночка
+ */
 public class EmployeeRepository {
 
     private static EmployeeRepository INSTANCE;
 
-    private EmployeeRepository(){}
+    private EmployeeRepository() {
+    }
 
     public static EmployeeRepository getInstance() {
-        if(INSTANCE == null) {
+        if (INSTANCE == null) {
             INSTANCE = new EmployeeRepository();
         }
 
@@ -21,33 +25,31 @@ public class EmployeeRepository {
     private final EntityRepository repository = new EntityRepository();
 
     /**
-     * Если до этого там не находилось другого объекта Employee
-     * добавляет employee в репозиторий и возвращает добавленный объект,
-     * иначе возвращает null.
+     * Добавляет employee в репозиторий и возвращает добавленный объект,
+     * если bank не был равен null, иначе возвращает null.
      */
-    public Employee add(Employee employee){
-       return (Employee) repository.add(employee);
+    public Employee add(Employee employee) {
+        return (Employee) repository.add(employee);
     }
 
     /**
-     * Возвращает истину, если при удалении объект был не null,
-     * иначе возвращает ложь.
+     * Удаляет работника по id.
      */
-    public boolean deleteById(Long id){
+    public boolean deleteById(Long id) {
         return repository.deleteById(id);
     }
 
     /**
-     * Возвращает объект, который хранится в репозитории.
+     * Возвращает работника по id, который хранится в репозитории.
      */
-    public Employee findById(Long id){
+    public Employee findById(Long id) {
         return (Employee) repository.findById(id);
     }
 
     /**
-     * Возвращает список клиентов, которые хранятся в репозитории.
+     * Возвращает список работников, которые хранятся в репозитории.
      */
-    public List<Employee> findAll(){
+    public List<Employee> findAll() {
 
         return repository.findAll().stream().map(entity -> (Employee) entity).toList();
 
@@ -57,7 +59,7 @@ public class EmployeeRepository {
      * Если объект существует, то обновляет его и возвращает истину,
      * иначе возвращает ложь.
      */
-    public Employee update(Employee employee){
+    public Employee update(Employee employee) {
         return (Employee) repository.update(employee);
     }
 

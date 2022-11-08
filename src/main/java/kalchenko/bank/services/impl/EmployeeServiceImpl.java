@@ -8,14 +8,18 @@ import kalchenko.bank.services.EmployeeService;
 import java.math.BigDecimal;
 import java.util.List;
 
+/**
+ * Класс-одиночка
+ */
 public class EmployeeServiceImpl implements EmployeeService {
 
     private static EmployeeServiceImpl INSTANCE;
 
-    private EmployeeServiceImpl(){}
+    private EmployeeServiceImpl() {
+    }
 
     public static EmployeeServiceImpl getInstance() {
-        if(INSTANCE == null) {
+        if (INSTANCE == null) {
             INSTANCE = new EmployeeServiceImpl();
         }
 
@@ -40,14 +44,14 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Employee addEmployee(Employee employee) {
 
-       var newEmployee = employeeRepository.add(employee);
-       var office = newEmployee.getBankOffice();
+        var newEmployee = employeeRepository.add(employee);
+        var office = newEmployee.getBankOffice();
 
-        if(office != null){
+        if (office != null) {
             bankOfficeService.addEmployee(office.getId());
         }
 
-       return newEmployee;
+        return newEmployee;
 
     }
 
@@ -56,7 +60,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         var officeId = employeeRepository.findById(id).getBankOffice().getId();
 
-        if(bankOfficeService.deleteEmployee(officeId)){
+        if (bankOfficeService.deleteEmployee(officeId)) {
             return employeeRepository.deleteById(id);
         }
         return false;

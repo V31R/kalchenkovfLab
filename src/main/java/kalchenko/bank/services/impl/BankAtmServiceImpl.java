@@ -8,15 +8,18 @@ import kalchenko.bank.services.BankOfficeService;
 import java.math.BigDecimal;
 import java.util.List;
 
+/**
+ * Класс-одиночка
+ */
 public class BankAtmServiceImpl implements BankAtmService {
-
 
     private static BankAtmServiceImpl INSTANCE;
 
-    private BankAtmServiceImpl(){}
+    private BankAtmServiceImpl() {
+    }
 
     public static BankAtmServiceImpl getInstance() {
-        if(INSTANCE == null) {
+        if (INSTANCE == null) {
             INSTANCE = new BankAtmServiceImpl();
         }
 
@@ -33,10 +36,10 @@ public class BankAtmServiceImpl implements BankAtmService {
         var newBankAtm = bankAtmRepository.add(bankAtm);
         var office = newBankAtm.getBankOffice();
 
-        if(office != null){
+        if (office != null) {
             bankOfficeService.addAtm(office.getId());
         }
-        return  newBankAtm;
+        return newBankAtm;
 
     }
 
@@ -56,7 +59,7 @@ public class BankAtmServiceImpl implements BankAtmService {
 
         var officeId = bankAtmRepository.findById(id).getId();
 
-        if(bankAtmRepository.deleteById(id)){
+        if (bankAtmRepository.deleteById(id)) {
 
             return bankOfficeService.deleteAtm(officeId);
 
@@ -67,8 +70,8 @@ public class BankAtmServiceImpl implements BankAtmService {
     @Override
     public boolean withdrawMoney(Long id, BigDecimal money) {
         var bankAtm = bankAtmRepository.findById(id);
-        if(bankAtm.isPaymentAvailable()) {
-            return bankOfficeService.withdrawMoney(bankAtm.getBankOffice().getId(),money);
+        if (bankAtm.isPaymentAvailable()) {
+            return bankOfficeService.withdrawMoney(bankAtm.getBankOffice().getId(), money);
         }
         return false;
     }
@@ -76,8 +79,8 @@ public class BankAtmServiceImpl implements BankAtmService {
     @Override
     public boolean depositMoney(Long id, BigDecimal money) {
         var bankAtm = bankAtmRepository.findById(id);
-        if(bankAtm.isDepositAvailable()){
-            return bankOfficeService.depositMoney(bankAtm.getBankOffice().getId(),money);
+        if (bankAtm.isDepositAvailable()) {
+            return bankOfficeService.depositMoney(bankAtm.getBankOffice().getId(), money);
         }
         return false;
     }

@@ -8,7 +8,7 @@ import java.util.List;
 public interface BankService extends BankOperations {
 
     /**
-     * Возвращает банк по Id, который хранится в репозитории.
+     * Возвращает банк по id, который хранится в репозитории.
      */
     Bank getBankById(Long id);
 
@@ -27,6 +27,9 @@ public interface BankService extends BankOperations {
      */
     Bank update(Bank bank);
 
+    /**
+     * Вывод всех данных по bankId банка (банкоматы, офисы, сотрудники, клиенты)
+     */
     void outputBankInfo(Long bankId, OutputStream outputStream);
 
 }

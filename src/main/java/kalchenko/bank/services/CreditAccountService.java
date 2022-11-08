@@ -18,7 +18,7 @@ public interface CreditAccountService {
     CreditAccount getCreditAccountById(Long id);
 
     /**
-     * Возвращает всех пользователей, которые хранятся в репозитории.
+     * Возвращает все кредиты, которые хранятся в репозитории.
      */
     List<CreditAccount> getAllCreditAccount();
 }

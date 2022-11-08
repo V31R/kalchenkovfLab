@@ -5,7 +5,6 @@ import kalchenko.bank.repositories.CreditAccountRepository;
 import kalchenko.bank.repositories.PaymentAccountRepository;
 import kalchenko.bank.repositories.UserRepository;
 import kalchenko.bank.services.BankService;
-import kalchenko.bank.services.PaymentAccountService;
 import kalchenko.bank.services.UserService;
 
 import java.io.OutputStream;
@@ -13,14 +12,18 @@ import java.io.PrintStream;
 import java.math.BigDecimal;
 import java.util.List;
 
+/**
+ * Класс-одиночка
+ */
 public class UserServiceImpl implements UserService {
 
     private static UserServiceImpl INSTANCE;
 
-    private UserServiceImpl(){}
+    private UserServiceImpl() {
+    }
 
     public static UserServiceImpl getInstance() {
-        if(INSTANCE == null) {
+        if (INSTANCE == null) {
             INSTANCE = new UserServiceImpl();
         }
 
@@ -44,10 +47,10 @@ public class UserServiceImpl implements UserService {
     public boolean deleteUser(Long id) {
         var user = userRepository.findById(id);
 
-        if(user!= null){
+        if (user != null) {
             userRepository.deleteById(id);
             var banks = user.getBanks();
-            for(var bank : banks){
+            for (var bank : banks) {
                 var tempBank = bankService.getBankById(bank.getId());
                 tempBank.setUserNumber(tempBank.getUserNumber() - 1);
                 bankService.update(tempBank);
@@ -63,21 +66,21 @@ public class UserServiceImpl implements UserService {
     @Override
     public User addUser(User user) {
 
-        if(user.getCreditRate() < 100){
+        if (user.getCreditRate() < 100) {
 
             int rate = 100;
             BigDecimal value = BigDecimal.valueOf(1000L);
-            while(user.getSalary().compareTo(value) == 1){
-                rate+=100;
-                value=value.add(BigDecimal.valueOf(1000L));
+            while (user.getSalary().compareTo(value) == 1) {
+                rate += 100;
+                value = value.add(BigDecimal.valueOf(1000L));
             }
             user.setCreditRate(rate);
         }
 
-        var newUser= userRepository.add(user);
+        var newUser = userRepository.add(user);
 
         var banks = user.getBanks();
-        for(var bank : banks){
+        for (var bank : banks) {
             var tempBank = bankService.getBankById(bank.getId());
             tempBank.setUserNumber(tempBank.getUserNumber() + 1);
             bankService.update(tempBank);
@@ -99,13 +102,13 @@ public class UserServiceImpl implements UserService {
         var paymentAccounts = paymentAccountRepository.findAll().stream()
                 .filter(paymentAccount -> paymentAccount.getUser().getId().compareTo(userId) == 0)
                 .toList();
-        if(paymentAccounts.size() > 0) {
+        if (paymentAccounts.size() > 0) {
             printStream.println("Payment accounts:");
             for (var paymentAccount : paymentAccounts) {
                 printStream.println(paymentAccount);
 
             }
-        }else{
+        } else {
             printStream.println("User does not have payment accounts");
         }
 
@@ -113,14 +116,14 @@ public class UserServiceImpl implements UserService {
                 .filter(creditAccount -> creditAccount.getUser().getId().compareTo(userId) == 0)
                 .toList();
 
-        if(creditAccounts.size() > 0) {
+        if (creditAccounts.size() > 0) {
             printStream.println("Credit accounts:");
             for (var creditAccount : creditAccounts) {
 
                 printStream.println(creditAccount);
 
             }
-        }else{
+        } else {
             printStream.println("User does not have credit accounts");
         }
 

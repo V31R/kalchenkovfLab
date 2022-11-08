@@ -2,7 +2,7 @@ package kalchenko.bank.entity;
 
 import java.math.BigDecimal;
 
-public class BankOffice implements Entity{
+public class BankOffice implements Entity {
 
     private Long id;
     private String name;
@@ -10,14 +10,15 @@ public class BankOffice implements Entity{
     private Bank bank;
     private boolean isWorking;
     private boolean isPossiblePlaceAtm;
-    private int atmNumber=0;
+    private int atmNumber = 0;
     private boolean loansAvailable;
     private boolean paymentAvailable;
     private boolean depositAvailable;
     private BigDecimal moneyAmount;
     private BigDecimal rent;
 
-    public BankOffice() {}
+    public BankOffice() {
+    }
 
     public BankOffice(String name, String address, Bank bank, boolean isWorking,
                       boolean isPossiblePlaceAtm, boolean canApplyLoan, boolean canPaymentOfMoney,

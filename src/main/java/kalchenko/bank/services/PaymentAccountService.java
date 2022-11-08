@@ -17,7 +17,7 @@ public interface PaymentAccountService {
     PaymentAccount getPaymentAccountById(Long id);
 
     /**
-     * Возвращает всех пользователей, которые хранятся в репозитории.
+     * Возвращает все платёжные счета, которые хранятся в репозитории.
      */
     List<PaymentAccount> getAllPaymentAccount();
 

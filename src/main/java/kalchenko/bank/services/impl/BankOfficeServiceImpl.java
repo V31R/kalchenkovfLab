@@ -8,14 +8,18 @@ import kalchenko.bank.services.BankService;
 import java.math.BigDecimal;
 import java.util.List;
 
+/**
+ * Класс-одиночка
+ */
 public class BankOfficeServiceImpl implements BankOfficeService {
 
     private static BankOfficeServiceImpl INSTANCE;
 
-    private BankOfficeServiceImpl(){}
+    private BankOfficeServiceImpl() {
+    }
 
     public static BankOfficeServiceImpl getInstance() {
-        if(INSTANCE == null) {
+        if (INSTANCE == null) {
             INSTANCE = new BankOfficeServiceImpl();
         }
 
@@ -32,7 +36,7 @@ public class BankOfficeServiceImpl implements BankOfficeService {
 
         var bank = bankService.getBankById(bankOffice.getBank().getId());
 
-        if(bank != null){
+        if (bank != null) {
             bank.setOfficesNumber(bank.getOfficesNumber() + 1);
             bankService.update(bank);
         }
@@ -56,12 +60,12 @@ public class BankOfficeServiceImpl implements BankOfficeService {
 
         var bankId = bankOfficeRepository.findById(id).getId();
 
-        if(!bankOfficeRepository.deleteById(id)) {
+        if (!bankOfficeRepository.deleteById(id)) {
             return false;
         }
-        var bank =bankService.getBankById(bankId);
+        var bank = bankService.getBankById(bankId);
 
-        if(bank != null && bank.getOfficesNumber() > 0){
+        if (bank != null && bank.getOfficesNumber() > 0) {
             bank.setOfficesNumber(bank.getOfficesNumber() - 1);
             bankService.update(bank);
             return true;
@@ -71,16 +75,15 @@ public class BankOfficeServiceImpl implements BankOfficeService {
     }
 
 
-
     @Override
     public boolean addAtm(Long bankOfficeId) {
         var bankOffice = bankOfficeRepository.findById(bankOfficeId);
-        if(bankOffice == null){
+        if (bankOffice == null) {
             return false;
         }
         var bank = bankService.getBankById(bankOffice.getBank().getId());
 
-        if(bank != null){
+        if (bank != null) {
             bank.setAtmNumber(bank.getAtmNumber() + 1);
             bankService.update(bank);
             bankOffice.setAtmNumber(bankOffice.getAtmNumber() + 1);
@@ -97,13 +100,13 @@ public class BankOfficeServiceImpl implements BankOfficeService {
     @Override
     public boolean deleteAtm(Long bankOfficeId) {
         var bankOffice = bankOfficeRepository.findById(bankOfficeId);
-        if(bankOffice == null){
+        if (bankOffice == null) {
             return false;
         }
 
         var bank = bankService.getBankById(bankOffice.getBank().getId());
 
-        if(bank != null && bank.getAtmNumber() > 0 && bankOffice.getAtmNumber() > 0){
+        if (bank != null && bank.getAtmNumber() > 0 && bankOffice.getAtmNumber() > 0) {
             bank.setAtmNumber(bank.getAtmNumber() - 1);
             bankService.update(bank);
             bankOffice.setAtmNumber(bankOffice.getAtmNumber() - 1);
@@ -119,12 +122,12 @@ public class BankOfficeServiceImpl implements BankOfficeService {
     public boolean addEmployee(Long bankOfficeId) {
 
         var bankOffice = bankOfficeRepository.findById(bankOfficeId);
-        if(bankOffice == null){
+        if (bankOffice == null) {
             return false;
         }
         var bank = bankService.getBankById(bankOffice.getBank().getId());
 
-        if(bank != null){
+        if (bank != null) {
             bank.setEmployeeNumber(bank.getEmployeeNumber() + 1);
             bankService.update(bank);
             return true;
@@ -138,13 +141,13 @@ public class BankOfficeServiceImpl implements BankOfficeService {
     @Override
     public boolean deleteEmployee(Long bankOfficeId) {
         var bankOffice = bankOfficeRepository.findById(bankOfficeId);
-        if(bankOffice == null){
+        if (bankOffice == null) {
             return false;
         }
 
         var bank = bankService.getBankById(bankOffice.getBank().getId());
 
-        if(bank != null && bank.getEmployeeNumber() > 0){
+        if (bank != null && bank.getEmployeeNumber() > 0) {
             bank.setEmployeeNumber(bank.getEmployeeNumber() - 1);
             bankService.update(bank);
             return true;
@@ -156,7 +159,7 @@ public class BankOfficeServiceImpl implements BankOfficeService {
     @Override
     public boolean withdrawMoney(Long id, BigDecimal money) {
         var bankOffice = bankOfficeRepository.findById(id);
-        if(bankOffice.isPaymentAvailable()){
+        if (bankOffice.isPaymentAvailable()) {
             return bankService.withdrawMoney(bankOffice.getBank().getId(), money);
         }
 
@@ -166,7 +169,7 @@ public class BankOfficeServiceImpl implements BankOfficeService {
     @Override
     public boolean depositMoney(Long id, BigDecimal money) {
         var bankOffice = bankOfficeRepository.findById(id);
-        if(bankOffice.isDepositAvailable()){
+        if (bankOffice.isDepositAvailable()) {
             return bankService.depositMoney(bankOffice.getBank().getId(), money);
         }
 

@@ -6,14 +6,18 @@ import kalchenko.bank.services.PaymentAccountService;
 
 import java.util.List;
 
+/**
+ * Класс-одиночка
+ */
 public class PaymentAccountServiceImpl implements PaymentAccountService {
 
     private static PaymentAccountServiceImpl INSTANCE;
 
-    private PaymentAccountServiceImpl(){}
+    private PaymentAccountServiceImpl() {
+    }
 
     public static PaymentAccountServiceImpl getInstance() {
-        if(INSTANCE == null) {
+        if (INSTANCE == null) {
             INSTANCE = new PaymentAccountServiceImpl();
         }
 

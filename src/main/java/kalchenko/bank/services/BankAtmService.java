@@ -7,23 +7,22 @@ import java.util.List;
 public interface BankAtmService extends BankOperations{
 
     /**
-     * Добавляет bankAtm в репозиторий, если добавление было успешно
-     * извещает об этом связанный bankOffice.
+     * Добавляет bankAtm в репозиторий, извещает об этом связанный bankOffice.
      */
     BankAtm addBankAtm(BankAtm bankAtm);
 
     /**
-     * Возвращает объект, который хранится в репозитории.
+     * Возвращает бакномат по Id, который хранится в репозитории.
      */
     BankAtm getBankAtmById(Long id);
 
     /**
-     * Возвращает все банки, которые хранятся в репозитории.
+     * Возвращает все бакноматы, которые хранятся в репозитории.
      */
     List<BankAtm> getAllBankAtms();
 
     /**
-     * Удаляет объект, извещает об этом связанный BankOffice.
+     * Удаляет бакномат по Id, извещает об этом связанный BankOffice.
      */
     boolean deleteBankAtmById(Long id);
 }

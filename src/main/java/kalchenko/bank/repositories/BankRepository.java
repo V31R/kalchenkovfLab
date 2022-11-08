@@ -5,16 +5,17 @@ import kalchenko.bank.entity.Bank;
 import java.util.List;
 
 /**
- *  Класс-одиночка
+ * Класс-одиночка
  */
 public class BankRepository {
 
     private static BankRepository INSTANCE;
 
-    private BankRepository(){}
+    private BankRepository() {
+    }
 
     public static BankRepository getInstance() {
-        if(INSTANCE == null) {
+        if (INSTANCE == null) {
             INSTANCE = new BankRepository();
         }
 
@@ -28,26 +29,25 @@ public class BankRepository {
      * Добавляет bank в репозиторий и возвращает добавленный объект,
      * если bank не был равен null, иначе возвращает null.
      */
-    public Bank add(Bank bank){
+    public Bank add(Bank bank) {
 
         return (Bank) repository.add(bank);
 
     }
 
     /**
-     * Возвращает истину, если при удалении объект был не null,
-     * иначе возвращает ложь.
+     * Удаляет банк по id.
      */
-    public boolean deleteById(Long id){
+    public boolean deleteById(Long id) {
 
         return repository.deleteById(id);
 
     }
 
     /**
-     * Возвращает объект, который хранится в репозитории.
+     * Возвращает банк по id, который хранится в репозитории.
      */
-    public Bank findById(Long id){
+    public Bank findById(Long id) {
 
         return (Bank) repository.findById(id);
 
@@ -56,7 +56,7 @@ public class BankRepository {
     /**
      * Возвращает список банков, которые хранятся в репозитории.
      */
-    public List<Bank> findAll(){
+    public List<Bank> findAll() {
 
         return repository.findAll().stream().map(entity -> (Bank) entity).toList();
 
@@ -66,7 +66,7 @@ public class BankRepository {
      * Если объект существует, то обновляет его и возвращает его,
      * иначе возвращает null.
      */
-    public Bank update(Bank bank){
+    public Bank update(Bank bank) {
 
         return (Bank) repository.update(bank);
 

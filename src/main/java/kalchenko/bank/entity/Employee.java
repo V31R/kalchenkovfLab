@@ -3,7 +3,7 @@ package kalchenko.bank.entity;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-public class Employee implements Entity{
+public class Employee implements Entity {
     private Long id;
     private String fullName;
     private LocalDate birthDate;
@@ -13,7 +13,8 @@ public class Employee implements Entity{
     private boolean loansAvailable;
     private BigDecimal salary;
 
-    public Employee() {}
+    public Employee() {
+    }
 
     public Employee(String fullName, LocalDate birthDate, String job, boolean inOffice,
                     BankOffice bankOffice, boolean canApplyLoan, BigDecimal salary) {
