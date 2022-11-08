@@ -10,12 +10,22 @@ import java.util.List;
 
 public class BankAtmServiceImpl implements BankAtmService {
 
-    private final BankAtmRepository bankAtmRepository = BankAtmRepository.getInstance();
-    private final BankOfficeService bankOfficeService;
 
-    public BankAtmServiceImpl(BankOfficeService bankOfficeService) {
-        this.bankOfficeService = bankOfficeService;
+    private static BankAtmServiceImpl INSTANCE;
+
+    private BankAtmServiceImpl(){}
+
+    public static BankAtmServiceImpl getInstance() {
+        if(INSTANCE == null) {
+            INSTANCE = new BankAtmServiceImpl();
+        }
+
+        return INSTANCE;
     }
+
+    private final BankAtmRepository bankAtmRepository = BankAtmRepository.getInstance();
+    private final BankOfficeService bankOfficeService = BankOfficeServiceImpl.getInstance();
+
 
     @Override
     public BankAtm addBankAtm(BankAtm bankAtm) {
