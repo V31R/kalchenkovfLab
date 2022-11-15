@@ -33,8 +33,12 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     private static int number = 0;
     public Employee createEmployee(BankOffice bankOffice) {
-        return new Employee(String.format("Employee_name_%d", number++), LocalDate.now(), "job", true, bankOffice,
-                true, BigDecimal.ONE);
+        BigDecimal salary = BigDecimal.ONE;
+        boolean inOffice = true;
+        boolean canApplyLoan = true;
+
+        return new Employee(String.format("Employee_name_%d", number++), LocalDate.now().minusYears(20), "job",
+                inOffice, bankOffice, canApplyLoan, salary);
     }
 
     @Override

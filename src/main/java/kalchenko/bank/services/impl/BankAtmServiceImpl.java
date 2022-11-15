@@ -34,8 +34,13 @@ public class BankAtmServiceImpl implements BankAtmService {
 
     private static int number = 0;
     public BankAtm createBankAtm(BankOffice bankOffice, Employee employee) {
-        return new BankAtm(String.format("Atm_%d", number++), AtmStatus.WORKING, bankOffice, "next to exit",
-                employee, true, true, bankOffice.getMoneyAmount(), BigDecimal.TEN);
+        BigDecimal rent = BigDecimal.TEN;
+        boolean canPayment = true;
+        boolean canDeposit = true;
+        AtmStatus status = AtmStatus.WORKING;
+
+        return new BankAtm(String.format("Atm_%d", number++), status, bankOffice, "next to exit",
+                employee, canPayment, canDeposit, bankOffice.getMoneyAmount(), rent);
     }
 
 

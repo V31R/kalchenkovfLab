@@ -33,9 +33,16 @@ public class BankOfficeServiceImpl implements BankOfficeService {
 
     private static int number = 0;
     public BankOffice createBankOffice(Bank bank) {
+        BigDecimal rent = BigDecimal.valueOf(10.5d);
+        boolean isWorking = true;
+        boolean hasAtm = true;
+        boolean canApplyLoan = true;
+        boolean canPayment = true;
+        boolean canDeposit = true;
         var n = number++;
-        return new BankOffice(String.format("Office_%d", n), String.format("Address_%d", n), bank, true, true,
-                true, true, true, bank.getMoneyAmount(), BigDecimal.valueOf(10.5d));
+
+        return new BankOffice(String.format("Office_%d", n), String.format("Address_%d", n), bank, isWorking, hasAtm,
+                canApplyLoan, canPayment, canDeposit, bank.getMoneyAmount(), rent);
     }
 
     @Override

@@ -34,9 +34,14 @@ public class BankServiceImpl implements BankService {
     private static int number = 0;
     private  static final Random random = new Random();
     public Bank createBank() {
-        var rate = random.nextInt(100);
-        BigDecimal interestRate = BigDecimal.valueOf(random.nextDouble() * (20.d - rate / 10.d));
-        BigDecimal money = BigDecimal.valueOf(random.nextInt(1_000_000));
+        int maxRate = 100;
+        double maxInterestRate = 20.d;
+        int maxMoney = 1_000_000;
+
+        var rate = random.nextInt(maxRate);
+        //Поскольку рейтинг может быть до 100, то нужно уменьшить его в 10 раз, чтобы ставка не могла быть отрицательной
+        BigDecimal interestRate = BigDecimal.valueOf(random.nextDouble() * (maxInterestRate - rate / 10.d));
+        BigDecimal money = BigDecimal.valueOf(random.nextInt(maxMoney));
         return new Bank(String.format("Bank_%d", number++), rate, money, interestRate);
     }
 
