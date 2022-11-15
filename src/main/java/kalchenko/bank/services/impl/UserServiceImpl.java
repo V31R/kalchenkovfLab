@@ -1,5 +1,6 @@
 package kalchenko.bank.services.impl;
 
+import kalchenko.bank.entity.Bank;
 import kalchenko.bank.entity.User;
 import kalchenko.bank.repositories.CreditAccountRepository;
 import kalchenko.bank.repositories.PaymentAccountRepository;
@@ -10,7 +11,9 @@ import kalchenko.bank.services.UserService;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Класс-одиночка
@@ -32,6 +35,13 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository = UserRepository.getInstance();
     private final BankService bankService = BankServiceImpl.getInstance();
+
+    private static int number = 0;
+    private  static final Random random = new Random();
+    public  User createUser(Bank bank) {
+        return new User(String.format("User_name_%d", number++), LocalDate.now(),
+                BigDecimal.valueOf(random.nextDouble() * 9_999 + 1), "job", bank);
+    }
 
     @Override
     public User getUserById(Long id) {

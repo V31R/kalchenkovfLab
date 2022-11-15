@@ -1,5 +1,6 @@
 package kalchenko.bank.services.impl;
 
+import kalchenko.bank.entity.Bank;
 import kalchenko.bank.entity.BankOffice;
 import kalchenko.bank.repositories.BankOfficeRepository;
 import kalchenko.bank.services.BankOfficeService;
@@ -29,6 +30,13 @@ public class BankOfficeServiceImpl implements BankOfficeService {
     private final BankService bankService = BankServiceImpl.getInstance();
 
     private final BankOfficeRepository bankOfficeRepository = BankOfficeRepository.getInstance();
+
+    private static int number = 0;
+    public BankOffice createBankOffice(Bank bank) {
+        var n = number++;
+        return new BankOffice(String.format("Office_%d", n), String.format("Address_%d", n), bank, true, true,
+                true, true, true, bank.getMoneyAmount(), BigDecimal.valueOf(10.5d));
+    }
 
     @Override
     public BankOffice addBankOffice(BankOffice bankOffice) {

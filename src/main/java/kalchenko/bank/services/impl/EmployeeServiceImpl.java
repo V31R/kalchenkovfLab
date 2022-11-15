@@ -1,11 +1,13 @@
 package kalchenko.bank.services.impl;
 
+import kalchenko.bank.entity.BankOffice;
 import kalchenko.bank.entity.Employee;
 import kalchenko.bank.repositories.EmployeeRepository;
 import kalchenko.bank.services.BankOfficeService;
 import kalchenko.bank.services.EmployeeService;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -28,6 +30,12 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     private final EmployeeRepository employeeRepository = EmployeeRepository.getInstance();
     private final BankOfficeService bankOfficeService = BankOfficeServiceImpl.getInstance();
+
+    private static int number = 0;
+    public Employee createEmployee(BankOffice bankOffice) {
+        return new Employee(String.format("Employee_name_%d", number++), LocalDate.now(), "job", true, bankOffice,
+                true, BigDecimal.ONE);
+    }
 
     @Override
     public boolean withdrawMoney(Long id, BigDecimal money) {

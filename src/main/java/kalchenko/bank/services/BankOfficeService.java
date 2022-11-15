@@ -1,5 +1,6 @@
 package kalchenko.bank.services;
 
+import kalchenko.bank.entity.Bank;
 import kalchenko.bank.entity.BankOffice;
 
 import java.util.List;
@@ -46,4 +47,8 @@ public interface BankOfficeService extends BankOperations {
      */
     boolean deleteEmployee(Long bankOfficeId);
 
+    /**
+     * Создаёт офис
+     */
+    BankOffice createBankOffice(Bank bank);
 }

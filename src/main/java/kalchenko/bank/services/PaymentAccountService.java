@@ -1,6 +1,8 @@
 package kalchenko.bank.services;
 
+import kalchenko.bank.entity.Bank;
 import kalchenko.bank.entity.PaymentAccount;
+import kalchenko.bank.entity.User;
 
 import java.util.List;
 
@@ -20,5 +22,10 @@ public interface PaymentAccountService {
      * Возвращает все платёжные счета, которые хранятся в репозитории.
      */
     List<PaymentAccount> getAllPaymentAccount();
+
+    /**
+     * Создаёт счёт
+     */
+    PaymentAccount createPaymentAccount(Bank bank, User user);
 
 }

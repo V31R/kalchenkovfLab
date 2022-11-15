@@ -1,5 +1,6 @@
 package kalchenko.bank.services;
 
+import kalchenko.bank.entity.BankOffice;
 import kalchenko.bank.entity.Employee;
 
 import java.util.List;
@@ -26,5 +27,9 @@ public interface EmployeeService extends BankOperations {
      */
     List<Employee> getAllEmployees();
 
+    /**
+     * Создаёт работника
+     */
+    Employee createEmployee(BankOffice bankOffice);
 
 }

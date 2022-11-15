@@ -1,6 +1,8 @@
 package kalchenko.bank.services.impl;
 
+import kalchenko.bank.entity.Bank;
 import kalchenko.bank.entity.PaymentAccount;
+import kalchenko.bank.entity.User;
 import kalchenko.bank.repositories.PaymentAccountRepository;
 import kalchenko.bank.services.PaymentAccountService;
 
@@ -25,6 +27,10 @@ public class PaymentAccountServiceImpl implements PaymentAccountService {
     }
 
     private final PaymentAccountRepository paymentAccountRepository = PaymentAccountRepository.getInstance();
+
+    public PaymentAccount createPaymentAccount(Bank bank, User user) {
+        return new PaymentAccount(user, bank.getName());
+    }
 
     @Override
     public PaymentAccount addPaymentAccount(PaymentAccount paymentAccount) {

@@ -1,5 +1,6 @@
 package kalchenko.bank.services;
 
+import kalchenko.bank.entity.Bank;
 import kalchenko.bank.entity.User;
 
 import java.io.OutputStream;
@@ -29,6 +30,14 @@ public interface UserService {
      */
     boolean deleteUser(Long id);
 
+    /**
+     * Создаёт клиента
+     */
+    User createUser(Bank bank);
+
+    /**
+     * Выводит пользователя с userId в поток outputStream
+     */
     void outputUserAccounts(Long userId, OutputStream outputStream);
 
 }

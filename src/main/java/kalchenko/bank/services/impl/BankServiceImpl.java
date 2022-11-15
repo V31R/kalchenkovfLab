@@ -8,6 +8,8 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Random;
+import java.util.Scanner;
 
 /**
  * Класс-одиночка
@@ -29,6 +31,14 @@ public class BankServiceImpl implements BankService {
 
     private final BankRepository bankRepository = BankRepository.getInstance();
 
+    private static int number = 0;
+    private  static final Random random = new Random();
+    public Bank createBank() {
+        var rate = random.nextInt(100);
+        BigDecimal interestRate = BigDecimal.valueOf(random.nextDouble() * (20.d - rate / 10.d));
+        BigDecimal money = BigDecimal.valueOf(random.nextInt(1_000_000));
+        return new Bank(String.format("Bank_%d", number++), rate, money, interestRate);
+    }
 
     @Override
     public Bank addBank(Bank bank) {

@@ -1,6 +1,6 @@
 package kalchenko.bank.services;
 
-import kalchenko.bank.entity.CreditAccount;
+import kalchenko.bank.entity.*;
 
 import java.util.List;
 
@@ -21,4 +21,9 @@ public interface CreditAccountService {
      * Возвращает все кредиты, которые хранятся в репозитории.
      */
     List<CreditAccount> getAllCreditAccount();
+
+    /**
+     * Создаёт кредитичный счёт
+     */
+    CreditAccount createCreditAccount(Bank bank, User user, PaymentAccount paymentAccount, Employee employee);
 }

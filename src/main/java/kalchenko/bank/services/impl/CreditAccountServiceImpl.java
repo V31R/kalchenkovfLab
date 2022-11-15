@@ -1,11 +1,12 @@
 package kalchenko.bank.services.impl;
 
-import kalchenko.bank.entity.CreditAccount;
+import kalchenko.bank.entity.*;
 import kalchenko.bank.repositories.CreditAccountRepository;
 import kalchenko.bank.services.CreditAccountService;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -27,6 +28,11 @@ public class CreditAccountServiceImpl implements CreditAccountService {
     }
 
     private final CreditAccountRepository creditAccountRepository = CreditAccountRepository.getInstance();
+
+    public CreditAccount createCreditAccount(Bank bank, User user, PaymentAccount paymentAccount, Employee employee) {
+        return new CreditAccount(user, bank.getName(), LocalDate.now(), 12, BigDecimal.valueOf(1000L),
+                bank.getInterestRate(), employee, paymentAccount);
+    }
 
     @Override
     public CreditAccount addCreditAccount(CreditAccount creditAccount) {

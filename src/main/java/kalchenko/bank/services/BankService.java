@@ -28,6 +28,11 @@ public interface BankService extends BankOperations {
     Bank update(Bank bank);
 
     /**
+     * Создаёт объект банка
+     */
+    Bank createBank();
+
+    /**
      * Вывод всех данных по bankId банка (банкоматы, офисы, сотрудники, клиенты)
      */
     void outputBankInfo(Long bankId, OutputStream outputStream);
