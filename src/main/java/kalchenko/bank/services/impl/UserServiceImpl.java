@@ -94,8 +94,9 @@ public class UserServiceImpl implements UserService {
     public void outputUserAccounts(Long userId, OutputStream outputStream) {
 
         PrintStream printStream = new PrintStream(outputStream);
-
-        printStream.printf("User data about %s\n", userRepository.findById(userId).getFullName());
+        var user = userRepository.findById(userId);
+        printStream.printf("User data about %s\n", user.getFullName());
+        printStream.println(user);
 
         PaymentAccountRepository paymentAccountRepository = PaymentAccountRepository.getInstance();
         CreditAccountRepository creditAccountRepository = CreditAccountRepository.getInstance();
@@ -104,10 +105,7 @@ public class UserServiceImpl implements UserService {
                 .toList();
         if (paymentAccounts.size() > 0) {
             printStream.println("Payment accounts:");
-            for (var paymentAccount : paymentAccounts) {
-                printStream.println(paymentAccount);
-
-            }
+            paymentAccounts.forEach(printStream::println);
         } else {
             printStream.println("User does not have payment accounts");
         }
@@ -118,11 +116,7 @@ public class UserServiceImpl implements UserService {
 
         if (creditAccounts.size() > 0) {
             printStream.println("Credit accounts:");
-            for (var creditAccount : creditAccounts) {
-
-                printStream.println(creditAccount);
-
-            }
+            creditAccounts.forEach(printStream::println);
         } else {
             printStream.println("User does not have credit accounts");
         }

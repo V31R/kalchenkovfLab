@@ -82,7 +82,9 @@ public class BankServiceImpl implements BankService {
 
         PrintStream printStream = new PrintStream(outputStream);
 
-        printStream.printf("Bank data about %s\n", bankRepository.findById(bankId).getName());
+        var bank = bankRepository.findById(bankId);
+        printStream.printf("Bank data about %s\n", bank.getName());
+        printStream.println(bank);
 
         BankOfficeRepository bankOfficeRepository = BankOfficeRepository.getInstance();
         BankAtmRepository bankAtmRepository = BankAtmRepository.getInstance();
@@ -94,10 +96,7 @@ public class BankServiceImpl implements BankService {
                 .toList();
         if (bankOffices.size() > 0) {
             printStream.println("Bank offices:");
-            for (var bankOffice : bankOffices) {
-                printStream.println(bankOffice);
-
-            }
+            bankOffices.forEach(printStream::println);
         } else {
             printStream.println("User does not have offices");
         }
@@ -108,11 +107,7 @@ public class BankServiceImpl implements BankService {
 
         if (bankAtms.size() > 0) {
             printStream.println("Bank ATMs:");
-            for (var bankAtm : bankAtms) {
-
-                printStream.println(bankAtm);
-
-            }
+            bankAtms.forEach(printStream::println);
         } else {
             printStream.println("Bank does not ATM");
         }
@@ -123,11 +118,7 @@ public class BankServiceImpl implements BankService {
 
         if (employees.size() > 0) {
             printStream.println("Bank employees:");
-            for (var employee : employees) {
-
-                printStream.println(employee);
-
-            }
+            employees.forEach(printStream::println);
         } else {
             printStream.println("Bank does not employees");
         }
@@ -135,7 +126,7 @@ public class BankServiceImpl implements BankService {
         var users = userRepository.findAll().stream()
                 .filter(
                         user -> user.getBanks().stream()
-                                .filter(bank -> bank.getId().compareTo(bankId) == 0)
+                                .filter(b -> b.getId().compareTo(bankId) == 0)
                                 .toList()
                                 .size() > 0
                 )
@@ -143,11 +134,7 @@ public class BankServiceImpl implements BankService {
 
         if (users.size() > 0) {
             printStream.println("Bank users:");
-            for (var user : users) {
-
-                printStream.println(user);
-
-            }
+            users.forEach(printStream::println);
         } else {
             printStream.println("Bank does not user");
         }
