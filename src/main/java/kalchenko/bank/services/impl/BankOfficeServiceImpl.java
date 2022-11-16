@@ -1,53 +1,115 @@
 package kalchenko.bank.services.impl;
 
+import kalchenko.bank.entity.Bank;
 import kalchenko.bank.entity.BankOffice;
 import kalchenko.bank.repositories.BankOfficeRepository;
 import kalchenko.bank.services.BankOfficeService;
 import kalchenko.bank.services.BankService;
 
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.Random;
 
+/**
+ * Класс-одиночка
+ */
 public class BankOfficeServiceImpl implements BankOfficeService {
 
-    private BankService bankService;
+    private static BankOfficeServiceImpl INSTANCE;
 
-    private BankOfficeRepository bankOfficeRepository = new BankOfficeRepository();
-
-    public BankOfficeServiceImpl(BankService bankService) {
-        this.bankService = bankService;
+    private BankOfficeServiceImpl() {
     }
 
+    public static BankOfficeServiceImpl getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new BankOfficeServiceImpl();
+        }
+
+        return INSTANCE;
+    }
+
+    private final BankService bankService = BankServiceImpl.getInstance();
+
+    private final BankOfficeRepository bankOfficeRepository = BankOfficeRepository.getInstance();
+
+    private static final Random random = new Random();
+    private static final double moneyDispersion = 0.1d;
+    private static final double minMoney = 0.2d;
+    private static int number = 0;
+    public BankOffice createBankOffice(Bank bank) {
+        final BigDecimal rent = BigDecimal.valueOf(10.5d);
+        final boolean isWorking = true;
+        final boolean hasAtm = true;
+        final boolean canApplyLoan = true;
+        final boolean canPayment = true;
+        final boolean canDeposit = true;
+        final var n = number++;
+
+        final BigDecimal officeMoney = bank.getMoneyAmount().multiply(
+                BigDecimal.valueOf((random.nextDouble()*moneyDispersion + minMoney))
+        );
+
+        return new BankOffice(String.format("Office_%d", n), String.format("Address_%d", n), bank, isWorking, hasAtm,
+                canApplyLoan, canPayment, canDeposit, officeMoney, rent);
+    }
 
     @Override
     public BankOffice addBankOffice(BankOffice bankOffice) {
+        var newBankOffice = bankOfficeRepository.add(bankOffice);
 
-        if(bankOfficeRepository.add(bankOffice)){
+        var bank = bankService.getBankById(bankOffice.getBank().getId());
 
-            bankService.addOffice();
-            return bankOfficeRepository.getBankOffice();
-
+        if (bank != null) {
+            bankService.withdrawMoney(bank.getId(), bankOffice.getMoneyAmount());
+            bank.setOfficesNumber(bank.getOfficesNumber() + 1);
+            bankService.update(bank);
         }
-        return null;
+
+        return newBankOffice;
     }
 
 
     @Override
-    public BankOffice getBankOffice() {
-        return bankOfficeRepository.getBankOffice();
+    public BankOffice getBankOfficeById(Long id) {
+        return bankOfficeRepository.findById(id);
+    }
+
+    @Override
+    public List<BankOffice> getAllBanks() {
+        return bankOfficeRepository.findAll();
+    }
+
+    @Override
+    public boolean deleteBankOfficeById(Long id) {
+
+        var bankId = bankOfficeRepository.findById(id).getId();
+
+        if (!bankOfficeRepository.deleteById(id)) {
+            return false;
+        }
+        var bank = bankService.getBankById(bankId);
+
+        if (bank != null && bank.getOfficesNumber() > 0) {
+            bank.setOfficesNumber(bank.getOfficesNumber() - 1);
+            bankService.update(bank);
+            return true;
+        }
+
+        return false;
     }
 
 
     @Override
-    public boolean deleteBankOffice() {
-        return bankOfficeRepository.delete() && bankService.deleteOffice();
-    }
+    public boolean addAtm(Long bankOfficeId) {
+        var bankOffice = bankOfficeRepository.findById(bankOfficeId);
+        if (bankOffice == null) {
+            return false;
+        }
+        var bank = bankService.getBankById(bankOffice.getBank().getId());
 
-
-    @Override
-    public boolean addAtm() {
-        var bankOffice = bankOfficeRepository.getBankOffice();
-
-        if(bankOffice != null && bankService.addAtm()){
+        if (bank != null) {
+            bank.setAtmNumber(bank.getAtmNumber() + 1);
+            bankService.update(bank);
             bankOffice.setAtmNumber(bankOffice.getAtmNumber() + 1);
             bankOfficeRepository.update(bankOffice);
             return true;
@@ -60,10 +122,17 @@ public class BankOfficeServiceImpl implements BankOfficeService {
      * Уменьшает число банкоматов, при добавлении, извещает об этом связанный bank.
      */
     @Override
-    public boolean deleteAtm() {
-        var bankOffice = bankOfficeRepository.getBankOffice();
+    public boolean deleteAtm(Long bankOfficeId) {
+        var bankOffice = bankOfficeRepository.findById(bankOfficeId);
+        if (bankOffice == null) {
+            return false;
+        }
 
-        if(bankOffice != null && bankService.deleteAtm()){
+        var bank = bankService.getBankById(bankOffice.getBank().getId());
+
+        if (bank != null && bank.getAtmNumber() > 0 && bankOffice.getAtmNumber() > 0) {
+            bank.setAtmNumber(bank.getAtmNumber() - 1);
+            bankService.update(bank);
             bankOffice.setAtmNumber(bankOffice.getAtmNumber() - 1);
             bankOfficeRepository.update(bankOffice);
             return true;
@@ -74,29 +143,63 @@ public class BankOfficeServiceImpl implements BankOfficeService {
 
 
     @Override
-    public boolean addEmployee() {
-        return bankService.addEmployee();
+    public boolean addEmployee(Long bankOfficeId) {
+
+        var bankOffice = bankOfficeRepository.findById(bankOfficeId);
+        if (bankOffice == null) {
+            return false;
+        }
+        var bank = bankService.getBankById(bankOffice.getBank().getId());
+
+        if (bank != null) {
+            bank.setEmployeeNumber(bank.getEmployeeNumber() + 1);
+            bankService.update(bank);
+            return true;
+        }
+
+        return false;
+
     }
 
 
     @Override
-    public boolean deleteEmployee() {
-        return bankService.deleteEmployee();
-    }
+    public boolean deleteEmployee(Long bankOfficeId) {
+        var bankOffice = bankOfficeRepository.findById(bankOfficeId);
+        if (bankOffice == null) {
+            return false;
+        }
 
-    @Override
-    public boolean withdrawMoney(BigDecimal money) {
-        if(bankOfficeRepository.getBankOffice().isPaymentAvailable()){
-            return bankService.withdrawMoney(money);
+        var bank = bankService.getBankById(bankOffice.getBank().getId());
+
+        if (bank != null && bank.getEmployeeNumber() > 0) {
+            bank.setEmployeeNumber(bank.getEmployeeNumber() - 1);
+            bankService.update(bank);
+            return true;
         }
 
         return false;
     }
 
     @Override
-    public boolean depositMoney(BigDecimal money) {
-        if(bankOfficeRepository.getBankOffice().isDepositAvailable()){
-            return bankService.depositMoney(money);
+    public boolean withdrawMoney(Long id, BigDecimal money) {
+        var bankOffice = bankOfficeRepository.findById(id);
+
+        if (bankOffice != null && bankOffice.isPaymentAvailable() && money.compareTo(bankOffice.getMoneyAmount()) == -1) {
+            bankOffice.setMoneyAmount(bankOffice.getMoneyAmount().subtract(money));
+            bankOfficeRepository.update(bankOffice);
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean depositMoney(Long id, BigDecimal money) {
+        var bankOffice = bankOfficeRepository.findById(id);
+        if (bankOffice != null && bankOffice.isDepositAvailable()) {
+            bankOffice.setMoneyAmount(bankOffice.getMoneyAmount().add(money));
+            bankOfficeRepository.update(bankOffice);
+            return true;
         }
 
         return false;

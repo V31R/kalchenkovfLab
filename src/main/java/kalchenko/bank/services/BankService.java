@@ -2,55 +2,39 @@ package kalchenko.bank.services;
 
 import kalchenko.bank.entity.Bank;
 
+import java.io.OutputStream;
+import java.util.List;
+
 public interface BankService extends BankOperations {
 
     /**
-     * Возвращает объект, который хранится в репозитории.
+     * Возвращает банк по id, который хранится в репозитории.
      */
-    Bank getBank();
+    Bank getBankById(Long id);
+
+    /**
+     * Возвращает все банки, которые хранятся в репозитории.
+     */
+    List<Bank> getAllBanks();
+
     /**
      * Добавляет bank в репозиторий
      */
     Bank addBank(Bank bank);
 
     /**
-     * Увеличивает число офисов.
+     * Если объект существует, то обновляет его.
      */
-    boolean addOffice();
+    Bank update(Bank bank);
 
     /**
-     * Уменьшает число офисов.
+     * Создаёт объект банка
      */
-    boolean deleteOffice();
+    Bank createBank();
 
     /**
-     * Увеличивает число банкоматов.
+     * Вывод всех данных по bankId банка (банкоматы, офисы, сотрудники, клиенты)
      */
-    boolean addAtm();
-
-    /**
-     * Уменьшает число банкоматов.
-     */
-    boolean deleteAtm();
-
-    /**
-     * Увеличивает число работников.
-     */
-    boolean addEmployee();
-
-    /**
-     * Уменьшает число работников.
-     */
-    boolean deleteEmployee();
-
-    /**
-     * Увеличивает число пользователей.
-     */
-    boolean addUser();
-
-    /**
-     * Уменьшает число пользователей.
-     */
-    boolean deleteUser();
+    void outputBankInfo(Long bankId, OutputStream outputStream);
 
 }

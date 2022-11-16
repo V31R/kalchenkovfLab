@@ -2,7 +2,7 @@ package kalchenko.bank.entity;
 
 import java.math.BigDecimal;
 
-public class Bank {
+public class Bank implements Entity {
 
     private Long id;
     private String name;
@@ -14,10 +14,10 @@ public class Bank {
     private BigDecimal moneyAmount;
     private BigDecimal interestRate;
 
-    public Bank() {}
+    public Bank() {
+    }
 
-    public Bank(Long id, String name, int bankRate, BigDecimal moneyAmount, BigDecimal interestRate) {
-        this.id = id;
+    public Bank(String name, int bankRate, BigDecimal moneyAmount, BigDecimal interestRate) {
         this.name = name;
         this.bankRate = bankRate;
         this.moneyAmount = moneyAmount;
@@ -26,20 +26,22 @@ public class Bank {
 
     public Bank(Bank bank) {
         this.id = bank.getId();
-        this.name =  bank.getName();
-        this.bankRate =  bank.getBankRate();
-        this.moneyAmount =  bank.getMoneyAmount();
-        this.interestRate =  bank.getInterestRate();
+        this.name = bank.getName();
+        this.bankRate = bank.getBankRate();
+        this.moneyAmount = bank.getMoneyAmount();
+        this.interestRate = bank.getInterestRate();
         this.officesNumber = bank.getOfficesNumber();
         this.atmNumber = bank.getAtmNumber();
         this.employeeNumber = bank.getEmployeeNumber();
         this.userNumber = bank.getUserNumber();
     }
 
+    @Override
     public Long getId() {
         return id;
     }
 
+    @Override
     public void setId(Long id) {
         this.id = id;
     }
@@ -118,8 +120,8 @@ public class Bank {
                 ", employeeNumber=" + employeeNumber +
                 ", userNumber=" + userNumber +
                 ", bankRate=" + bankRate +
-                ", moneyAmount=" + moneyAmount +
-                ", interestRate=" + interestRate + "%}";
+                ", moneyAmount=" + String.format("%.2f", moneyAmount.floatValue()) +
+                ", interestRate=" + String.format("%.2f", interestRate.floatValue()) + "%}";
     }
 
 }

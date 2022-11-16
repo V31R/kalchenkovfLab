@@ -2,68 +2,65 @@ package kalchenko.bank.repositories;
 
 import kalchenko.bank.entity.Employee;
 
+import java.util.List;
+
+/**
+ * Класс-одиночка
+ */
 public class EmployeeRepository {
 
-    private Employee employee = null;
+    private static EmployeeRepository INSTANCE;
 
-    public EmployeeRepository(){}
+    private EmployeeRepository() {
+    }
 
-    /**
-     * Если до этого там не находилось другого объекта Employee
-     * добавляет employee в репозиторий и возвращает добавленный объект,
-     * иначе возвращает null.
-     */
-    public boolean add(Employee employee){
-        var isEmpty = this.employee == null;
-
-        if (isEmpty && employee != null){
-
-            this.employee = new Employee(employee);
-
+    public static EmployeeRepository getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new EmployeeRepository();
         }
 
-        return isEmpty;
+        return INSTANCE;
+    }
+
+    private final EntityRepository repository = new EntityRepository();
+
+    /**
+     * Добавляет employee в репозиторий и возвращает добавленный объект,
+     * если bank не был равен null, иначе возвращает null.
+     */
+    public Employee add(Employee employee) {
+        return (Employee) repository.add(employee);
     }
 
     /**
-     * Возвращает истину, если при удалении объект был не null,
-     * иначе возвращает ложь.
+     * Удаляет работника по id.
      */
-    public boolean delete(){
-        if(this.employee == null){
-            return false;
-        }
-
-        this.employee = null;
-        return true;
+    public boolean deleteById(Long id) {
+        return repository.deleteById(id);
     }
 
     /**
-     * Возвращает объект, который хранится в репозитории.
+     * Возвращает работника по id, который хранится в репозитории.
      */
-    public Employee getEmployee(){
-        if(this.employee == null){
+    public Employee findById(Long id) {
+        return (Employee) repository.findById(id);
+    }
 
-            return null;
+    /**
+     * Возвращает список работников, которые хранятся в репозитории.
+     */
+    public List<Employee> findAll() {
 
-        }
+        return repository.findAll().stream().map(entity -> (Employee) entity).toList();
 
-        return this.employee;
     }
 
     /**
      * Если объект существует, то обновляет его и возвращает истину,
      * иначе возвращает ложь.
      */
-    public boolean update(Employee employee){
-        if(this.employee == null && employee != null){
-
-            return false;
-
-        }
-
-        this.employee = employee;
-        return true;
+    public Employee update(Employee employee) {
+        return (Employee) repository.update(employee);
     }
 
 }

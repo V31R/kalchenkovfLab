@@ -1,60 +1,118 @@
 package kalchenko.bank.services.impl;
 
 import kalchenko.bank.entity.BankAtm;
+import kalchenko.bank.entity.BankOffice;
+import kalchenko.bank.entity.Employee;
 import kalchenko.bank.repositories.BankAtmRepository;
 import kalchenko.bank.services.BankAtmService;
 import kalchenko.bank.services.BankOfficeService;
+import kalchenko.bank.utils.AtmStatus;
 
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.Random;
 
+/**
+ * Класс-одиночка
+ */
 public class BankAtmServiceImpl implements BankAtmService {
 
-    private BankAtmRepository bankAtmRepository = new BankAtmRepository();
-    private BankOfficeService bankOfficeService;
+    private static BankAtmServiceImpl INSTANCE;
 
-    public BankAtmServiceImpl(BankOfficeService bankOfficeService) {
-        this.bankOfficeService = bankOfficeService;
+    private BankAtmServiceImpl() {
     }
+
+    public static BankAtmServiceImpl getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new BankAtmServiceImpl();
+        }
+
+        return INSTANCE;
+    }
+
+    private final BankAtmRepository bankAtmRepository = BankAtmRepository.getInstance();
+    private final BankOfficeService bankOfficeService = BankOfficeServiceImpl.getInstance();
+
+    private static final Random random = new Random();
+    private static final double moneyDispersion = 0.2d;
+    private static final double minMoney = 0.3d;
+
+    private static int number = 0;
+    public BankAtm createBankAtm(BankOffice bankOffice, Employee employee) {
+        final BigDecimal rent = BigDecimal.TEN;
+        final boolean canPayment = true;
+        final boolean canDeposit = true;
+        final AtmStatus status = AtmStatus.WORKING;
+
+        final BigDecimal atmMoney = bankOffice.getMoneyAmount().multiply(
+                BigDecimal.valueOf((random.nextDouble()*moneyDispersion + minMoney))
+        );
+
+        return new BankAtm(String.format("Atm_%d", number++), status, bankOffice, "next to exit",
+                employee, canPayment, canDeposit, atmMoney, rent);
+    }
+
 
     @Override
     public BankAtm addBankAtm(BankAtm bankAtm) {
-        if(bankAtmRepository.add(bankAtm)){
-            bankOfficeService.addAtm();
-            return  bankAtmRepository.getBankAtm();
+
+        var newBankAtm = bankAtmRepository.add(bankAtm);
+        var office = newBankAtm.getBankOffice();
+
+        if (office != null) {
+            bankOfficeService.withdrawMoney(office.getId(), newBankAtm.getMoneyAmount());
+            bankOfficeService.addAtm(office.getId());
         }
+        return newBankAtm;
 
-        return null;
     }
 
 
     @Override
-    public BankAtm getBankAtm() {
-        return bankAtmRepository.getBankAtm();
+    public BankAtm getBankAtmById(Long id) {
+        return bankAtmRepository.findById(id);
     }
 
     @Override
-    public boolean deleteBankAtm() {
-        if(bankAtmRepository.delete()){
+    public List<BankAtm> getAllBankAtms() {
+        return bankAtmRepository.findAll();
+    }
 
-            return bankOfficeService.deleteAtm();
+    @Override
+    public boolean deleteBankAtmById(Long id) {
+
+        var officeId = bankAtmRepository.findById(id).getId();
+
+        if (bankAtmRepository.deleteById(id)) {
+
+            return bankOfficeService.deleteAtm(officeId);
 
         }
         return false;
     }
 
     @Override
-    public boolean withdrawMoney(BigDecimal money) {
-        if(bankAtmRepository.getBankAtm().isPaymentAvailable()) {
-            return bankOfficeService.withdrawMoney(money);
+    public boolean withdrawMoney(Long id, BigDecimal money) {
+        var bankAtm = bankAtmRepository.findById(id);
+        if (bankAtm != null && bankAtm.isPaymentAvailable() && money.compareTo(bankAtm.getMoneyAmount()) == -1) {
+            bankAtm.setMoneyAmount(bankAtm.getMoneyAmount().subtract(money));
+            bankAtmRepository.update(bankAtm);
+            return true;
         }
+
         return false;
     }
 
     @Override
-    public boolean depositMoney(BigDecimal money) {
-        if(bankAtmRepository.getBankAtm().isDepositAvailable()){
-            return bankOfficeService.depositMoney(money);
+    public boolean depositMoney(Long id, BigDecimal money) {
+        var bankAtm = bankAtmRepository.findById(id);
+
+        if (bankAtm != null && bankAtm.isDepositAvailable()) {
+            bankAtm.setMoneyAmount(bankAtm.getMoneyAmount().add(money));
+            bankAtmRepository.update(bankAtm);
+            return true;
         }
+
         return false;
     }
 }

@@ -2,7 +2,7 @@ package kalchenko.bank.entity;
 
 import java.math.BigDecimal;
 
-public class BankOffice {
+public class BankOffice implements Entity {
 
     private Long id;
     private String name;
@@ -10,19 +10,19 @@ public class BankOffice {
     private Bank bank;
     private boolean isWorking;
     private boolean isPossiblePlaceAtm;
-    private int atmNumber=0;
+    private int atmNumber = 0;
     private boolean loansAvailable;
     private boolean paymentAvailable;
     private boolean depositAvailable;
     private BigDecimal moneyAmount;
     private BigDecimal rent;
 
-    public BankOffice() {}
+    public BankOffice() {
+    }
 
-    public BankOffice(Long id, String name, String address, Bank bank, boolean isWorking,
+    public BankOffice(String name, String address, Bank bank, boolean isWorking,
                       boolean isPossiblePlaceAtm, boolean canApplyLoan, boolean canPaymentOfMoney,
                       boolean canDepositMoney, BigDecimal moneyAmount, BigDecimal rent) {
-        this.id = id;
         this.name = name;
         this.address = address;
         this.bank = bank;
@@ -50,10 +50,12 @@ public class BankOffice {
         this.rent = bankOffice.getRent();
     }
 
+    @Override
     public Long getId() {
         return id;
     }
 
+    @Override
     public void setId(Long id) {
         this.id = id;
     }
@@ -152,14 +154,14 @@ public class BankOffice {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", address='" + address + '\'' +
-                ", bank=" + bank +
+                ", bank=" + bank.getName() +
                 ", isWorking=" + isWorking +
                 ", isPossiblePlaceAtm=" + isPossiblePlaceAtm +
                 ", atmNumber=" + atmNumber +
                 ", canApplyLoan=" + loansAvailable +
                 ", canPaymentOfMoney=" + paymentAvailable +
                 ", canDepositMoney=" + depositAvailable +
-                ", moneyAmount=" + moneyAmount +
+                ", moneyAmount=" + String.format("%.2f", moneyAmount.floatValue()) +
                 ", rent=" + rent +
                 '}';
     }

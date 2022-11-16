@@ -1,43 +1,54 @@
 package kalchenko.bank.services;
 
+import kalchenko.bank.entity.Bank;
 import kalchenko.bank.entity.BankOffice;
+
+import java.util.List;
 
 public interface BankOfficeService extends BankOperations {
 
     /**
-     * Добавляет bankOffice в репозиторий, если добавление было успешно
-     * извещает об этом связанный bank.
+     * Добавляет bankOffice в репозиторий, извещает об этом связанный bank.
      */
     BankOffice addBankOffice(BankOffice bankOffice);
 
     /**
-     * Возвращает объект, который хранится в репозитории.
+     * Возвращает офис по Id, который хранится в репозитории.
      */
-    BankOffice getBankOffice();
+    BankOffice getBankOfficeById(Long id);
 
     /**
-     * Удаляет объект, извещает об этом связанный Bank.
+     * Возвращает все офисы, которые хранятся в репозитории.
      */
-    boolean deleteBankOffice();
+    List<BankOffice> getAllBanks();
 
     /**
-     * Увеличивает число банкоматов, при добавлении, извещает об этом связанный bank.
+     * Удаляет офис по Id, извещает об этом связанный Bank.
      */
-    boolean addAtm();
+    boolean deleteBankOfficeById(Long id);
 
     /**
-     * Уменьшает число банкоматов, при добавлении, извещает об этом связанный bank.
+     * Увеличивает число банкоматов, при добавлении банкомата, извещает об этом связанный bank.
      */
-    boolean deleteAtm();
+    boolean addAtm(Long bankOfficeId);
+
+    /**
+     * Уменьшает число банкоматов, при удалении банкомата, извещает об этом связанный bank.
+     */
+    boolean deleteAtm(Long bankOfficeId);
 
     /**
      * Извещает связанный bank об увеличении числа пользователей.
      */
-    boolean addEmployee();
+    boolean addEmployee(Long bankOfficeId);
 
     /**
      * Извещает связанный bank об уменьшении числа пользователей.
      */
-    boolean deleteEmployee();
+    boolean deleteEmployee(Long bankOfficeId);
 
+    /**
+     * Создаёт офис
+     */
+    BankOffice createBankOffice(Bank bank);
 }

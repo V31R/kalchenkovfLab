@@ -2,62 +2,74 @@ package kalchenko.bank.repositories;
 
 import kalchenko.bank.entity.Bank;
 
+import java.util.List;
+
+/**
+ * Класс-одиночка
+ */
 public class BankRepository {
 
-    private Bank bank = null;
+    private static BankRepository INSTANCE;
 
-    public BankRepository(){}
+    private BankRepository() {
+    }
+
+    public static BankRepository getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new BankRepository();
+        }
+
+        return INSTANCE;
+    }
+
+    private final EntityRepository repository = new EntityRepository();
+
 
     /**
-     * Если до этого там не находилось другого объекта Bank
-     * добавляет bank в репозиторий и возвращает добавленный объект,
+     * Добавляет bank в репозиторий и возвращает добавленный объект,
+     * если bank не был равен null, иначе возвращает null.
+     */
+    public Bank add(Bank bank) {
+
+        return (Bank) repository.add(bank);
+
+    }
+
+    /**
+     * Удаляет банк по id.
+     */
+    public boolean deleteById(Long id) {
+
+        return repository.deleteById(id);
+
+    }
+
+    /**
+     * Возвращает банк по id, который хранится в репозитории.
+     */
+    public Bank findById(Long id) {
+
+        return (Bank) repository.findById(id);
+
+    }
+
+    /**
+     * Возвращает список банков, которые хранятся в репозитории.
+     */
+    public List<Bank> findAll() {
+
+        return repository.findAll().stream().map(entity -> (Bank) entity).toList();
+
+    }
+
+    /**
+     * Если объект существует, то обновляет его и возвращает его,
      * иначе возвращает null.
      */
-    public boolean add(Bank bank){
-        var isEmpty = this.bank == null;
+    public Bank update(Bank bank) {
 
-        if (isEmpty && bank != null){
+        return (Bank) repository.update(bank);
 
-            this.bank = new Bank(bank);
-
-        }
-
-        return isEmpty;
-    }
-
-    /**
-     * Возвращает истину, если при удалении объект был не null,
-     * иначе возвращает ложь.
-     */
-    public boolean delete(){
-        if(this.bank == null){
-            return false;
-        }
-
-        this.bank = null;
-        return true;
-    }
-
-    /**
-     * Возвращает объект, который хранится в репозитории.
-     */
-    public Bank getBank(){
-        return this.bank;
-    }
-
-    /**
-     * Если объект существует, то обновляет его и возвращает истину,
-     * иначе возвращает ложь.
-     */
-    public boolean update(Bank bank){
-        if(this.bank == null && bank != null){
-
-            return false;
-
-        }
-
-        this.bank = bank;
-        return true;
     }
 
 }

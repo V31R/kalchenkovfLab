@@ -4,7 +4,7 @@ import kalchenko.bank.utils.AtmStatus;
 
 import java.math.BigDecimal;
 
-public class BankAtm {
+public class BankAtm implements Entity {
 
     private Long id;
     private String name;
@@ -17,12 +17,12 @@ public class BankAtm {
     private BigDecimal moneyAmount;
     private BigDecimal maintenance;
 
-    public BankAtm() {}
+    public BankAtm() {
+    }
 
-    public BankAtm(Long id, String name, AtmStatus status, BankOffice bankOffice,
+    public BankAtm(String name, AtmStatus status, BankOffice bankOffice,
                    String place, Employee employee, boolean canPaymentOfMoney, boolean canDepositMoney,
                    BigDecimal moneyAmount, BigDecimal maintenance) {
-        this.id = id;
         this.name = name;
         this.status = status;
         this.bankOffice = bankOffice;
@@ -47,10 +47,12 @@ public class BankAtm {
         this.maintenance = bankAtm.getMaintenance();
     }
 
+    @Override
     public Long getId() {
         return id;
     }
 
+    @Override
     public void setId(Long id) {
         this.id = id;
     }
@@ -137,12 +139,12 @@ public class BankAtm {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", status=" + status +
-                ", bankOffice=" + bankOffice +
+                ", bankOffice=" + bankOffice.getName() +
                 ", place='" + place + '\'' +
-                ", employee=" + employee +
+                ", employee=" + employee.getFullName() +
                 ", canPaymentOfMoney=" + paymentAvailable +
                 ", canDepositMoney=" + depositAvailable +
-                ", moneyAmount=" + moneyAmount +
+                ", moneyAmount=" + String.format("%.2f", moneyAmount.floatValue()) +
                 ", maintenance=" + maintenance +
                 '}';
     }

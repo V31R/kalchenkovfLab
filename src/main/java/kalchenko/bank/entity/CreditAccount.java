@@ -3,7 +3,7 @@ package kalchenko.bank.entity;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-public class CreditAccount {
+public class CreditAccount implements Entity {
 
     private Long id;
     private User user;
@@ -17,11 +17,11 @@ public class CreditAccount {
     private Employee employee;
     private PaymentAccount paymentAccount;
 
-    public CreditAccount() {}
+    public CreditAccount() {
+    }
 
-    public CreditAccount(Long id, User user, String bankName, LocalDate start, int monthNumber, BigDecimal sum,
+    public CreditAccount(User user, String bankName, LocalDate start, int monthNumber, BigDecimal sum,
                          BigDecimal interestRate, Employee employee, PaymentAccount paymentAccount) {
-        this.id = id;
         this.user = user;
         this.bankName = bankName;
         this.start = start;
@@ -46,10 +46,12 @@ public class CreditAccount {
         this.paymentAccount = creditAccount.getPaymentAccount();
     }
 
+    @Override
     public Long getId() {
         return id;
     }
 
+    @Override
     public void setId(Long id) {
         this.id = id;
     }
@@ -138,16 +140,16 @@ public class CreditAccount {
     public String toString() {
         return "CreditAccount{" +
                 "id=" + id +
-                ", user=" + user +
+                ", user=" + user.getFullName() +
                 ", bankName='" + bankName + '\'' +
                 ", start=" + start +
                 ", end=" + end +
                 ", monthNumber=" + monthNumber +
-                ", sum=" + sum +
-                ", monthPayment=" + monthPayment +
-                ", interestRate=" + interestRate +
-                "%, employee=" + employee +
-                ", paymentAccount=" + paymentAccount +
+                ", sum=" + String.format("%.2f", sum.floatValue()) +
+                ", monthPayment=" + String.format("%.2f", monthPayment.floatValue()) +
+                ", interestRate=" + String.format("%.2f", interestRate.floatValue()) +
+                "%, employee=" + employee.getFullName() +
+                ", paymentAccount=" + paymentAccount.getId() +
                 '}';
     }
 }

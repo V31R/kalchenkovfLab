@@ -1,39 +1,75 @@
 package kalchenko.bank.services.impl;
 
 import kalchenko.bank.entity.Bank;
-import kalchenko.bank.repositories.BankRepository;
+import kalchenko.bank.repositories.*;
 import kalchenko.bank.services.BankService;
 
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.Random;
+import java.util.Scanner;
 
+/**
+ * Класс-одиночка
+ */
 public class BankServiceImpl implements BankService {
 
-    private BankRepository bankRepository = new BankRepository();
+    private static BankServiceImpl INSTANCE;
 
-    public BankServiceImpl() {}
+    private BankServiceImpl() {
+    }
+
+    public static BankServiceImpl getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new BankServiceImpl();
+        }
+
+        return INSTANCE;
+    }
+
+    private final BankRepository bankRepository = BankRepository.getInstance();
+
+    private static int number = 0;
+    private static final Random random = new Random();
+    private static final int maxRate = 100;
+    private static final double maxInterestRate = 20.d;
+    private static final int maxMoney = 1_000_000;
+
+    public Bank createBank() {
+        var rate = random.nextInt(maxRate);
+        //Поскольку рейтинг может быть до 100, то нужно уменьшить его в 10 раз, чтобы ставка не могла быть отрицательной
+        BigDecimal interestRate = BigDecimal.valueOf(random.nextDouble() * (maxInterestRate - rate / 10.d));
+        BigDecimal money = BigDecimal.valueOf(random.nextInt(maxMoney));
+        return new Bank(String.format("Bank_%d", number++), rate, money, interestRate);
+    }
 
     @Override
     public Bank addBank(Bank bank) {
-        if(bankRepository.add(bank)){
-
-            return bankRepository.getBank();
-
-        }
-
-        return null;
+        return bankRepository.add(bank);
     }
 
     @Override
-    public Bank getBank() {
-        return bankRepository.getBank();
+    public Bank getBankById(Long id) {
+        return bankRepository.findById(id);
     }
 
+    @Override
+    public List<Bank> getAllBanks() {
+        return bankRepository.findAll();
+    }
 
     @Override
-    public boolean withdrawMoney(BigDecimal money) {
-        var bank = bankRepository.getBank();
+    public Bank update(Bank bank) {
+        return bankRepository.update(bank);
+    }
 
-        if(bank != null && money.compareTo(bank.getMoneyAmount()) == -1){
+    @Override
+    public boolean withdrawMoney(Long id, BigDecimal money) {
+        var bank = bankRepository.findById(id);
+
+        if (bank != null && money.compareTo(bank.getMoneyAmount()) == -1) {
             bank.setMoneyAmount(bank.getMoneyAmount().subtract(money));
             bankRepository.update(bank);
             return true;
@@ -43,10 +79,10 @@ public class BankServiceImpl implements BankService {
     }
 
     @Override
-    public boolean depositMoney(BigDecimal money) {
-        var bank = bankRepository.getBank();
+    public boolean depositMoney(Long id, BigDecimal money) {
+        var bank = bankRepository.findById(id);
 
-        if(bank != null ){
+        if (bank != null) {
             bank.setMoneyAmount(bank.getMoneyAmount().add(money));
             bankRepository.update(bank);
             return true;
@@ -55,109 +91,68 @@ public class BankServiceImpl implements BankService {
         return false;
     }
 
-    @Override
-    public boolean addOffice() {
-        var bank = bankRepository.getBank();
-
-        if(bank != null){
-            bank.setOfficesNumber(bank.getOfficesNumber() + 1);
-            bankRepository.update(bank);
-            return true;
-        }
-
-        return false;
-    }
 
     @Override
-    public boolean deleteOffice() {
-        var bank = bankRepository.getBank();
+    public void outputBankInfo(Long bankId, OutputStream outputStream) {
 
-        if(bank != null && bank.getOfficesNumber() > 0){
-            bank.setOfficesNumber(bank.getOfficesNumber() - 1);
-            bankRepository.update(bank);
-            return true;
+        PrintStream printStream = new PrintStream(outputStream);
+
+        var bank = bankRepository.findById(bankId);
+        printStream.printf("Bank data about %s\n", bank.getName());
+        printStream.println(bank);
+
+        BankOfficeRepository bankOfficeRepository = BankOfficeRepository.getInstance();
+        BankAtmRepository bankAtmRepository = BankAtmRepository.getInstance();
+        EmployeeRepository employeeRepository = EmployeeRepository.getInstance();
+        UserRepository userRepository = UserRepository.getInstance();
+
+        var bankOffices = bankOfficeRepository.findAll().stream()
+                .filter(bankOffice -> bankOffice.getBank().getId().compareTo(bankId) == 0)
+                .toList();
+        if (bankOffices.size() > 0) {
+            printStream.println("Bank offices:");
+            bankOffices.forEach(printStream::println);
+        } else {
+            printStream.println("User does not have offices");
         }
 
-        return false;
-    }
+        var bankAtms = bankAtmRepository.findAll().stream()
+                .filter(bankAtm -> bankAtm.getBankOffice().getBank().getId().compareTo(bankId) == 0)
+                .toList();
 
-    @Override
-    public boolean addAtm() {
-        var bank = bankRepository.getBank();
-
-        if(bank != null){
-            bank.setAtmNumber(bank.getAtmNumber() + 1);
-            bankRepository.update(bank);
-            return true;
+        if (bankAtms.size() > 0) {
+            printStream.println("Bank ATMs:");
+            bankAtms.forEach(printStream::println);
+        } else {
+            printStream.println("Bank does not ATM");
         }
 
-        return false;
-    }
+        var employees = employeeRepository.findAll().stream()
+                .filter(employee -> employee.getBankOffice().getBank().getId().compareTo(bankId) == 0)
+                .toList();
 
-    @Override
-    public boolean deleteAtm() {
-        var bank = bankRepository.getBank();
-
-        if(bank != null && bank.getAtmNumber() > 0){
-            bank.setAtmNumber(bank.getAtmNumber() - 1);
-            bankRepository.update(bank);
-            return true;
+        if (employees.size() > 0) {
+            printStream.println("Bank employees:");
+            employees.forEach(printStream::println);
+        } else {
+            printStream.println("Bank does not employees");
         }
 
-        return false;
-    }
+        var users = userRepository.findAll().stream()
+                .filter(
+                        user -> user.getBanks().stream()
+                                .filter(b -> b.getId().compareTo(bankId) == 0)
+                                .toList()
+                                .size() > 0
+                )
+                .toList();
 
-
-    @Override
-    public boolean addEmployee() {
-        var bank = bankRepository.getBank();
-
-        if(bank != null){
-            bank.setEmployeeNumber(bank.getEmployeeNumber() + 1);
-            bankRepository.update(bank);
-            return true;
+        if (users.size() > 0) {
+            printStream.println("Bank users:");
+            users.forEach(printStream::println);
+        } else {
+            printStream.println("Bank does not user");
         }
 
-        return false;
-    }
-
-
-    @Override
-    public boolean deleteEmployee() {
-        var bank = bankRepository.getBank();
-
-        if(bank != null && bank.getEmployeeNumber() > 0){
-            bank.setEmployeeNumber(bank.getEmployeeNumber() - 1);
-            bankRepository.update(bank);
-            return true;
-        }
-
-        return false;
-    }
-
-    @Override
-    public boolean addUser() {
-        var bank = bankRepository.getBank();
-
-        if(bank != null){
-            bank.setUserNumber(bank.getUserNumber() + 1);
-            bankRepository.update(bank);
-            return true;
-        }
-
-        return false;
-    }
-
-    @Override
-    public boolean deleteUser() {
-        var bank = bankRepository.getBank();
-
-        if(bank != null && bank.getUserNumber() > 0){
-            bank.setUserNumber(bank.getUserNumber() - 1);
-            bankRepository.update(bank);
-            return true;
-        }
-
-        return false;
     }
 }

@@ -1,62 +1,56 @@
 package kalchenko.bank;
 
-
 import kalchenko.bank.entity.*;
 import kalchenko.bank.services.*;
 import kalchenko.bank.services.impl.*;
-import kalchenko.bank.utils.AtmStatus;
-
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.Date;
-import java.util.Random;
 
 public class Main {
 
-    public static void main(String[] argv){
-        Random random = new Random();
 
-        BankService bankService = new BankServiceImpl();
-        var rate =  random.nextInt(100);
-        BigDecimal interestRate =  BigDecimal.valueOf(random.nextDouble()*(20.d - rate/10.d));
-        BigDecimal money = BigDecimal.valueOf(random.nextInt(1_000_000));
-        bankService.addBank(new Bank(1L, "Bank_1", rate, money, interestRate ));
+    public static void main(String[] argv) {
 
-        BankOfficeService bankOfficeService = new BankOfficeServiceImpl(bankService);
-        bankOfficeService.addBankOffice(new BankOffice(1L,"Office_1","Address_1",
-                bankService.getBank(), true, true, true,
-                true, true,bankService.getBank().getMoneyAmount(), BigDecimal.valueOf(10.5d)));
+        // Количество сущностей согласно заданию
+        final int banksNumber = 5;
+        final int officesNumber = 3;
+        final int employeeNumber = 5;
+        final int usersNumber = 5;
+        final int accountsNumber = 2;
 
-        EmployeeService employeeService = new EmployeeServiceImpl(bankOfficeService);
-        employeeService.addEmployee(new Employee(1L, "Ivanov Ivan Ivanovich", LocalDate.now(), "job",
-                true, bankOfficeService.getBankOffice(), true, BigDecimal.ONE));
+        BankService bankService = BankServiceImpl.getInstance();
+        BankOfficeService bankOfficeService = BankOfficeServiceImpl.getInstance();
+        EmployeeService employeeService = EmployeeServiceImpl.getInstance();
+        BankAtmService bankAtmService = BankAtmServiceImpl.getInstance();
+        UserService userService = UserServiceImpl.getInstance();
+        PaymentAccountService paymentAccountService = PaymentAccountServiceImpl.getInstance();
+        CreditAccountService creditAccountService = CreditAccountServiceImpl.getInstance();
 
-        BankAtmService bankAtmService = new BankAtmServiceImpl(bankOfficeService);
-        bankAtmService.addBankAtm(new BankAtm(1L, "atm_1", AtmStatus.WORKING, bankOfficeService.getBankOffice(),
-                "next to exit", employeeService.getEmployee(), true, true,
-                bankOfficeService.getBankOffice().getMoneyAmount(), BigDecimal.TEN));
+        for (int i = 0; i < banksNumber; i++) {
+            var bank = bankService.addBank(bankService.createBank());
+            Employee employeeForAccount = null;
+            for (int j = 0; j < officesNumber; j++) {
+                var bankOffice = bankOfficeService.addBankOffice(bankOfficeService.createBankOffice(bank));
+                Employee employee = null;
+                for (int k = 0; k < employeeNumber; k++) {
+                    employee = employeeService.addEmployee(employeeService.createEmployee(bankOffice));
+                    if (employeeForAccount == null) {
+                        employeeForAccount = employee;
+                    }
+                }
+                bankAtmService.addBankAtm(bankAtmService.createBankAtm(bankOffice, employee));
 
-        UserService userService = new UserServiceImpl(bankService);
-        userService.addUser(new User(1L, "Ivanov Ivan Ivanovich", LocalDate.now(),
-                BigDecimal.valueOf(random.nextDouble()*9_999 +1), "job", bankService.getBank()));
+            }
+            for (int j = 0; j < usersNumber; j++) {
+                var user = userService.addUser(userService.createUser(bank));
+                for (int k = 0; k < accountsNumber; k++) {
+                    var paymentAccount = paymentAccountService.addPaymentAccount(paymentAccountService.createPaymentAccount(bank, user));
+                    creditAccountService.addCreditAccount(creditAccountService.createCreditAccount(bank, user, paymentAccount, employeeForAccount));
+                }
+            }
+        }
 
-        PaymentAccountService paymentAccountService = new PaymentAccountServiceImpl();
-        paymentAccountService.addPaymentAccount(new PaymentAccount(1L, userService.getUser(),
-                bankService.getBank().getName()));
 
-        CreditAccountService creditAccountService = new CreditAccountServiceImpl();
-        creditAccountService.addCreditAccount(new CreditAccount(1L, userService.getUser(),
-                bankService.getBank().getName(), LocalDate.now(), 12, BigDecimal.valueOf(1000L),
-                bankService.getBank().getInterestRate(), employeeService.getEmployee(),
-                paymentAccountService.getPaymentAccount()));
-
-        System.out.println(bankService.getBank());
-        System.out.println(bankOfficeService.getBankOffice());
-        System.out.println(employeeService.getEmployee());
-        System.out.println(bankAtmService.getBankAtm());
-        System.out.println(userService.getUser());
-        System.out.println(paymentAccountService.getPaymentAccount());
-        System.out.println(creditAccountService.getCreditAccount());
+        bankService.outputBankInfo(bankService.getAllBanks().get(0).getId(), System.out);
+        userService.outputUserAccounts(userService.getAllUsers().get(0).getId(), System.out);
 
     }
 

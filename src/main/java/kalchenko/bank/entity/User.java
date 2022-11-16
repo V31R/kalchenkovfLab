@@ -2,27 +2,29 @@ package kalchenko.bank.entity;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
-public class User {
+public class User implements Entity {
 
     private Long id;
     private String fullName;
     private LocalDate birthDate;
     private BigDecimal salary;
     private String job;
-    private Bank bank;
+    private List<Bank> banks = new ArrayList<>();
     private int creditRate = 0;
 
-    public User() {}
+    public User() {
+    }
 
-    public User(Long id, String fullName, LocalDate birthDate, BigDecimal salary,
+    public User(String fullName, LocalDate birthDate, BigDecimal salary,
                 String job, Bank bank) {
-        this.id = id;
         this.fullName = fullName;
         this.birthDate = birthDate;
         this.salary = salary;
         this.job = job;
-        this.bank = bank;
+        this.banks.add(bank);
     }
 
     public User(User user) {
@@ -31,14 +33,16 @@ public class User {
         this.birthDate = user.getBirthDate();
         this.salary = user.getSalary();
         this.job = user.getJob();
-        this.bank = user.getBank();
+        this.banks = user.getBanks();
         this.creditRate = user.getCreditRate();
     }
 
+    @Override
     public Long getId() {
         return id;
     }
 
+    @Override
     public void setId(Long id) {
         this.id = id;
     }
@@ -75,12 +79,12 @@ public class User {
         this.job = job;
     }
 
-    public Bank getBank() {
-        return bank;
+    public List<Bank> getBanks() {
+        return banks;
     }
 
-    public void setBank(Bank bank) {
-        this.bank = bank;
+    public void addBank(Bank bank) {
+        this.banks.add(bank);
     }
 
     public int getCreditRate() {
@@ -97,9 +101,9 @@ public class User {
                 "id=" + id +
                 ", fullName='" + fullName + '\'' +
                 ", birthDate=" + birthDate +
-                ", salary=" + salary +
+                ", salary=" + String.format("%.2f", salary.floatValue()) +
                 ", job='" + job + '\'' +
-                ", bank=" + bank +
+                ", bank=" + banks.stream().map(Bank::getName).toList() +
                 ", creditRate=" + creditRate +
                 '}';
     }

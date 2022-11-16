@@ -1,23 +1,35 @@
 package kalchenko.bank.services;
 
+import kalchenko.bank.entity.BankOffice;
 import kalchenko.bank.entity.Employee;
+
+import java.util.List;
 
 public interface EmployeeService extends BankOperations {
 
     /**
-     * Добавляет employee в репозиторий, если добавление было успешно
-     * извещает об этом связанный bankOffice.
+     * Добавляет employee в репозиторий, извещает об этом связанный bankOffice.
      */
     Employee addEmployee(Employee employee);
 
     /**
      * Удаляет объект, извещает об этом связанный BankOffice.
      */
-    boolean deleteEmployee();
+    boolean deleteEmployeeById(Long id);
 
     /**
      * Возвращает объект, который хранится в репозитории.
      */
-    Employee getEmployee();
+    Employee getEmployeeById(Long id);
+
+    /**
+     * Возвращает все работников, которые хранятся в репозитории.
+     */
+    List<Employee> getAllEmployees();
+
+    /**
+     * Создаёт работника
+     */
+    Employee createEmployee(BankOffice bankOffice);
 
 }

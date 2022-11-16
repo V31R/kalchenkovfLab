@@ -2,68 +2,65 @@ package kalchenko.bank.repositories;
 
 import kalchenko.bank.entity.BankOffice;
 
+import java.util.List;
+
+/**
+ * Класс-одиночка
+ */
 public class BankOfficeRepository {
 
-    private BankOffice bankOffice = null;
+    private static BankOfficeRepository INSTANCE;
 
-    public BankOfficeRepository(){}
+    private BankOfficeRepository() {
+    }
 
-    /**
-     * Если до этого там не находилось другого объекта BankOffice
-     * добавляет bankOffice в репозиторий и возвращает добавленный объект,
-     * иначе возвращает null.
-     */
-    public boolean add(BankOffice bankOffice){
-        var isEmpty = this.bankOffice == null;
-
-        if (isEmpty && bankOffice != null){
-
-            this.bankOffice = new BankOffice(bankOffice);
-
+    public static BankOfficeRepository getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new BankOfficeRepository();
         }
 
-        return isEmpty;
+        return INSTANCE;
+    }
+
+    private final EntityRepository repository = new EntityRepository();
+
+    /**
+     * Добавляет bankOffice в репозиторий и возвращает добавленный объект,
+     * если bank не был равен null, иначе возвращает null.
+     */
+    public BankOffice add(BankOffice bankOffice) {
+        return (BankOffice) repository.add(bankOffice);
     }
 
     /**
-     * Возвращает истину, если при удалении объект был не null,
-     * иначе возвращает ложь.
+     * Удаляет офис по id.
      */
-    public boolean delete(){
-        if(this.bankOffice == null){
-            return false;
-        }
-
-        this.bankOffice = null;
-        return true;
+    public boolean deleteById(Long id) {
+        return repository.deleteById(id);
     }
 
     /**
-     * Возвращает объект, который хранится в репозитории.
+     * Возвращает офис по id, который хранится в репозитории.
      */
-    public BankOffice getBankOffice(){
-        if(this.bankOffice == null){
+    public BankOffice findById(Long id) {
+        return (BankOffice) repository.findById(id);
+    }
 
-            return null;
+    /**
+     * Возвращает список офисов, которые хранятся в репозитории.
+     */
+    public List<BankOffice> findAll() {
 
-        }
+        return repository.findAll().stream().map(entity -> (BankOffice) entity).toList();
 
-        return this.bankOffice;
     }
 
     /**
      * Если объект существует, то обновляет его и возвращает истину,
      * иначе возвращает ложь.
      */
-    public boolean update(BankOffice bankOffice){
-        if(this.bankOffice == null && bankOffice != null){
-
-            return false;
-
-        }
-
-        this.bankOffice = bankOffice;
-        return true;
+    public BankOffice update(BankOffice bankOffice) {
+        return (BankOffice) repository.update(bankOffice);
     }
 
 }
