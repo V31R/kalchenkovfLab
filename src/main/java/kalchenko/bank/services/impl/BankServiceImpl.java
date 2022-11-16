@@ -9,7 +9,6 @@ import java.io.PrintStream;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Random;
-import java.util.Scanner;
 
 /**
  * Класс-одиночка
@@ -32,16 +31,16 @@ public class BankServiceImpl implements BankService {
     private final BankRepository bankRepository = BankRepository.getInstance();
 
     private static int number = 0;
-    private static final Random random = new Random();
-    private static final int maxRate = 100;
-    private static final double maxInterestRate = 20.d;
-    private static final int maxMoney = 1_000_000;
+    private static final Random RANDOM = new Random();
+    private static final int MAX_RATE = 100;
+    private static final double MAX_INTEREST_RATE = 20.d;
+    private static final int MAX_MONEY = 1_000_000;
 
     public Bank createBank() {
-        var rate = random.nextInt(maxRate);
+        var rate = RANDOM.nextInt(MAX_RATE);
         //Поскольку рейтинг может быть до 100, то нужно уменьшить его в 10 раз, чтобы ставка не могла быть отрицательной
-        BigDecimal interestRate = BigDecimal.valueOf(random.nextDouble() * (maxInterestRate - rate / 10.d));
-        BigDecimal money = BigDecimal.valueOf(random.nextInt(maxMoney));
+        BigDecimal interestRate = BigDecimal.valueOf(RANDOM.nextDouble() * (MAX_INTEREST_RATE - rate / 10.d));
+        BigDecimal money = BigDecimal.valueOf(RANDOM.nextInt(MAX_MONEY));
         return new Bank(String.format("Bank_%d", number++), rate, money, interestRate);
     }
 

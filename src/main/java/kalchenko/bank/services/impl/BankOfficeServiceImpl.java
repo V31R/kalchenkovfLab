@@ -32,9 +32,9 @@ public class BankOfficeServiceImpl implements BankOfficeService {
 
     private final BankOfficeRepository bankOfficeRepository = BankOfficeRepository.getInstance();
 
-    private static final Random random = new Random();
-    private static final double moneyDispersion = 0.1d;
-    private static final double minMoney = 0.2d;
+    private static final Random RANDOM = new Random();
+    private static final double MONEY_DISPERSION = 0.1d;
+    private static final double MIN_MONEY = 0.2d;
     private static int number = 0;
     public BankOffice createBankOffice(Bank bank) {
         final BigDecimal rent = BigDecimal.valueOf(10.5d);
@@ -46,7 +46,7 @@ public class BankOfficeServiceImpl implements BankOfficeService {
         final var n = number++;
 
         final BigDecimal officeMoney = bank.getMoneyAmount().multiply(
-                BigDecimal.valueOf((random.nextDouble()*moneyDispersion + minMoney))
+                BigDecimal.valueOf((RANDOM.nextDouble()* MONEY_DISPERSION + MIN_MONEY))
         );
 
         return new BankOffice(String.format("Office_%d", n), String.format("Address_%d", n), bank, isWorking, hasAtm,

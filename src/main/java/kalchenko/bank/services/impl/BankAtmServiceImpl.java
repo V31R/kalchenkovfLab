@@ -33,9 +33,9 @@ public class BankAtmServiceImpl implements BankAtmService {
     private final BankAtmRepository bankAtmRepository = BankAtmRepository.getInstance();
     private final BankOfficeService bankOfficeService = BankOfficeServiceImpl.getInstance();
 
-    private static final Random random = new Random();
-    private static final double moneyDispersion = 0.2d;
-    private static final double minMoney = 0.3d;
+    private static final Random RANDOM = new Random();
+    private static final double MONEY_DISPERSION = 0.2d;
+    private static final double MIN_MONEY = 0.3d;
 
     private static int number = 0;
     public BankAtm createBankAtm(BankOffice bankOffice, Employee employee) {
@@ -45,7 +45,7 @@ public class BankAtmServiceImpl implements BankAtmService {
         final AtmStatus status = AtmStatus.WORKING;
 
         final BigDecimal atmMoney = bankOffice.getMoneyAmount().multiply(
-                BigDecimal.valueOf((random.nextDouble()*moneyDispersion + minMoney))
+                BigDecimal.valueOf((RANDOM.nextDouble()* MONEY_DISPERSION + MIN_MONEY))
         );
 
         return new BankAtm(String.format("Atm_%d", number++), status, bankOffice, "next to exit",
