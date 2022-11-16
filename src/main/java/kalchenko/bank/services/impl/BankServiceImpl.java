@@ -32,12 +32,12 @@ public class BankServiceImpl implements BankService {
     private final BankRepository bankRepository = BankRepository.getInstance();
 
     private static int number = 0;
-    private  static final Random random = new Random();
-    public Bank createBank() {
-        int maxRate = 100;
-        double maxInterestRate = 20.d;
-        int maxMoney = 1_000_000;
+    private static final Random random = new Random();
+    private static final int maxRate = 100;
+    private static final double maxInterestRate = 20.d;
+    private static final int maxMoney = 1_000_000;
 
+    public Bank createBank() {
         var rate = random.nextInt(maxRate);
         //Поскольку рейтинг может быть до 100, то нужно уменьшить его в 10 раз, чтобы ставка не могла быть отрицательной
         BigDecimal interestRate = BigDecimal.valueOf(random.nextDouble() * (maxInterestRate - rate / 10.d));

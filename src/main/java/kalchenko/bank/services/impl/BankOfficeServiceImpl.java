@@ -8,6 +8,7 @@ import kalchenko.bank.services.BankService;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Класс-одиночка
@@ -31,18 +32,25 @@ public class BankOfficeServiceImpl implements BankOfficeService {
 
     private final BankOfficeRepository bankOfficeRepository = BankOfficeRepository.getInstance();
 
+    private static final Random random = new Random();
+    private static final double moneyDispersion = 0.1d;
+    private static final double minMoney = 0.2d;
     private static int number = 0;
     public BankOffice createBankOffice(Bank bank) {
-        BigDecimal rent = BigDecimal.valueOf(10.5d);
-        boolean isWorking = true;
-        boolean hasAtm = true;
-        boolean canApplyLoan = true;
-        boolean canPayment = true;
-        boolean canDeposit = true;
-        var n = number++;
+        final BigDecimal rent = BigDecimal.valueOf(10.5d);
+        final boolean isWorking = true;
+        final boolean hasAtm = true;
+        final boolean canApplyLoan = true;
+        final boolean canPayment = true;
+        final boolean canDeposit = true;
+        final var n = number++;
+
+        final BigDecimal officeMoney = bank.getMoneyAmount().multiply(
+                BigDecimal.valueOf((random.nextDouble()*moneyDispersion + minMoney))
+        );
 
         return new BankOffice(String.format("Office_%d", n), String.format("Address_%d", n), bank, isWorking, hasAtm,
-                canApplyLoan, canPayment, canDeposit, bank.getMoneyAmount(), rent);
+                canApplyLoan, canPayment, canDeposit, officeMoney, rent);
     }
 
     @Override
@@ -52,6 +60,7 @@ public class BankOfficeServiceImpl implements BankOfficeService {
         var bank = bankService.getBankById(bankOffice.getBank().getId());
 
         if (bank != null) {
+            bankService.withdrawMoney(bank.getId(), bankOffice.getMoneyAmount());
             bank.setOfficesNumber(bank.getOfficesNumber() + 1);
             bankService.update(bank);
         }
@@ -174,8 +183,11 @@ public class BankOfficeServiceImpl implements BankOfficeService {
     @Override
     public boolean withdrawMoney(Long id, BigDecimal money) {
         var bankOffice = bankOfficeRepository.findById(id);
-        if (bankOffice.isPaymentAvailable()) {
-            return bankService.withdrawMoney(bankOffice.getBank().getId(), money);
+
+        if (bankOffice != null && bankOffice.isPaymentAvailable() && money.compareTo(bankOffice.getMoneyAmount()) == -1) {
+            bankOffice.setMoneyAmount(bankOffice.getMoneyAmount().subtract(money));
+            bankOfficeRepository.update(bankOffice);
+            return true;
         }
 
         return false;
@@ -184,8 +196,10 @@ public class BankOfficeServiceImpl implements BankOfficeService {
     @Override
     public boolean depositMoney(Long id, BigDecimal money) {
         var bankOffice = bankOfficeRepository.findById(id);
-        if (bankOffice.isDepositAvailable()) {
-            return bankService.depositMoney(bankOffice.getBank().getId(), money);
+        if (bankOffice != null && bankOffice.isDepositAvailable()) {
+            bankOffice.setMoneyAmount(bankOffice.getMoneyAmount().add(money));
+            bankOfficeRepository.update(bankOffice);
+            return true;
         }
 
         return false;

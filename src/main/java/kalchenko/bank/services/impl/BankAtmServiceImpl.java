@@ -10,6 +10,7 @@ import kalchenko.bank.utils.AtmStatus;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Класс-одиночка
@@ -32,15 +33,23 @@ public class BankAtmServiceImpl implements BankAtmService {
     private final BankAtmRepository bankAtmRepository = BankAtmRepository.getInstance();
     private final BankOfficeService bankOfficeService = BankOfficeServiceImpl.getInstance();
 
+    private static final Random random = new Random();
+    private static final double moneyDispersion = 0.2d;
+    private static final double minMoney = 0.3d;
+
     private static int number = 0;
     public BankAtm createBankAtm(BankOffice bankOffice, Employee employee) {
-        BigDecimal rent = BigDecimal.TEN;
-        boolean canPayment = true;
-        boolean canDeposit = true;
-        AtmStatus status = AtmStatus.WORKING;
+        final BigDecimal rent = BigDecimal.TEN;
+        final boolean canPayment = true;
+        final boolean canDeposit = true;
+        final AtmStatus status = AtmStatus.WORKING;
+
+        final BigDecimal atmMoney = bankOffice.getMoneyAmount().multiply(
+                BigDecimal.valueOf((random.nextDouble()*moneyDispersion + minMoney))
+        );
 
         return new BankAtm(String.format("Atm_%d", number++), status, bankOffice, "next to exit",
-                employee, canPayment, canDeposit, bankOffice.getMoneyAmount(), rent);
+                employee, canPayment, canDeposit, atmMoney, rent);
     }
 
 
@@ -51,6 +60,7 @@ public class BankAtmServiceImpl implements BankAtmService {
         var office = newBankAtm.getBankOffice();
 
         if (office != null) {
+            bankOfficeService.withdrawMoney(office.getId(), newBankAtm.getMoneyAmount());
             bankOfficeService.addAtm(office.getId());
         }
         return newBankAtm;
@@ -84,18 +94,25 @@ public class BankAtmServiceImpl implements BankAtmService {
     @Override
     public boolean withdrawMoney(Long id, BigDecimal money) {
         var bankAtm = bankAtmRepository.findById(id);
-        if (bankAtm.isPaymentAvailable()) {
-            return bankOfficeService.withdrawMoney(bankAtm.getBankOffice().getId(), money);
+        if (bankAtm != null && bankAtm.isPaymentAvailable() && money.compareTo(bankAtm.getMoneyAmount()) == -1) {
+            bankAtm.setMoneyAmount(bankAtm.getMoneyAmount().subtract(money));
+            bankAtmRepository.update(bankAtm);
+            return true;
         }
+
         return false;
     }
 
     @Override
     public boolean depositMoney(Long id, BigDecimal money) {
         var bankAtm = bankAtmRepository.findById(id);
-        if (bankAtm.isDepositAvailable()) {
-            return bankOfficeService.depositMoney(bankAtm.getBankOffice().getId(), money);
+
+        if (bankAtm != null && bankAtm.isDepositAvailable()) {
+            bankAtm.setMoneyAmount(bankAtm.getMoneyAmount().add(money));
+            bankAtmRepository.update(bankAtm);
+            return true;
         }
+
         return false;
     }
 }

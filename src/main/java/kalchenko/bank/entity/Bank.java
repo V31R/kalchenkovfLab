@@ -120,8 +120,8 @@ public class Bank implements Entity {
                 ", employeeNumber=" + employeeNumber +
                 ", userNumber=" + userNumber +
                 ", bankRate=" + bankRate +
-                ", moneyAmount=" + moneyAmount +
-                ", interestRate=" + interestRate + "%}";
+                ", moneyAmount=" + String.format("%.2f", moneyAmount.floatValue()) +
+                ", interestRate=" + String.format("%.2f", interestRate.floatValue()) + "%}";
     }
 
 }

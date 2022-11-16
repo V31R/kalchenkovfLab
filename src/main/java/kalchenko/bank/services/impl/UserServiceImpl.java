@@ -37,12 +37,13 @@ public class UserServiceImpl implements UserService {
     private final BankService bankService = BankServiceImpl.getInstance();
 
     private static int number = 0;
-    private  static final Random random = new Random();
-    public  User createUser(Bank bank) {
-        int maxSalary = 9_999;
-        int minSalary = 1;
+    private static final Random random = new Random();
+    private static final int maxSalary = 9_999;
+    private static final int minSalary = 1;
 
-        return new User(String.format("User_name_%d", number++), LocalDate.now().minusYears(18),
+    public  User createUser(Bank bank) {
+        final int years = 18;
+        return new User(String.format("User_name_%d", number++), LocalDate.now().minusYears(years),
                 BigDecimal.valueOf(random.nextDouble() * maxSalary + minSalary), "job", bank);
     }
 

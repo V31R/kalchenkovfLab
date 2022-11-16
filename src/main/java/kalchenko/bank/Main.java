@@ -10,11 +10,11 @@ public class Main {
     public static void main(String[] argv) {
 
         // Количество сущностей согласно заданию
-        int banksNumber = 5;
-        int officesNumber = 3;
-        int employeeNumber = 5;
-        int usersNumber = 5;
-        int accountsNumber = 2;
+        final int banksNumber = 5;
+        final int officesNumber = 3;
+        final int employeeNumber = 5;
+        final int usersNumber = 5;
+        final int accountsNumber = 2;
 
         BankService bankService = BankServiceImpl.getInstance();
         BankOfficeService bankOfficeService = BankOfficeServiceImpl.getInstance();

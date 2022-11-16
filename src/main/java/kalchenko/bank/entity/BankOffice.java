@@ -161,7 +161,7 @@ public class BankOffice implements Entity {
                 ", canApplyLoan=" + loansAvailable +
                 ", canPaymentOfMoney=" + paymentAvailable +
                 ", canDepositMoney=" + depositAvailable +
-                ", moneyAmount=" + moneyAmount +
+                ", moneyAmount=" + String.format("%.2f", moneyAmount.floatValue()) +
                 ", rent=" + rent +
                 '}';
     }

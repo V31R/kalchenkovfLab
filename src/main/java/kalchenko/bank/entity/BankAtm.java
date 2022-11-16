@@ -144,7 +144,7 @@ public class BankAtm implements Entity {
                 ", employee=" + employee.getFullName() +
                 ", canPaymentOfMoney=" + paymentAvailable +
                 ", canDepositMoney=" + depositAvailable +
-                ", moneyAmount=" + moneyAmount +
+                ", moneyAmount=" + String.format("%.2f", moneyAmount.floatValue()) +
                 ", maintenance=" + maintenance +
                 '}';
     }

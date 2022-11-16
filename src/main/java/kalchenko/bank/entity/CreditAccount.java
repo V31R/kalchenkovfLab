@@ -145,9 +145,9 @@ public class CreditAccount implements Entity {
                 ", start=" + start +
                 ", end=" + end +
                 ", monthNumber=" + monthNumber +
-                ", sum=" + sum +
-                ", monthPayment=" + monthPayment +
-                ", interestRate=" + interestRate +
+                ", sum=" + String.format("%.2f", sum.floatValue()) +
+                ", monthPayment=" + String.format("%.2f", monthPayment.floatValue()) +
+                ", interestRate=" + String.format("%.2f", interestRate.floatValue()) +
                 "%, employee=" + employee.getFullName() +
                 ", paymentAccount=" + paymentAccount.getId() +
                 '}';

@@ -101,7 +101,7 @@ public class User implements Entity {
                 "id=" + id +
                 ", fullName='" + fullName + '\'' +
                 ", birthDate=" + birthDate +
-                ", salary=" + salary +
+                ", salary=" + String.format("%.2f", salary.floatValue()) +
                 ", job='" + job + '\'' +
                 ", bank=" + banks.stream().map(Bank::getName).toList() +
                 ", creditRate=" + creditRate +
