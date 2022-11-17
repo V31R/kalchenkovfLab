@@ -75,8 +75,15 @@ public class BankOfficeServiceImpl implements BankOfficeService {
     }
 
     @Override
-    public List<BankOffice> getAllBanks() {
+    public List<BankOffice> getAllBankOffices() {
         return bankOfficeRepository.findAll();
+    }
+
+    @Override
+    public List<BankOffice> getAllBankOfficesByBankId(Long bankId) {
+        return bankOfficeRepository.findAll().stream()
+                .filter(bankOffice -> bankOffice.getBank().getId().compareTo(bankId) == 0)
+                .toList();
     }
 
     @Override

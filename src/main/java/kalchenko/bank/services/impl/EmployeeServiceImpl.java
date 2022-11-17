@@ -88,4 +88,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     public List<Employee> getAllEmployees() {
         return employeeRepository.findAll();
     }
+
+    @Override
+    public List<Employee> getAllEmployeesByOffice(Long officeId) {
+        return employeeRepository.findAll().stream()
+                .filter(employee -> employee.getBankOffice().getId().compareTo(officeId) == 0)
+                .toList();
+    }
 }

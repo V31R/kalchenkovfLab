@@ -28,6 +28,11 @@ public interface EmployeeService extends BankOperations {
     List<Employee> getAllEmployees();
 
     /**
+     * Возвращает все работников, которые хранятся в репозитории, принадлежащие офису officeId.
+     */
+    List<Employee>getAllEmployeesByOffice(Long officeId);
+
+    /**
      * Создаёт работника
      */
     Employee createEmployee(BankOffice bankOffice);

@@ -79,6 +79,13 @@ public class BankAtmServiceImpl implements BankAtmService {
     }
 
     @Override
+    public List<BankAtm> getAllBankAtmsByOffice(Long officeId) {
+        return bankAtmRepository.findAll().stream()
+                .filter(employee -> employee.getBankOffice().getId().compareTo(officeId) == 0)
+                .toList();
+    }
+
+    @Override
     public boolean deleteBankAtmById(Long id) {
 
         var officeId = bankAtmRepository.findById(id).getId();

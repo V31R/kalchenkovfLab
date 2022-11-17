@@ -100,14 +100,11 @@ public class BankServiceImpl implements BankService {
         printStream.printf("Bank data about %s\n", bank.getName());
         printStream.println(bank);
 
-        BankOfficeRepository bankOfficeRepository = BankOfficeRepository.getInstance();
         BankAtmRepository bankAtmRepository = BankAtmRepository.getInstance();
         EmployeeRepository employeeRepository = EmployeeRepository.getInstance();
         UserRepository userRepository = UserRepository.getInstance();
 
-        var bankOffices = bankOfficeRepository.findAll().stream()
-                .filter(bankOffice -> bankOffice.getBank().getId().compareTo(bankId) == 0)
-                .toList();
+        var bankOffices = BankOfficeServiceImpl.getInstance().getAllBankOfficesByBankId(bankId);
         if (bankOffices.size() > 0) {
             printStream.println("Bank offices:");
             bankOffices.forEach(printStream::println);

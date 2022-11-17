@@ -24,6 +24,11 @@ public interface BankAtmService extends BankOperations{
     List<BankAtm> getAllBankAtms();
 
     /**
+     * Возвращает все бакноматы, которые хранятся в репозитории, принадлежащие офису officeId.
+     */
+    List<BankAtm> getAllBankAtmsByOffice(Long officeId);
+
+    /**
      * Создаёт банкомат
      */
     BankAtm createBankAtm(BankOffice bankOffice, Employee employee);

@@ -1,12 +1,14 @@
 package kalchenko.bank.services.impl;
 
 import kalchenko.bank.entity.Bank;
+import kalchenko.bank.entity.Employee;
 import kalchenko.bank.entity.User;
 import kalchenko.bank.repositories.CreditAccountRepository;
 import kalchenko.bank.repositories.PaymentAccountRepository;
 import kalchenko.bank.repositories.UserRepository;
 import kalchenko.bank.services.BankService;
 import kalchenko.bank.services.UserService;
+import kalchenko.bank.utils.BankComparator;
 
 import java.io.OutputStream;
 import java.io.PrintStream;
@@ -135,5 +137,46 @@ public class UserServiceImpl implements UserService {
             printStream.println("User does not have credit accounts");
         }
 
+    }
+
+    @Override
+    public Long getCredit(Long userId, BigDecimal creditSum) {
+        var user = userRepository.findById(userId);
+        if(user == null){
+            return null;
+        }
+        //получем список банков, отсортированных по правилу из лабораторной работы. Последний банк - самый лучший
+        var banks = bankService.getAllBanks().stream().sorted(new BankComparator()).toList();
+        for(int i = banks.size()-1; i >=0; i--){
+            System.out.println(banks.get(i));
+            if( banks.get(i).getBankRate() > 50 && user.getCreditRate() < 5000){
+                continue;
+            }
+            var offices = BankOfficeServiceImpl.getInstance().getAllBankOfficesByBankId(banks.get(i).getId());
+            for(int j = 0; j < offices.size(); j++) {
+                if(!offices.get(j).isLoansAvailable() || offices.get(j).getMoneyAmount().compareTo(creditSum) < 0){
+                    continue;
+                }
+                var employee = EmployeeServiceImpl.getInstance().getAllEmployeesByOffice(offices.get(j).getId()).stream().filter(Employee::isLoansAvailable).findFirst();
+                if( employee.isEmpty()){
+                    continue;
+                }
+
+                var atms = BankAtmServiceImpl.getInstance().getAllBankAtmsByOffice(offices.get(j).getId());
+                for(int k = 0; k < atms.size(); k++) {
+                    if(atms.get(k).isPaymentAvailable() && atms.get(k).getMoneyAmount().compareTo(creditSum) < 0){
+                        continue;
+                    }
+
+                    //выдача кредита
+                    break;
+
+                }
+
+
+            }
+        }
+
+        return null;
     }
 }

@@ -20,7 +20,12 @@ public interface BankOfficeService extends BankOperations {
     /**
      * Возвращает все офисы, которые хранятся в репозитории.
      */
-    List<BankOffice> getAllBanks();
+    List<BankOffice> getAllBankOffices();
+
+    /**
+     * Возвращает все офисы, которые хранятся в репозитории, принадлежащие банку bankId.
+     */
+    List<BankOffice> getAllBankOfficesByBankId(Long bankId);
 
     /**
      * Удаляет офис по Id, извещает об этом связанный Bank.

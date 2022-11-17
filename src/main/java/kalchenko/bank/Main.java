@@ -4,6 +4,8 @@ import kalchenko.bank.entity.*;
 import kalchenko.bank.services.*;
 import kalchenko.bank.services.impl.*;
 
+import java.math.BigDecimal;
+
 public class Main {
 
 
@@ -48,9 +50,11 @@ public class Main {
             }
         }
 
-
+        var userId = userService.getAllUsers().get(0).getId();
+        var creditId = userService.getCredit(userId, BigDecimal.valueOf(1000d));
+        System.out.println(creditId);
         bankService.outputBankInfo(bankService.getAllBanks().get(0).getId(), System.out);
-        userService.outputUserAccounts(userService.getAllUsers().get(0).getId(), System.out);
+        userService.outputUserAccounts(userId, System.out);
 
     }
 

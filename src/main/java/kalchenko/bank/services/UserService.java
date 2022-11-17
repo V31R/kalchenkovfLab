@@ -4,6 +4,7 @@ import kalchenko.bank.entity.Bank;
 import kalchenko.bank.entity.User;
 
 import java.io.OutputStream;
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface UserService {
@@ -39,5 +40,14 @@ public interface UserService {
      * Выводит пользователя с userId в поток outputStream
      */
     void outputUserAccounts(Long userId, OutputStream outputStream);
+
+
+    /**
+     * Выдаёт кредит пользователю
+     * @param userId id пользователя, которому будет выдан кредит
+     * @param creditSum сумма, на которую будет выдан кредит
+     * @return возвращает id кредита, если он был выдан, иначе возвращает null.
+     */
+    Long getCredit(Long userId, BigDecimal creditSum);
 
 }
