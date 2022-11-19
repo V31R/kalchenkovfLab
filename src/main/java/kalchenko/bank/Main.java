@@ -1,6 +1,7 @@
 package kalchenko.bank;
 
 import kalchenko.bank.entity.*;
+import kalchenko.bank.exceptions.*;
 import kalchenko.bank.services.*;
 import kalchenko.bank.services.impl.*;
 
@@ -13,7 +14,7 @@ public class Main {
     private static final double MIN_CREDIT_SUM = 1000;
     private static final double CREDIT_SUM_DISPERSION = 10_000;
 
-    public static void main(String[] argv) {
+    public static void main(String[] argv) throws IdException, NotExistedObjectException, NegativeSumException {
 
         // Количество сущностей согласно заданию
         final int banksNumber = 5;
@@ -53,11 +54,11 @@ public class Main {
         }
 
         var userId = userService.getAllUsers().get(0).getId();
-        var creditId = userService.getCredit(userId, BigDecimal.valueOf(RANDOM.nextDouble()*CREDIT_SUM_DISPERSION + MIN_CREDIT_SUM));
-        if(creditId == null){
-            System.out.println("Failed to get a loan");
-        }else {
+        try {
+            var creditId = userService.getCredit(userId, BigDecimal.valueOf(RANDOM.nextDouble() * CREDIT_SUM_DISPERSION + MIN_CREDIT_SUM));
             System.out.println("Managed to get a loan #" + creditId);
+        }catch (LendingTermsException | ZeroMonthException exception){
+            System.out.println("Failed to get a loan");
         }
         bankService.outputBankInfo(bankService.getAllBanks().get(0).getId(), System.out);
         userService.outputUserAccounts(userId, System.out);

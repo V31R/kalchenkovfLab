@@ -3,6 +3,9 @@ package kalchenko.bank.services;
 import kalchenko.bank.entity.BankAtm;
 import kalchenko.bank.entity.BankOffice;
 import kalchenko.bank.entity.Employee;
+import kalchenko.bank.exceptions.IdException;
+import kalchenko.bank.exceptions.NegativeSumException;
+import kalchenko.bank.exceptions.NotExistedObjectException;
 
 import java.util.List;
 
@@ -11,7 +14,7 @@ public interface BankAtmService extends BankOperations{
     /**
      * Добавляет bankAtm в репозиторий, извещает об этом связанный bankOffice.
      */
-    BankAtm addBankAtm(BankAtm bankAtm);
+    BankAtm addBankAtm(BankAtm bankAtm) throws NotExistedObjectException, IdException, NegativeSumException;
 
     /**
      * Возвращает бакномат по Id, который хранится в репозитории.
@@ -36,5 +39,5 @@ public interface BankAtmService extends BankOperations{
     /**
      * Удаляет бакномат по Id, извещает об этом связанный BankOffice.
      */
-    boolean deleteBankAtmById(Long id);
+    boolean deleteBankAtmById(Long id) throws NotExistedObjectException, IdException;
 }

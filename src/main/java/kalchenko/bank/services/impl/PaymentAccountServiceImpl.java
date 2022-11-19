@@ -3,6 +3,7 @@ package kalchenko.bank.services.impl;
 import kalchenko.bank.entity.Bank;
 import kalchenko.bank.entity.PaymentAccount;
 import kalchenko.bank.entity.User;
+import kalchenko.bank.exceptions.IdException;
 import kalchenko.bank.repositories.PaymentAccountRepository;
 import kalchenko.bank.services.PaymentAccountService;
 
@@ -53,8 +54,12 @@ public class PaymentAccountServiceImpl implements PaymentAccountService {
     }
 
     @Override
-    public PaymentAccount getPaymentAccountById(Long id) {
-        return paymentAccountRepository.findById(id);
+    public PaymentAccount getPaymentAccountById(Long id) throws IdException {
+        var paymentAccount = paymentAccountRepository.findById(id);
+        if(paymentAccount == null){
+            throw new IdException();
+        }
+        return paymentAccount;
     }
 
     @Override

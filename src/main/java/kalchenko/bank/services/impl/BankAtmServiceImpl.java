@@ -3,6 +3,9 @@ package kalchenko.bank.services.impl;
 import kalchenko.bank.entity.BankAtm;
 import kalchenko.bank.entity.BankOffice;
 import kalchenko.bank.entity.Employee;
+import kalchenko.bank.exceptions.IdException;
+import kalchenko.bank.exceptions.NegativeSumException;
+import kalchenko.bank.exceptions.NotExistedObjectException;
 import kalchenko.bank.repositories.BankAtmRepository;
 import kalchenko.bank.services.BankAtmService;
 import kalchenko.bank.services.BankOfficeService;
@@ -54,7 +57,7 @@ public class BankAtmServiceImpl implements BankAtmService {
 
 
     @Override
-    public BankAtm addBankAtm(BankAtm bankAtm) {
+    public BankAtm addBankAtm(BankAtm bankAtm) throws NotExistedObjectException, IdException, NegativeSumException {
 
         var newBankAtm = bankAtmRepository.add(bankAtm);
         var office = newBankAtm.getBankOffice();
@@ -86,9 +89,9 @@ public class BankAtmServiceImpl implements BankAtmService {
     }
 
     @Override
-    public boolean deleteBankAtmById(Long id) {
+    public boolean deleteBankAtmById(Long id) throws NotExistedObjectException, IdException {
 
-        var officeId = bankAtmRepository.findById(id).getId();
+        var officeId = bankAtmRepository.findById(id).getBankOffice().getId();
 
         if (bankAtmRepository.deleteById(id)) {
 
@@ -99,9 +102,15 @@ public class BankAtmServiceImpl implements BankAtmService {
     }
 
     @Override
-    public boolean withdrawMoney(Long id, BigDecimal money) {
+    public boolean withdrawMoney(Long id, BigDecimal money) throws NegativeSumException, IdException {
+        if(BigDecimal.ZERO.compareTo(money) > 0){
+            throw new NegativeSumException();
+        }
         var bankAtm = bankAtmRepository.findById(id);
-        if (bankAtm != null && bankAtm.isPaymentAvailable() && money.compareTo(bankAtm.getMoneyAmount()) == -1) {
+        if(bankAtm==null){
+            throw new IdException();
+        }
+        if (bankAtm.isPaymentAvailable() && money.compareTo(bankAtm.getMoneyAmount()) == -1) {
             bankAtm.setMoneyAmount(bankAtm.getMoneyAmount().subtract(money));
             bankAtmRepository.update(bankAtm);
             return true;
@@ -111,10 +120,15 @@ public class BankAtmServiceImpl implements BankAtmService {
     }
 
     @Override
-    public boolean depositMoney(Long id, BigDecimal money) {
+    public boolean depositMoney(Long id, BigDecimal money) throws NegativeSumException, IdException {
+        if(BigDecimal.ZERO.compareTo(money) > 0){
+            throw new NegativeSumException();
+        }
         var bankAtm = bankAtmRepository.findById(id);
-
-        if (bankAtm != null && bankAtm.isDepositAvailable()) {
+        if(bankAtm==null){
+            throw new IdException();
+        }
+        if (bankAtm.isDepositAvailable()) {
             bankAtm.setMoneyAmount(bankAtm.getMoneyAmount().add(money));
             bankAtmRepository.update(bankAtm);
             return true;

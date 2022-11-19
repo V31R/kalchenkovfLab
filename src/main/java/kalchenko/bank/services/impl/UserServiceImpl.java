@@ -3,6 +3,7 @@ package kalchenko.bank.services.impl;
 import kalchenko.bank.entity.Bank;
 import kalchenko.bank.entity.Employee;
 import kalchenko.bank.entity.User;
+import kalchenko.bank.exceptions.*;
 import kalchenko.bank.repositories.CreditAccountRepository;
 import kalchenko.bank.repositories.PaymentAccountRepository;
 import kalchenko.bank.repositories.UserRepository;
@@ -52,8 +53,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserById(Long id) {
-        return userRepository.findById(id);
+    public User getUserById(Long id) throws IdException {
+        var user = userRepository.findById(id);
+        if(user == null){
+            throw new IdException();
+        }
+        return user;
     }
 
     @Override
@@ -62,7 +67,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean deleteUser(Long id) {
+    public boolean deleteUser(Long id) throws NotExistedObjectException, IdException {
         var user = userRepository.findById(id);
 
         if (user != null) {
@@ -75,14 +80,14 @@ public class UserServiceImpl implements UserService {
             }
 
             return true;
+        }else{
+            throw new NotExistedObjectException();
         }
-
-        return false;
 
     }
 
     @Override
-    public User addUser(User user) {
+    public User addUser(User user) throws IdException {
 
         if (user.getCreditRate() < 100) {
 
@@ -147,10 +152,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Long getCredit(Long userId, BigDecimal creditSum) {
+    public Long getCredit(Long userId, BigDecimal creditSum) throws NotExistedObjectException, LendingTermsException, NegativeSumException, IdException, ZeroMonthException {
+        if(BigDecimal.ZERO.compareTo(creditSum) >= 0){
+            throw new NegativeSumException();
+        }
         var user = userRepository.findById(userId);
         if(user == null){
-            return null;
+            throw new NotExistedObjectException();
         }
         //получем список банков, отсортированных по правилу из лабораторной работы. Последний банк - самый лучший
         var banks = bankService.getAllBanks().stream().sorted(new BankComparator()).toList();
@@ -204,6 +212,6 @@ public class UserServiceImpl implements UserService {
             }
         }
 
-        return null;
+        throw new LendingTermsException();
     }
 }

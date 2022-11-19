@@ -2,6 +2,8 @@ package kalchenko.bank.services;
 
 import kalchenko.bank.entity.BankOffice;
 import kalchenko.bank.entity.Employee;
+import kalchenko.bank.exceptions.IdException;
+import kalchenko.bank.exceptions.NotExistedObjectException;
 
 import java.util.List;
 
@@ -10,17 +12,17 @@ public interface EmployeeService extends BankOperations {
     /**
      * Добавляет employee в репозиторий, извещает об этом связанный bankOffice.
      */
-    Employee addEmployee(Employee employee);
+    Employee addEmployee(Employee employee) throws NotExistedObjectException, IdException;
 
     /**
      * Удаляет объект, извещает об этом связанный BankOffice.
      */
-    boolean deleteEmployeeById(Long id);
+    boolean deleteEmployeeById(Long id) throws NotExistedObjectException, IdException;
 
     /**
      * Возвращает объект, который хранится в репозитории.
      */
-    Employee getEmployeeById(Long id);
+    Employee getEmployeeById(Long id) throws IdException;
 
     /**
      * Возвращает все работников, которые хранятся в репозитории.

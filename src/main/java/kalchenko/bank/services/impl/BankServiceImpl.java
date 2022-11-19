@@ -1,6 +1,9 @@
 package kalchenko.bank.services.impl;
 
 import kalchenko.bank.entity.Bank;
+import kalchenko.bank.exceptions.IdException;
+import kalchenko.bank.exceptions.NegativeSumException;
+import kalchenko.bank.exceptions.NotExistedObjectException;
 import kalchenko.bank.repositories.*;
 import kalchenko.bank.services.BankService;
 
@@ -50,8 +53,12 @@ public class BankServiceImpl implements BankService {
     }
 
     @Override
-    public Bank getBankById(Long id) {
-        return bankRepository.findById(id);
+    public Bank getBankById(Long id) throws IdException {
+        var bank = bankRepository.findById(id);;
+        if(bank == null){
+            throw new IdException();
+        }
+        return bank;
     }
 
     @Override
@@ -65,10 +72,15 @@ public class BankServiceImpl implements BankService {
     }
 
     @Override
-    public boolean withdrawMoney(Long id, BigDecimal money) {
+    public boolean withdrawMoney(Long id, BigDecimal money) throws NegativeSumException, IdException {
+        if(BigDecimal.ZERO.compareTo(money) > 0){
+            throw new NegativeSumException();
+        }
         var bank = bankRepository.findById(id);
-
-        if (bank != null && money.compareTo(bank.getMoneyAmount()) == -1) {
+        if(bank==null){
+            throw new IdException();
+        }
+        if (money.compareTo(bank.getMoneyAmount()) == -1) {
             bank.setMoneyAmount(bank.getMoneyAmount().subtract(money));
             bankRepository.update(bank);
             return true;
@@ -78,7 +90,10 @@ public class BankServiceImpl implements BankService {
     }
 
     @Override
-    public boolean depositMoney(Long id, BigDecimal money) {
+    public boolean depositMoney(Long id, BigDecimal money) throws NegativeSumException {
+        if(BigDecimal.ZERO.compareTo(money) > 0){
+            throw new NegativeSumException();
+        }
         var bank = bankRepository.findById(id);
 
         if (bank != null) {
@@ -92,11 +107,14 @@ public class BankServiceImpl implements BankService {
 
 
     @Override
-    public void outputBankInfo(Long bankId, OutputStream outputStream) {
+    public void outputBankInfo(Long bankId, OutputStream outputStream) throws NotExistedObjectException {
 
         PrintStream printStream = new PrintStream(outputStream);
 
         var bank = bankRepository.findById(bankId);
+        if(bank == null){
+            throw new NotExistedObjectException();
+        }
         printStream.printf("Bank data about %s\n", bank.getName());
         printStream.println(bank);
 

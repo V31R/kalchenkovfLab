@@ -2,6 +2,9 @@ package kalchenko.bank.services.impl;
 
 import kalchenko.bank.entity.BankOffice;
 import kalchenko.bank.entity.Employee;
+import kalchenko.bank.exceptions.IdException;
+import kalchenko.bank.exceptions.NegativeSumException;
+import kalchenko.bank.exceptions.NotExistedObjectException;
 import kalchenko.bank.repositories.EmployeeRepository;
 import kalchenko.bank.services.BankOfficeService;
 import kalchenko.bank.services.EmployeeService;
@@ -43,19 +46,25 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public boolean withdrawMoney(Long id, BigDecimal money) {
+    public boolean withdrawMoney(Long id, BigDecimal money) throws NegativeSumException, IdException {
         var employee = employeeRepository.findById(id);
+        if(employee==null){
+            throw new IdException();
+        }
         return bankOfficeService.withdrawMoney(employee.getBankOffice().getId(), money);
     }
 
     @Override
-    public boolean depositMoney(Long id, BigDecimal money) {
+    public boolean depositMoney(Long id, BigDecimal money) throws IdException, NegativeSumException {
         var employee = employeeRepository.findById(id);
+        if(employee==null){
+            throw new IdException();
+        }
         return bankOfficeService.depositMoney(employee.getBankOffice().getId(), money);
     }
 
     @Override
-    public Employee addEmployee(Employee employee) {
+    public Employee addEmployee(Employee employee) throws NotExistedObjectException, IdException {
 
         var newEmployee = employeeRepository.add(employee);
         var office = newEmployee.getBankOffice();
@@ -69,7 +78,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public boolean deleteEmployeeById(Long id) {
+    public boolean deleteEmployeeById(Long id) throws NotExistedObjectException, IdException {
 
         var officeId = employeeRepository.findById(id).getBankOffice().getId();
 
@@ -80,8 +89,12 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee getEmployeeById(Long id) {
-        return employeeRepository.findById(id);
+    public Employee getEmployeeById(Long id) throws IdException {
+        var employee = employeeRepository.findById(id);
+        if(employee == null){
+            throw new IdException();
+        }
+        return employee;
     }
 
     @Override
