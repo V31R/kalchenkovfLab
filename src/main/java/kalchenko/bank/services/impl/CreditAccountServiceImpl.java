@@ -29,11 +29,9 @@ public class CreditAccountServiceImpl implements CreditAccountService {
 
     private final CreditAccountRepository creditAccountRepository = CreditAccountRepository.getInstance();
 
-    public CreditAccount createCreditAccount(Bank bank, User user, PaymentAccount paymentAccount, Employee employee) {
-        final int monthNumber = 12;
-        final BigDecimal creditSum = BigDecimal.valueOf(1000L);
+    public CreditAccount createCreditAccount(Bank bank, User user, PaymentAccount paymentAccount, Employee employee, BigDecimal sum, int monthNumber) {
 
-        return new CreditAccount(user, bank.getName(), LocalDate.now(), monthNumber, creditSum,
+        return new CreditAccount(user, bank.getName(), LocalDate.now(), monthNumber, sum,
                 bank.getInterestRate(), employee, paymentAccount);
     }
 

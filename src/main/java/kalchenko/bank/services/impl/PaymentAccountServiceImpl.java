@@ -35,6 +35,19 @@ public class PaymentAccountServiceImpl implements PaymentAccountService {
     @Override
     public PaymentAccount addPaymentAccount(PaymentAccount paymentAccount) {
 
+        var bank = BankServiceImpl.getInstance().getAllBanks()
+                .stream()
+                .filter(b -> b.getName().equals(paymentAccount.getBankName()))
+                .findFirst();
+
+        var userHasBank = paymentAccount.getUser().getBanks().contains(bank.get());
+
+        if(!userHasBank){
+            var user = paymentAccount.getUser();
+            user.addBank(bank.get());
+            UserServiceImpl.getInstance().updateUser(user);
+        }
+
         return paymentAccountRepository.add(paymentAccount);
 
     }

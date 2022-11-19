@@ -7,12 +7,14 @@ import kalchenko.bank.repositories.CreditAccountRepository;
 import kalchenko.bank.repositories.PaymentAccountRepository;
 import kalchenko.bank.repositories.UserRepository;
 import kalchenko.bank.services.BankService;
+import kalchenko.bank.services.PaymentAccountService;
 import kalchenko.bank.services.UserService;
 import kalchenko.bank.utils.BankComparator;
 
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Random;
@@ -107,6 +109,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User updateUser(User user) {
+        return userRepository.update(user);
+    }
+
+    @Override
     public void outputUserAccounts(Long userId, OutputStream outputStream) {
 
         PrintStream printStream = new PrintStream(outputStream);
@@ -148,8 +155,7 @@ public class UserServiceImpl implements UserService {
         //получем список банков, отсортированных по правилу из лабораторной работы. Последний банк - самый лучший
         var banks = bankService.getAllBanks().stream().sorted(new BankComparator()).toList();
         for(int i = banks.size()-1; i >=0; i--){
-            System.out.println(banks.get(i));
-            if( banks.get(i).getBankRate() > 50 && user.getCreditRate() < 5000){
+            if( banks.get(i).getBankRate() > 50 && user.getCreditRate() < 500){
                 continue;
             }
             var offices = BankOfficeServiceImpl.getInstance().getAllBankOfficesByBankId(banks.get(i).getId());
@@ -157,7 +163,11 @@ public class UserServiceImpl implements UserService {
                 if(!offices.get(j).isLoansAvailable() || offices.get(j).getMoneyAmount().compareTo(creditSum) < 0){
                     continue;
                 }
-                var employee = EmployeeServiceImpl.getInstance().getAllEmployeesByOffice(offices.get(j).getId()).stream().filter(Employee::isLoansAvailable).findFirst();
+                var employee = EmployeeServiceImpl.getInstance()
+                        .getAllEmployeesByOffice(offices.get(j).getId())
+                        .stream()
+                        .filter(Employee::isLoansAvailable)
+                        .findFirst();
                 if( employee.isEmpty()){
                     continue;
                 }
@@ -167,12 +177,29 @@ public class UserServiceImpl implements UserService {
                     if(atms.get(k).isPaymentAvailable() && atms.get(k).getMoneyAmount().compareTo(creditSum) < 0){
                         continue;
                     }
+                    PaymentAccountService paymentAccountService = PaymentAccountServiceImpl.getInstance();
+                    if(!user.getBanks().contains(banks.get(i))){
 
-                    //выдача кредита
-                    break;
+                        paymentAccountService.addPaymentAccount(paymentAccountService.createPaymentAccount(banks.get(i), user));
+
+                    }
+
+                    int monthNumber = creditSum.divide(user.getSalary().multiply(BigDecimal.valueOf(0.3)), RoundingMode.CEILING).intValue();
+                    if(monthNumber < 3){
+                        monthNumber = 3;
+                    }
+
+                    var paymentAccount = paymentAccountService.getAllPaymentAccount().stream().findFirst();
+                    var creditAccount = CreditAccountServiceImpl.getInstance()
+                            .createCreditAccount(banks.get(i),user, paymentAccount.get(), employee.get(), creditSum, monthNumber);
+
+                    BankAtmServiceImpl.getInstance().withdrawMoney(atms.get(k).getId(), creditSum);
+
+                    return CreditAccountServiceImpl.getInstance()
+                            .addCreditAccount(creditAccount)
+                            .getId();
 
                 }
-
 
             }
         }

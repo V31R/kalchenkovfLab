@@ -36,6 +36,8 @@ public interface UserService {
      */
     User createUser(Bank bank);
 
+    User updateUser(User user);
+
     /**
      * Выводит пользователя с userId в поток outputStream
      */

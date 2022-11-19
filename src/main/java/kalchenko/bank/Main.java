@@ -5,9 +5,13 @@ import kalchenko.bank.services.*;
 import kalchenko.bank.services.impl.*;
 
 import java.math.BigDecimal;
+import java.util.Random;
 
 public class Main {
 
+    private static final Random RANDOM = new Random();
+    private static final double MIN_CREDIT_SUM = 1000;
+    private static final double CREDIT_SUM_DISPERSION = 10_000;
 
     public static void main(String[] argv) {
 
@@ -16,7 +20,7 @@ public class Main {
         final int officesNumber = 3;
         final int employeeNumber = 5;
         final int usersNumber = 5;
-        final int accountsNumber = 2;
+        final int accountsNumber = 1;
 
         BankService bankService = BankServiceImpl.getInstance();
         BankOfficeService bankOfficeService = BankOfficeServiceImpl.getInstance();
@@ -24,7 +28,6 @@ public class Main {
         BankAtmService bankAtmService = BankAtmServiceImpl.getInstance();
         UserService userService = UserServiceImpl.getInstance();
         PaymentAccountService paymentAccountService = PaymentAccountServiceImpl.getInstance();
-        CreditAccountService creditAccountService = CreditAccountServiceImpl.getInstance();
 
         for (int i = 0; i < banksNumber; i++) {
             var bank = bankService.addBank(bankService.createBank());
@@ -44,15 +47,18 @@ public class Main {
             for (int j = 0; j < usersNumber; j++) {
                 var user = userService.addUser(userService.createUser(bank));
                 for (int k = 0; k < accountsNumber; k++) {
-                    var paymentAccount = paymentAccountService.addPaymentAccount(paymentAccountService.createPaymentAccount(bank, user));
-                    creditAccountService.addCreditAccount(creditAccountService.createCreditAccount(bank, user, paymentAccount, employeeForAccount));
+                    paymentAccountService.addPaymentAccount(paymentAccountService.createPaymentAccount(bank, user));
                 }
             }
         }
 
         var userId = userService.getAllUsers().get(0).getId();
-        var creditId = userService.getCredit(userId, BigDecimal.valueOf(1000d));
-        System.out.println(creditId);
+        var creditId = userService.getCredit(userId, BigDecimal.valueOf(RANDOM.nextDouble()*CREDIT_SUM_DISPERSION + MIN_CREDIT_SUM));
+        if(creditId == null){
+            System.out.println("Failed to get a loan");
+        }else {
+            System.out.println("Managed to get a loan #" + creditId);
+        }
         bankService.outputBankInfo(bankService.getAllBanks().get(0).getId(), System.out);
         userService.outputUserAccounts(userId, System.out);
 
