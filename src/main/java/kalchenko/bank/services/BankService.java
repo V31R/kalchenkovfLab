@@ -1,10 +1,10 @@
 package kalchenko.bank.services;
 
 import kalchenko.bank.entity.Bank;
-import kalchenko.bank.exceptions.IdException;
-import kalchenko.bank.exceptions.NotExistedObjectException;
+import kalchenko.bank.exceptions.*;
 
 import java.io.OutputStream;
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface BankService extends BankOperations {
@@ -38,5 +38,13 @@ public interface BankService extends BankOperations {
      * Вывод всех данных по bankId банка (банкоматы, офисы, сотрудники, клиенты)
      */
     void outputBankInfo(Long bankId, OutputStream outputStream) throws NotExistedObjectException;
+
+    /**
+     * Выдаёт кредит пользователю
+     * @param userId id пользователя, которому будет выдан кредит
+     * @param creditSum сумма, на которую будет выдан кредит
+     * @return возвращает id кредита, если он был выдан, иначе возвращает null.
+     */
+    Long issueLoan(Long userId, BigDecimal creditSum) throws LendingTermsException, NegativeSumException, IdException, ZeroMonthException;
 
 }

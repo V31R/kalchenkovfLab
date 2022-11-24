@@ -54,6 +54,20 @@ public class PaymentAccountServiceImpl implements PaymentAccountService {
     }
 
     @Override
+    public PaymentAccount paymentAccountRegistration(Bank bank, User user) {
+
+        if(!user.getBanks().contains(bank)){
+
+            return this.addPaymentAccount(this.createPaymentAccount(bank, user));
+
+        }else {
+            return this.getAllPaymentAccountByBankNameAndUser(bank.getName(), user.getId())
+                    .stream()
+                    .findFirst().get();
+        }
+    }
+
+    @Override
     public PaymentAccount getPaymentAccountById(Long id) throws IdException {
         var paymentAccount = paymentAccountRepository.findById(id);
         if(paymentAccount == null){
@@ -65,5 +79,13 @@ public class PaymentAccountServiceImpl implements PaymentAccountService {
     @Override
     public List<PaymentAccount> getAllPaymentAccount() {
         return paymentAccountRepository.findAll();
+    }
+
+    @Override
+    public List<PaymentAccount> getAllPaymentAccountByBankNameAndUser(String bankName, Long userId) {
+        return paymentAccountRepository.findAll()
+                .stream()
+                .filter(account -> account.getBankName().equals(bankName) && account.getUser().getId().compareTo(userId) == 0)
+                .toList();
     }
 }

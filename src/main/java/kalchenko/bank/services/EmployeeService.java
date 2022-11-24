@@ -29,6 +29,12 @@ public interface EmployeeService extends BankOperations {
      */
     List<Employee> getAllEmployees();
 
+
+    /**
+     * Возвращает работника из офиса, который может выдавать кредиты.
+     */
+    Employee getEmployeeInOfficeWhichCanApplyLoan(Long officeId);
+
     /**
      * Возвращает все работников, которые хранятся в репозитории, принадлежащие офису officeId.
      */

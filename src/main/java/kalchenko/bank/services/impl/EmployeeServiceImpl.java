@@ -108,4 +108,20 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .filter(employee -> employee.getBankOffice().getId().compareTo(officeId) == 0)
                 .toList();
     }
+
+    @Override
+    public Employee getEmployeeInOfficeWhichCanApplyLoan(Long officeId) {
+        var e = employeeRepository.findAll()
+                .stream()
+                .filter(employee -> employee.getBankOffice().getId().compareTo(officeId) == 0)
+                .filter(Employee::isLoansAvailable)
+                .findFirst();
+
+        if(e.isEmpty()){
+            return null;
+        }
+
+        return e.get();
+
+    }
 }

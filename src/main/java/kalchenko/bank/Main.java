@@ -55,7 +55,7 @@ public class Main {
 
         var userId = userService.getAllUsers().get(0).getId();
         try {
-            var creditId = userService.getCredit(userId, BigDecimal.valueOf(RANDOM.nextDouble() * CREDIT_SUM_DISPERSION + MIN_CREDIT_SUM));
+            var creditId = bankService.issueLoan(userId, BigDecimal.valueOf(RANDOM.nextDouble() * CREDIT_SUM_DISPERSION + MIN_CREDIT_SUM));
             System.out.println("Managed to get a loan #" + creditId);
         }catch (LendingTermsException | ZeroMonthException exception){
             System.out.println("Failed to get a loan");
