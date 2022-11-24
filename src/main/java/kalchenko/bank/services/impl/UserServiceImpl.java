@@ -1,21 +1,17 @@
 package kalchenko.bank.services.impl;
 
 import kalchenko.bank.entity.Bank;
-import kalchenko.bank.entity.Employee;
 import kalchenko.bank.entity.User;
 import kalchenko.bank.exceptions.*;
 import kalchenko.bank.repositories.CreditAccountRepository;
 import kalchenko.bank.repositories.PaymentAccountRepository;
 import kalchenko.bank.repositories.UserRepository;
 import kalchenko.bank.services.BankService;
-import kalchenko.bank.services.PaymentAccountService;
 import kalchenko.bank.services.UserService;
-import kalchenko.bank.utils.BankComparator;
 
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Random;
@@ -53,7 +49,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserById(Long id) throws IdException {
+    public User getUserById(Long id) {
         var user = userRepository.findById(id);
         if(user == null){
             throw new IdException();
@@ -67,7 +63,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean deleteUser(Long id) throws NotExistedObjectException, IdException {
+    public boolean deleteUser(Long id) {
         var user = userRepository.findById(id);
 
         if (user != null) {
@@ -87,7 +83,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User addUser(User user) throws IdException {
+    public User addUser(User user) {
 
         if (user.getCreditRate() < 100) {
 

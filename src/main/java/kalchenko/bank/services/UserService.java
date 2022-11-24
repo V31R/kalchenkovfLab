@@ -2,7 +2,6 @@ package kalchenko.bank.services;
 
 import kalchenko.bank.entity.Bank;
 import kalchenko.bank.entity.User;
-import kalchenko.bank.exceptions.*;
 
 import java.io.OutputStream;
 import java.util.List;
@@ -14,12 +13,12 @@ public interface UserService {
      * При добавлении вычисляет кредитный рейтинг пользователя,
      * если такового раньше не было.
      */
-    User addUser(User user) throws IdException;
+    User addUser(User user);
 
     /**
      * Возвращает объект, который хранится в репозитории.
      */
-    User getUserById(Long id) throws IdException;
+    User getUserById(Long id);
 
     /**
      * Возвращает всех пользователей, которые хранятся в репозитории.
@@ -29,7 +28,7 @@ public interface UserService {
     /**
      * Удаляет объект, извещает об этом связанный Bank.
      */
-    boolean deleteUser(Long id) throws NotExistedObjectException, IdException;
+    boolean deleteUser(Long id);
 
     /**
      * Создаёт клиента

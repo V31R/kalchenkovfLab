@@ -1,7 +1,6 @@
 package kalchenko.bank.services.impl;
 
 import kalchenko.bank.entity.Bank;
-import kalchenko.bank.entity.Employee;
 import kalchenko.bank.exceptions.*;
 import kalchenko.bank.repositories.*;
 import kalchenko.bank.services.BankService;
@@ -57,7 +56,7 @@ public class BankServiceImpl implements BankService {
     }
 
     @Override
-    public Bank getBankById(Long id) throws IdException {
+    public Bank getBankById(Long id) {
         var bank = bankRepository.findById(id);;
         if(bank == null){
             throw new IdException();
@@ -76,7 +75,7 @@ public class BankServiceImpl implements BankService {
     }
 
     @Override
-    public boolean withdrawMoney(Long id, BigDecimal money) throws NegativeSumException, IdException {
+    public boolean withdrawMoney(Long id, BigDecimal money) {
         if(BigDecimal.ZERO.compareTo(money) > 0){
             throw new NegativeSumException();
         }
@@ -94,7 +93,7 @@ public class BankServiceImpl implements BankService {
     }
 
     @Override
-    public boolean depositMoney(Long id, BigDecimal money) throws NegativeSumException {
+    public boolean depositMoney(Long id, BigDecimal money) {
         if(BigDecimal.ZERO.compareTo(money) > 0){
             throw new NegativeSumException();
         }
@@ -111,7 +110,7 @@ public class BankServiceImpl implements BankService {
 
 
     @Override
-    public void outputBankInfo(Long bankId, OutputStream outputStream) throws NotExistedObjectException {
+    public void outputBankInfo(Long bankId, OutputStream outputStream) {
 
         PrintStream printStream = new PrintStream(outputStream);
 
@@ -176,7 +175,7 @@ public class BankServiceImpl implements BankService {
 
 
     @Override
-    public Long issueLoan(Long userId, BigDecimal creditSum) throws  LendingTermsException, NegativeSumException, IdException, ZeroMonthException {
+    public Long issueLoan(Long userId, BigDecimal creditSum) throws LendingTermsException {
         if(BigDecimal.ZERO.compareTo(creditSum) >= 0){
             throw new NegativeSumException();
         }

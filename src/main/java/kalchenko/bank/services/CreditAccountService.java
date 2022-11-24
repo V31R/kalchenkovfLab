@@ -1,8 +1,6 @@
 package kalchenko.bank.services;
 
 import kalchenko.bank.entity.*;
-import kalchenko.bank.exceptions.IdException;
-import kalchenko.bank.exceptions.ZeroMonthException;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -13,12 +11,12 @@ public interface CreditAccountService {
      * Добавляет creditAccount в репозиторий.
      * При добавлении вычисляет дату окончания кредита и ежемесячный платёж.
      */
-    CreditAccount addCreditAccount(CreditAccount creditAccount) throws ZeroMonthException;
+    CreditAccount addCreditAccount(CreditAccount creditAccount);
 
     /**
      * Возвращает объект, который хранится в репозитории.
      */
-    CreditAccount getCreditAccountById(Long id) throws IdException;
+    CreditAccount getCreditAccountById(Long id);
 
     /**
      * Возвращает все кредиты, которые хранятся в репозитории.

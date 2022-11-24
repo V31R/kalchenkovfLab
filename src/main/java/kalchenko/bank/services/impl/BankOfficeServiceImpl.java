@@ -57,7 +57,7 @@ public class BankOfficeServiceImpl implements BankOfficeService {
     }
 
     @Override
-    public BankOffice addBankOffice(BankOffice bankOffice) throws IdException, NegativeSumException {
+    public BankOffice addBankOffice(BankOffice bankOffice) {
         var newBankOffice = bankOfficeRepository.add(bankOffice);
 
         var bank = bankService.getBankById(bankOffice.getBank().getId());
@@ -73,7 +73,7 @@ public class BankOfficeServiceImpl implements BankOfficeService {
 
 
     @Override
-    public BankOffice getBankOfficeById(Long id) throws IdException {
+    public BankOffice getBankOfficeById(Long id) {
         var bankOffice= bankOfficeRepository.findById(id);
         if(bankOffice == null){
             throw new IdException();
@@ -115,7 +115,7 @@ public class BankOfficeServiceImpl implements BankOfficeService {
 
 
     @Override
-    public boolean addAtm(Long bankOfficeId) throws IdException, NotExistedObjectException {
+    public boolean addAtm(Long bankOfficeId) {
         var bankOffice = bankOfficeRepository.findById(bankOfficeId);
         if (bankOffice == null) {
             throw new NotExistedObjectException();
@@ -137,7 +137,7 @@ public class BankOfficeServiceImpl implements BankOfficeService {
      * Уменьшает число банкоматов, при добавлении, извещает об этом связанный bank.
      */
     @Override
-    public boolean deleteAtm(Long bankOfficeId) throws NotExistedObjectException, IdException {
+    public boolean deleteAtm(Long bankOfficeId) {
         var bankOffice = bankOfficeRepository.findById(bankOfficeId);
         if (bankOffice == null) {
             throw new NotExistedObjectException();
@@ -158,7 +158,7 @@ public class BankOfficeServiceImpl implements BankOfficeService {
 
 
     @Override
-    public boolean addEmployee(Long bankOfficeId) throws NotExistedObjectException, IdException {
+    public boolean addEmployee(Long bankOfficeId) {
 
         var bankOffice = bankOfficeRepository.findById(bankOfficeId);
         if (bankOffice == null) {
@@ -174,7 +174,7 @@ public class BankOfficeServiceImpl implements BankOfficeService {
 
 
     @Override
-    public boolean deleteEmployee(Long bankOfficeId) throws IdException, NotExistedObjectException {
+    public boolean deleteEmployee(Long bankOfficeId) {
         var bankOffice = bankOfficeRepository.findById(bankOfficeId);
         if (bankOffice == null) {
             throw new NotExistedObjectException();
@@ -192,7 +192,7 @@ public class BankOfficeServiceImpl implements BankOfficeService {
     }
 
     @Override
-    public boolean withdrawMoney(Long id, BigDecimal money) throws NegativeSumException, IdException {
+    public boolean withdrawMoney(Long id, BigDecimal money) {
         if(BigDecimal.ZERO.compareTo(money) > 0){
             throw new NegativeSumException();
         }
@@ -210,7 +210,7 @@ public class BankOfficeServiceImpl implements BankOfficeService {
     }
 
     @Override
-    public boolean depositMoney(Long id, BigDecimal money) throws NegativeSumException, IdException {
+    public boolean depositMoney(Long id, BigDecimal money) {
         if(BigDecimal.ZERO.compareTo(money) > 0){
             throw new NegativeSumException();
         }

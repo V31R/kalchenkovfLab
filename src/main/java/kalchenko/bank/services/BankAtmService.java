@@ -14,7 +14,7 @@ public interface BankAtmService extends BankOperations{
     /**
      * Добавляет bankAtm в репозиторий, извещает об этом связанный bankOffice.
      */
-    BankAtm addBankAtm(BankAtm bankAtm) throws NotExistedObjectException, IdException, NegativeSumException;
+    BankAtm addBankAtm(BankAtm bankAtm);
 
     /**
      * Возвращает бакномат по Id, который хранится в репозитории.

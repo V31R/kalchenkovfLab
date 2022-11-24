@@ -3,8 +3,6 @@ package kalchenko.bank.services;
 import kalchenko.bank.entity.Bank;
 import kalchenko.bank.entity.BankOffice;
 import kalchenko.bank.exceptions.IdException;
-import kalchenko.bank.exceptions.NegativeSumException;
-import kalchenko.bank.exceptions.NotExistedObjectException;
 
 import java.util.List;
 
@@ -13,12 +11,12 @@ public interface BankOfficeService extends BankOperations {
     /**
      * Добавляет bankOffice в репозиторий, извещает об этом связанный bank.
      */
-    BankOffice addBankOffice(BankOffice bankOffice) throws IdException, NegativeSumException;
+    BankOffice addBankOffice(BankOffice bankOffice);
 
     /**
      * Возвращает офис по Id, который хранится в репозитории.
      */
-    BankOffice getBankOfficeById(Long id) throws IdException;
+    BankOffice getBankOfficeById(Long id);
 
     /**
      * Возвращает все офисы, которые хранятся в репозитории.
@@ -38,22 +36,22 @@ public interface BankOfficeService extends BankOperations {
     /**
      * Увеличивает число банкоматов, при добавлении банкомата, извещает об этом связанный bank.
      */
-    boolean addAtm(Long bankOfficeId) throws IdException, NotExistedObjectException;
+    boolean addAtm(Long bankOfficeId);
 
     /**
      * Уменьшает число банкоматов, при удалении банкомата, извещает об этом связанный bank.
      */
-    boolean deleteAtm(Long bankOfficeId) throws NotExistedObjectException, IdException;
+    boolean deleteAtm(Long bankOfficeId);
 
     /**
      * Извещает связанный bank об увеличении числа пользователей.
      */
-    boolean addEmployee(Long bankOfficeId) throws NotExistedObjectException, IdException;
+    boolean addEmployee(Long bankOfficeId);
 
     /**
      * Извещает связанный bank об уменьшении числа пользователей.
      */
-    boolean deleteEmployee(Long bankOfficeId) throws IdException, NotExistedObjectException;
+    boolean deleteEmployee(Long bankOfficeId);
 
     /**
      * Создаёт офис

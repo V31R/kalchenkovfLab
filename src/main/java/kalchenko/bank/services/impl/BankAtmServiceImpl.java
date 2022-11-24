@@ -5,7 +5,6 @@ import kalchenko.bank.entity.BankOffice;
 import kalchenko.bank.entity.Employee;
 import kalchenko.bank.exceptions.IdException;
 import kalchenko.bank.exceptions.NegativeSumException;
-import kalchenko.bank.exceptions.NotExistedObjectException;
 import kalchenko.bank.repositories.BankAtmRepository;
 import kalchenko.bank.services.BankAtmService;
 import kalchenko.bank.services.BankOfficeService;
@@ -57,7 +56,7 @@ public class BankAtmServiceImpl implements BankAtmService {
 
 
     @Override
-    public BankAtm addBankAtm(BankAtm bankAtm) throws NotExistedObjectException, IdException, NegativeSumException {
+    public BankAtm addBankAtm(BankAtm bankAtm) {
 
         var newBankAtm = bankAtmRepository.add(bankAtm);
         var office = newBankAtm.getBankOffice();
@@ -89,7 +88,7 @@ public class BankAtmServiceImpl implements BankAtmService {
     }
 
     @Override
-    public boolean deleteBankAtmById(Long id) throws NotExistedObjectException, IdException {
+    public boolean deleteBankAtmById(Long id) {
 
         var officeId = bankAtmRepository.findById(id).getBankOffice().getId();
 
@@ -102,7 +101,7 @@ public class BankAtmServiceImpl implements BankAtmService {
     }
 
     @Override
-    public boolean withdrawMoney(Long id, BigDecimal money) throws NegativeSumException, IdException {
+    public boolean withdrawMoney(Long id, BigDecimal money) {
         if(BigDecimal.ZERO.compareTo(money) > 0){
             throw new NegativeSumException();
         }
@@ -120,7 +119,7 @@ public class BankAtmServiceImpl implements BankAtmService {
     }
 
     @Override
-    public boolean depositMoney(Long id, BigDecimal money) throws NegativeSumException, IdException {
+    public boolean depositMoney(Long id, BigDecimal money) {
         if(BigDecimal.ZERO.compareTo(money) > 0){
             throw new NegativeSumException();
         }

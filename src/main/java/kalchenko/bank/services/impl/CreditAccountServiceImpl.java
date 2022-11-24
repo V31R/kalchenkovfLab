@@ -38,7 +38,7 @@ public class CreditAccountServiceImpl implements CreditAccountService {
     }
 
     @Override
-    public CreditAccount addCreditAccount(CreditAccount creditAccount) throws ZeroMonthException {
+    public CreditAccount addCreditAccount(CreditAccount creditAccount) {
         if(creditAccount.getMonthNumber() <= 0){
             throw new ZeroMonthException();
         }
@@ -55,7 +55,7 @@ public class CreditAccountServiceImpl implements CreditAccountService {
     }
 
     @Override
-    public CreditAccount getCreditAccountById(Long id) throws IdException {
+    public CreditAccount getCreditAccountById(Long id) {
         var creditAccount = creditAccountRepository.findById(id);
         if(creditAccount == null){
             throw new IdException();

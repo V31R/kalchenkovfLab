@@ -14,7 +14,7 @@ public class Main {
     private static final double MIN_CREDIT_SUM = 1000;
     private static final double CREDIT_SUM_DISPERSION = 10_000;
 
-    public static void main(String[] argv) throws IdException, NotExistedObjectException, NegativeSumException {
+    public static void main(String[] argv) {
 
         // Количество сущностей согласно заданию
         final int banksNumber = 5;
@@ -57,7 +57,7 @@ public class Main {
         try {
             var creditId = bankService.issueLoan(userId, BigDecimal.valueOf(RANDOM.nextDouble() * CREDIT_SUM_DISPERSION + MIN_CREDIT_SUM));
             System.out.println("Managed to get a loan #" + creditId);
-        }catch (LendingTermsException | ZeroMonthException exception){
+        }catch (LendingTermsException lendingTermsException){
             System.out.println("Failed to get a loan");
         }
         bankService.outputBankInfo(bankService.getAllBanks().get(0).getId(), System.out);

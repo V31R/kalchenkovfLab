@@ -12,7 +12,7 @@ public interface BankService extends BankOperations {
     /**
      * Возвращает банк по id, который хранится в репозитории.
      */
-    Bank getBankById(Long id) throws IdException;
+    Bank getBankById(Long id);
 
     /**
      * Возвращает все банки, которые хранятся в репозитории.
@@ -37,7 +37,7 @@ public interface BankService extends BankOperations {
     /**
      * Вывод всех данных по bankId банка (банкоматы, офисы, сотрудники, клиенты)
      */
-    void outputBankInfo(Long bankId, OutputStream outputStream) throws NotExistedObjectException;
+    void outputBankInfo(Long bankId, OutputStream outputStream);
 
     /**
      * Выдаёт кредит пользователю
@@ -45,6 +45,6 @@ public interface BankService extends BankOperations {
      * @param creditSum сумма, на которую будет выдан кредит
      * @return возвращает id кредита, если он был выдан, иначе возвращает null.
      */
-    Long issueLoan(Long userId, BigDecimal creditSum) throws LendingTermsException, NegativeSumException, IdException, ZeroMonthException;
+    Long issueLoan(Long userId, BigDecimal creditSum) throws LendingTermsException;
 
 }
