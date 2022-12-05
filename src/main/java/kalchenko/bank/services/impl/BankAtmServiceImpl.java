@@ -7,33 +7,21 @@ import kalchenko.bank.exceptions.IdException;
 import kalchenko.bank.exceptions.NegativeSumException;
 import kalchenko.bank.repositories.BankAtmRepository;
 import kalchenko.bank.services.BankAtmService;
-import kalchenko.bank.services.BankOfficeService;
 import kalchenko.bank.utils.AtmStatus;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Random;
 
-/**
- * Класс-одиночка
- */
+@Component
 public class BankAtmServiceImpl implements BankAtmService {
 
-    private static BankAtmServiceImpl INSTANCE;
-
-    private BankAtmServiceImpl() {
-    }
-
-    public static BankAtmServiceImpl getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new BankAtmServiceImpl();
-        }
-
-        return INSTANCE;
-    }
-
-    private final BankAtmRepository bankAtmRepository = BankAtmRepository.getInstance();
-    private final BankOfficeService bankOfficeService = BankOfficeServiceImpl.getInstance();
+    @Autowired
+    private BankAtmRepository bankAtmRepository;
+    @Autowired
+    private BankOfficeServiceImpl bankOfficeService;
 
     private static final Random RANDOM = new Random();
     private static final double MONEY_DISPERSION = 0.2d;

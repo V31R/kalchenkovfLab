@@ -4,30 +4,26 @@ import kalchenko.bank.entity.Bank;
 import kalchenko.bank.entity.PaymentAccount;
 import kalchenko.bank.entity.User;
 import kalchenko.bank.exceptions.IdException;
+import kalchenko.bank.repositories.BankRepository;
 import kalchenko.bank.repositories.PaymentAccountRepository;
+import kalchenko.bank.repositories.UserRepository;
 import kalchenko.bank.services.PaymentAccountService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-/**
- * Класс-одиночка
- */
+@Component
 public class PaymentAccountServiceImpl implements PaymentAccountService {
 
-    private static PaymentAccountServiceImpl INSTANCE;
+    @Autowired
+    private PaymentAccountRepository paymentAccountRepository;
 
-    private PaymentAccountServiceImpl() {
-    }
+    @Autowired
+    private BankRepository bankRepository;
 
-    public static PaymentAccountServiceImpl getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new PaymentAccountServiceImpl();
-        }
-
-        return INSTANCE;
-    }
-
-    private final PaymentAccountRepository paymentAccountRepository = PaymentAccountRepository.getInstance();
+    @Autowired
+    private UserRepository userRepository;
 
     public PaymentAccount createPaymentAccount(Bank bank, User user) {
         return new PaymentAccount(user, bank.getName());
@@ -36,7 +32,7 @@ public class PaymentAccountServiceImpl implements PaymentAccountService {
     @Override
     public PaymentAccount addPaymentAccount(PaymentAccount paymentAccount) {
 
-        var bank = BankServiceImpl.getInstance().getAllBanks()
+        var bank = bankRepository.findAll()
                 .stream()
                 .filter(b -> b.getName().equals(paymentAccount.getBankName()))
                 .findFirst();
@@ -46,7 +42,7 @@ public class PaymentAccountServiceImpl implements PaymentAccountService {
         if(!userHasBank){
             var user = paymentAccount.getUser();
             user.addBank(bank.get());
-            UserServiceImpl.getInstance().updateUser(user);
+            userRepository.update(user);
         }
 
         return paymentAccountRepository.add(paymentAccount);

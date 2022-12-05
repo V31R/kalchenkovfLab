@@ -5,31 +5,19 @@ import kalchenko.bank.exceptions.IdException;
 import kalchenko.bank.exceptions.ZeroMonthException;
 import kalchenko.bank.repositories.CreditAccountRepository;
 import kalchenko.bank.services.CreditAccountService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.List;
 
-/**
- * Класс-одиночка
- */
+@Component
 public class CreditAccountServiceImpl implements CreditAccountService {
 
-    private static CreditAccountServiceImpl INSTANCE;
-
-    private CreditAccountServiceImpl() {
-    }
-
-    public static CreditAccountServiceImpl getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new CreditAccountServiceImpl();
-        }
-
-        return INSTANCE;
-    }
-
-    private final CreditAccountRepository creditAccountRepository = CreditAccountRepository.getInstance();
+    @Autowired
+    private CreditAccountRepository creditAccountRepository;
 
     public CreditAccount createCreditAccount(Bank bank, User user, PaymentAccount paymentAccount, Employee employee, BigDecimal sum, int monthNumber) {
 

@@ -4,33 +4,21 @@ import kalchenko.bank.entity.BankOffice;
 import kalchenko.bank.entity.Employee;
 import kalchenko.bank.exceptions.IdException;
 import kalchenko.bank.repositories.EmployeeRepository;
-import kalchenko.bank.services.BankOfficeService;
 import kalchenko.bank.services.EmployeeService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
-/**
- * Класс-одиночка
- */
+@Component
 public class EmployeeServiceImpl implements EmployeeService {
 
-    private static EmployeeServiceImpl INSTANCE;
-
-    private EmployeeServiceImpl() {
-    }
-
-    public static EmployeeServiceImpl getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new EmployeeServiceImpl();
-        }
-
-        return INSTANCE;
-    }
-
-    private final EmployeeRepository employeeRepository = EmployeeRepository.getInstance();
-    private final BankOfficeService bankOfficeService = BankOfficeServiceImpl.getInstance();
+    @Autowired
+    private EmployeeRepository employeeRepository;
+    @Autowired
+    private BankOfficeServiceImpl bankOfficeService;
 
     private static int number = 0;
     public Employee createEmployee(BankOffice bankOffice) {
