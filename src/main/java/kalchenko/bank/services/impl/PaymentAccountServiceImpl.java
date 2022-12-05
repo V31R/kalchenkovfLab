@@ -88,4 +88,12 @@ public class PaymentAccountServiceImpl implements PaymentAccountService {
                 .filter(account -> account.getBankName().equals(bankName) && account.getUser().getId().compareTo(userId) == 0)
                 .toList();
     }
+
+    @Override
+    public List<PaymentAccount> getAllPaymentAccountsByBank(Bank bank) {
+        return paymentAccountRepository.findAll()
+                .stream()
+                .filter(account -> account.getBankName().equals(bank.getName()))
+                .toList();
+    }
 }

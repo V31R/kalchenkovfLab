@@ -83,6 +83,10 @@ public class User implements Entity {
         return banks;
     }
 
+    public void setBanks(List<Bank> banks) {
+        this.banks = banks;
+    }
+
     public void addBank(Bank bank) {
         this.banks.add(bank);
     }

@@ -27,4 +27,7 @@ public interface CreditAccountService {
      * Создаёт кредитичный счёт
      */
     CreditAccount createCreditAccount(Bank bank, User user, PaymentAccount paymentAccount, Employee employee, BigDecimal sum, int monthNumber);
+
+
+    List<CreditAccount> getAllCreditAccountsByBank(Bank bank);
 }

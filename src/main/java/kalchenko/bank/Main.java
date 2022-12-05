@@ -5,6 +5,7 @@ import kalchenko.bank.exceptions.*;
 import kalchenko.bank.services.*;
 import kalchenko.bank.services.impl.*;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Random;
 
@@ -14,7 +15,7 @@ public class Main {
     private static final double MIN_CREDIT_SUM = 1000;
     private static final double CREDIT_SUM_DISPERSION = 10_000;
 
-    public static void main(String[] argv) {
+    public static void main(String[] argv) throws IOException {
 
         // Количество сущностей согласно заданию
         final int banksNumber = 5;
@@ -60,7 +61,14 @@ public class Main {
         }catch (LendingTermsException lendingTermsException){
             System.out.println("Failed to get a loan");
         }
+
         bankService.outputBankInfo(bankService.getAllBanks().get(0).getId(), System.out);
+        userService.outputUserAccounts(userId, System.out);
+
+        bankService.exportBankAccounts(bankService.getAllBanks().get(0).getId(), "/tmp/accounts.txt");
+
+        bankService.transferBankAccounts(bankService.getAllBanks().get(0).getId(), bankService.getAllBanks().get(1).getId());
+
         userService.outputUserAccounts(userId, System.out);
 
     }

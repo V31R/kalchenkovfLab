@@ -1,15 +1,23 @@
 package kalchenko.bank.services.impl;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import kalchenko.bank.entity.Bank;
+import kalchenko.bank.entity.CreditAccount;
+import kalchenko.bank.entity.PaymentAccount;
 import kalchenko.bank.exceptions.*;
 import kalchenko.bank.repositories.*;
 import kalchenko.bank.services.BankService;
+import kalchenko.bank.services.CreditAccountService;
+import kalchenko.bank.services.PaymentAccountService;
 import kalchenko.bank.utils.BankComparator;
 
-import java.io.OutputStream;
-import java.io.PrintStream;
+import java.io.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -21,6 +29,7 @@ public class BankServiceImpl implements BankService {
     private static BankServiceImpl INSTANCE;
 
     private BankServiceImpl() {
+        objectMapper.registerModule(new JavaTimeModule());
     }
 
     public static BankServiceImpl getInstance() {
@@ -32,6 +41,9 @@ public class BankServiceImpl implements BankService {
     }
 
     private final BankRepository bankRepository = BankRepository.getInstance();
+    private final ObjectMapper objectMapper = new ObjectMapper();
+
+    private static final String TRANSFER_PATH = "/tmp/transfer.txt";
 
     private static final int MAX_RATE = 100;
 
@@ -227,4 +239,86 @@ public class BankServiceImpl implements BankService {
 
         throw new LendingTermsException();
     }
+
+    @Override
+    public void exportBankAccounts(Long bankId, String filename) throws IOException {
+        var bank = bankRepository.findById(bankId);
+        var paymentAccounts = PaymentAccountServiceImpl.getInstance().getAllPaymentAccountsByBank(bank);
+        var creditAccounts = CreditAccountServiceImpl.getInstance().getAllCreditAccountsByBank(bank);
+
+        AccountsRepository accountsRepository = new AccountsRepository(paymentAccounts,creditAccounts);
+
+        FileWriter writer = new FileWriter(filename, false);
+
+        String accountsJson = objectMapper.writeValueAsString(accountsRepository);
+        writer.write(accountsJson);
+        writer.flush();
+
+    }
+
+    @Override
+    public void importBankAccounts(Long bankId, String filename) throws IOException {
+        var bank = bankRepository.findById(bankId);
+        File file = new File(filename);
+        AccountsRepository accountsRepository = objectMapper.readValue(file, AccountsRepository.class);
+        var paymentAccounts = accountsRepository.paymentAccounts;
+        var creditAccounts = accountsRepository.creditAccounts;
+        //paymentAccounts.forEach(paymentAccount -> paymentAccount.setBankName(bank.getName()));
+        creditAccounts.forEach(creditAccount -> creditAccount.setBankName(bank.getName()));
+
+        PaymentAccountService paymentAccountService = PaymentAccountServiceImpl.getInstance();
+        CreditAccountService creditAccountService = CreditAccountServiceImpl.getInstance();
+
+        List<PaymentAccount> newPaymentAccounts = new ArrayList<>();
+        for(var paymentAccount: paymentAccounts){
+            paymentAccount.setBankName(bank.getName());
+            newPaymentAccounts.add(paymentAccountService.addPaymentAccount(paymentAccount));
+        }
+        for(var creditAccount: creditAccounts) {
+           int index = paymentAccounts.indexOf(creditAccount.getPaymentAccount());
+           if(index != -1){
+               creditAccount.setPaymentAccount(newPaymentAccounts.get(index));
+           }
+           creditAccountService.addCreditAccount(creditAccount);
+        }
+
+    }
+
+    @Override
+    public void transferBankAccounts(Long srcBankId, Long dstBankId) throws IOException {
+        var srcBank = bankRepository.findById(srcBankId);
+        var dstBank = bankRepository.findById(dstBankId);
+        var paymentAccounts = PaymentAccountServiceImpl.getInstance().getAllPaymentAccountsByBank(srcBank);
+        var creditAccounts = CreditAccountServiceImpl.getInstance().getAllCreditAccountsByBank(srcBank);
+
+        this.exportBankAccounts(srcBankId, TRANSFER_PATH);
+
+        creditAccounts.forEach(paymentAccount ->  CreditAccountRepository.getInstance().deleteById(paymentAccount.getId()));
+        paymentAccounts.forEach(paymentAccount ->  PaymentAccountRepository.getInstance().deleteById(paymentAccount.getId()));
+
+        for(var paymentAccount: paymentAccounts){
+            var user = UserServiceImpl.getInstance().getUserById(paymentAccount.getUser().getId());
+            var banks = user.getBanks();
+            banks.removeIf(bank -> bank.getName().equals(srcBank.getName()));
+            user.setBanks(banks);
+            UserServiceImpl.getInstance().updateUser(user);
+        }
+
+        this.importBankAccounts(dstBankId, TRANSFER_PATH);
+
+    }
+
+    private static class AccountsRepository{
+        public List<PaymentAccount> paymentAccounts;
+        public List<CreditAccount> creditAccounts;
+
+        public AccountsRepository(){}
+
+        public AccountsRepository(List<PaymentAccount> paymentAccounts, List<CreditAccount> creditAccounts) {
+            this.paymentAccounts = paymentAccounts;
+            this.creditAccounts = creditAccounts;
+        }
+    }
+
+
 }

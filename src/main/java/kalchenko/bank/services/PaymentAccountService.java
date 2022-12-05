@@ -41,5 +41,6 @@ public interface PaymentAccountService {
      */
     PaymentAccount paymentAccountRegistration(Bank bank, User user);
 
+    List<PaymentAccount> getAllPaymentAccountsByBank(Bank bank);
 
 }
