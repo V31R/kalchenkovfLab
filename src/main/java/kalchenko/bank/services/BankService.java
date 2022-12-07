@@ -3,6 +3,7 @@ package kalchenko.bank.services;
 import kalchenko.bank.entity.Bank;
 import kalchenko.bank.exceptions.*;
 
+import java.io.IOException;
 import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.util.List;
@@ -46,5 +47,26 @@ public interface BankService extends BankOperations {
      * @return возвращает id кредита, если он был выдан, иначе возвращает null.
      */
     Long issueLoan(Long userId, BigDecimal creditSum) throws LendingTermsException;
+
+    /**
+     * Выводит все счета банка в txt файл
+     * @param bankId  id банка
+     * @param filename имя txt файла
+     */
+    void exportBankAccounts(Long bankId, String filename) throws IOException;
+
+    /**
+     * Считывает все счета из txt файла ы банк
+     * @param bankId id банка, в который будут считаны счета
+     * @param filename имя txt файла, из которого будут считаны счета
+     */
+    void importBankAccounts(Long bankId, String filename) throws IOException;
+
+    /**
+     * Переносит счета из одно банка в другой
+     * @param srcBankId id банка, из которого будут перенесены счета
+     * @param dstBankId id банка, в который будут перенесены счета
+     */
+    void transferBankAccounts(Long srcBankId, Long dstBankId) throws IOException;
 
 }
