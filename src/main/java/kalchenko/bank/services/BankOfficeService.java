@@ -2,6 +2,7 @@ package kalchenko.bank.services;
 
 import kalchenko.bank.entity.Bank;
 import kalchenko.bank.entity.BankOffice;
+import kalchenko.bank.exceptions.IdException;
 
 import java.util.List;
 
@@ -20,12 +21,17 @@ public interface BankOfficeService extends BankOperations {
     /**
      * Возвращает все офисы, которые хранятся в репозитории.
      */
-    List<BankOffice> getAllBanks();
+    List<BankOffice> getAllBankOffices();
+
+    /**
+     * Возвращает все офисы, которые хранятся в репозитории, принадлежащие банку bankId.
+     */
+    List<BankOffice> getAllBankOfficesByBankId(Long bankId);
 
     /**
      * Удаляет офис по Id, извещает об этом связанный Bank.
      */
-    boolean deleteBankOfficeById(Long id);
+    boolean deleteBankOfficeById(Long id) throws IdException;
 
     /**
      * Увеличивает число банкоматов, при добавлении банкомата, извещает об этом связанный bank.

@@ -2,6 +2,7 @@ package kalchenko.bank.services.impl;
 
 import kalchenko.bank.entity.Bank;
 import kalchenko.bank.entity.User;
+import kalchenko.bank.exceptions.*;
 import kalchenko.bank.repositories.CreditAccountRepository;
 import kalchenko.bank.repositories.PaymentAccountRepository;
 import kalchenko.bank.repositories.UserRepository;
@@ -37,19 +38,23 @@ public class UserServiceImpl implements UserService {
     private final BankService bankService = BankServiceImpl.getInstance();
 
     private static int number = 0;
-    private static final Random random = new Random();
-    private static final int maxSalary = 9_999;
-    private static final int minSalary = 1;
+    private static final Random RANDOM = new Random();
+    private static final int MAX_SALARY = 9_999;
+    private static final int MIN_SALARY = 1;
 
     public  User createUser(Bank bank) {
         final int years = 18;
         return new User(String.format("User_name_%d", number++), LocalDate.now().minusYears(years),
-                BigDecimal.valueOf(random.nextDouble() * maxSalary + minSalary), "job", bank);
+                BigDecimal.valueOf(RANDOM.nextDouble() * MAX_SALARY + MIN_SALARY), "job", bank);
     }
 
     @Override
     public User getUserById(Long id) {
-        return userRepository.findById(id);
+        var user = userRepository.findById(id);
+        if(user == null){
+            throw new IdException();
+        }
+        return user;
     }
 
     @Override
@@ -71,9 +76,9 @@ public class UserServiceImpl implements UserService {
             }
 
             return true;
+        }else{
+            throw new NotExistedObjectException();
         }
-
-        return false;
 
     }
 
@@ -102,6 +107,11 @@ public class UserServiceImpl implements UserService {
 
         return newUser;
 
+    }
+
+    @Override
+    public User updateUser(User user) {
+        return userRepository.update(user);
     }
 
     @Override
@@ -136,4 +146,5 @@ public class UserServiceImpl implements UserService {
         }
 
     }
+
 }

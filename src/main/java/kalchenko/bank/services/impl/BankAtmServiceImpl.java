@@ -3,6 +3,8 @@ package kalchenko.bank.services.impl;
 import kalchenko.bank.entity.BankAtm;
 import kalchenko.bank.entity.BankOffice;
 import kalchenko.bank.entity.Employee;
+import kalchenko.bank.exceptions.IdException;
+import kalchenko.bank.exceptions.NegativeSumException;
 import kalchenko.bank.repositories.BankAtmRepository;
 import kalchenko.bank.services.BankAtmService;
 import kalchenko.bank.services.BankOfficeService;
@@ -33,9 +35,9 @@ public class BankAtmServiceImpl implements BankAtmService {
     private final BankAtmRepository bankAtmRepository = BankAtmRepository.getInstance();
     private final BankOfficeService bankOfficeService = BankOfficeServiceImpl.getInstance();
 
-    private static final Random random = new Random();
-    private static final double moneyDispersion = 0.2d;
-    private static final double minMoney = 0.3d;
+    private static final Random RANDOM = new Random();
+    private static final double MONEY_DISPERSION = 0.2d;
+    private static final double MIN_MONEY = 0.3d;
 
     private static int number = 0;
     public BankAtm createBankAtm(BankOffice bankOffice, Employee employee) {
@@ -45,7 +47,7 @@ public class BankAtmServiceImpl implements BankAtmService {
         final AtmStatus status = AtmStatus.WORKING;
 
         final BigDecimal atmMoney = bankOffice.getMoneyAmount().multiply(
-                BigDecimal.valueOf((random.nextDouble()*moneyDispersion + minMoney))
+                BigDecimal.valueOf((RANDOM.nextDouble()* MONEY_DISPERSION + MIN_MONEY))
         );
 
         return new BankAtm(String.format("Atm_%d", number++), status, bankOffice, "next to exit",
@@ -79,9 +81,16 @@ public class BankAtmServiceImpl implements BankAtmService {
     }
 
     @Override
+    public List<BankAtm> getAllBankAtmsByOffice(Long officeId) {
+        return bankAtmRepository.findAll().stream()
+                .filter(employee -> employee.getBankOffice().getId().compareTo(officeId) == 0)
+                .toList();
+    }
+
+    @Override
     public boolean deleteBankAtmById(Long id) {
 
-        var officeId = bankAtmRepository.findById(id).getId();
+        var officeId = bankAtmRepository.findById(id).getBankOffice().getId();
 
         if (bankAtmRepository.deleteById(id)) {
 
@@ -93,8 +102,14 @@ public class BankAtmServiceImpl implements BankAtmService {
 
     @Override
     public boolean withdrawMoney(Long id, BigDecimal money) {
+        if(BigDecimal.ZERO.compareTo(money) > 0){
+            throw new NegativeSumException();
+        }
         var bankAtm = bankAtmRepository.findById(id);
-        if (bankAtm != null && bankAtm.isPaymentAvailable() && money.compareTo(bankAtm.getMoneyAmount()) == -1) {
+        if(bankAtm==null){
+            throw new IdException();
+        }
+        if (bankAtm.isPaymentAvailable() && money.compareTo(bankAtm.getMoneyAmount()) == -1) {
             bankAtm.setMoneyAmount(bankAtm.getMoneyAmount().subtract(money));
             bankAtmRepository.update(bankAtm);
             return true;
@@ -105,9 +120,14 @@ public class BankAtmServiceImpl implements BankAtmService {
 
     @Override
     public boolean depositMoney(Long id, BigDecimal money) {
+        if(BigDecimal.ZERO.compareTo(money) > 0){
+            throw new NegativeSumException();
+        }
         var bankAtm = bankAtmRepository.findById(id);
-
-        if (bankAtm != null && bankAtm.isDepositAvailable()) {
+        if(bankAtm==null){
+            throw new IdException();
+        }
+        if (bankAtm.isDepositAvailable()) {
             bankAtm.setMoneyAmount(bankAtm.getMoneyAmount().add(money));
             bankAtmRepository.update(bankAtm);
             return true;

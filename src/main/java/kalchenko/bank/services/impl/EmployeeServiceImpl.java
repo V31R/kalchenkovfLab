@@ -2,6 +2,7 @@ package kalchenko.bank.services.impl;
 
 import kalchenko.bank.entity.BankOffice;
 import kalchenko.bank.entity.Employee;
+import kalchenko.bank.exceptions.IdException;
 import kalchenko.bank.repositories.EmployeeRepository;
 import kalchenko.bank.services.BankOfficeService;
 import kalchenko.bank.services.EmployeeService;
@@ -45,12 +46,18 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public boolean withdrawMoney(Long id, BigDecimal money) {
         var employee = employeeRepository.findById(id);
+        if(employee==null){
+            throw new IdException();
+        }
         return bankOfficeService.withdrawMoney(employee.getBankOffice().getId(), money);
     }
 
     @Override
     public boolean depositMoney(Long id, BigDecimal money) {
         var employee = employeeRepository.findById(id);
+        if(employee==null){
+            throw new IdException();
+        }
         return bankOfficeService.depositMoney(employee.getBankOffice().getId(), money);
     }
 
@@ -81,11 +88,38 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee getEmployeeById(Long id) {
-        return employeeRepository.findById(id);
+        var employee = employeeRepository.findById(id);
+        if(employee == null){
+            throw new IdException();
+        }
+        return employee;
     }
 
     @Override
     public List<Employee> getAllEmployees() {
         return employeeRepository.findAll();
+    }
+
+    @Override
+    public List<Employee> getAllEmployeesByOffice(Long officeId) {
+        return employeeRepository.findAll().stream()
+                .filter(employee -> employee.getBankOffice().getId().compareTo(officeId) == 0)
+                .toList();
+    }
+
+    @Override
+    public Employee getEmployeeInOfficeWhichCanApplyLoan(Long officeId) {
+        var e = employeeRepository.findAll()
+                .stream()
+                .filter(employee -> employee.getBankOffice().getId().compareTo(officeId) == 0)
+                .filter(Employee::isLoansAvailable)
+                .findFirst();
+
+        if(e.isEmpty()){
+            return null;
+        }
+
+        return e.get();
+
     }
 }

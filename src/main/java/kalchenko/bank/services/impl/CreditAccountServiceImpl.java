@@ -1,6 +1,8 @@
 package kalchenko.bank.services.impl;
 
 import kalchenko.bank.entity.*;
+import kalchenko.bank.exceptions.IdException;
+import kalchenko.bank.exceptions.ZeroMonthException;
 import kalchenko.bank.repositories.CreditAccountRepository;
 import kalchenko.bank.services.CreditAccountService;
 
@@ -29,17 +31,17 @@ public class CreditAccountServiceImpl implements CreditAccountService {
 
     private final CreditAccountRepository creditAccountRepository = CreditAccountRepository.getInstance();
 
-    public CreditAccount createCreditAccount(Bank bank, User user, PaymentAccount paymentAccount, Employee employee) {
-        final int monthNumber = 12;
-        final BigDecimal creditSum = BigDecimal.valueOf(1000L);
+    public CreditAccount createCreditAccount(Bank bank, User user, PaymentAccount paymentAccount, Employee employee, BigDecimal sum, int monthNumber) {
 
-        return new CreditAccount(user, bank.getName(), LocalDate.now(), monthNumber, creditSum,
+        return new CreditAccount(user, bank.getName(), LocalDate.now(), monthNumber, sum,
                 bank.getInterestRate(), employee, paymentAccount);
     }
 
     @Override
     public CreditAccount addCreditAccount(CreditAccount creditAccount) {
-
+        if(creditAccount.getMonthNumber() <= 0){
+            throw new ZeroMonthException();
+        }
         creditAccount.setEnd(creditAccount.getStart().plusMonths(creditAccount.getMonthNumber()));
 
         var monthPayment = creditAccount.getSum()
@@ -54,7 +56,11 @@ public class CreditAccountServiceImpl implements CreditAccountService {
 
     @Override
     public CreditAccount getCreditAccountById(Long id) {
-        return creditAccountRepository.findById(id);
+        var creditAccount = creditAccountRepository.findById(id);
+        if(creditAccount == null){
+            throw new IdException();
+        }
+        return creditAccount;
     }
 
     @Override

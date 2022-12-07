@@ -2,6 +2,7 @@ package kalchenko.bank.services;
 
 import kalchenko.bank.entity.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface CreditAccountService {
@@ -25,5 +26,5 @@ public interface CreditAccountService {
     /**
      * Создаёт кредитичный счёт
      */
-    CreditAccount createCreditAccount(Bank bank, User user, PaymentAccount paymentAccount, Employee employee);
+    CreditAccount createCreditAccount(Bank bank, User user, PaymentAccount paymentAccount, Employee employee, BigDecimal sum, int monthNumber);
 }
