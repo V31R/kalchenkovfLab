@@ -7,38 +7,27 @@ import kalchenko.bank.exceptions.NegativeSumException;
 import kalchenko.bank.exceptions.NotExistedObjectException;
 import kalchenko.bank.repositories.BankOfficeRepository;
 import kalchenko.bank.services.BankOfficeService;
-import kalchenko.bank.services.BankService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Random;
 
-/**
- * Класс-одиночка
- */
+@Component
 public class BankOfficeServiceImpl implements BankOfficeService {
 
-    private static BankOfficeServiceImpl INSTANCE;
+    @Autowired
+    private BankServiceImpl bankService;
 
-    private BankOfficeServiceImpl() {
-    }
-
-    public static BankOfficeServiceImpl getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new BankOfficeServiceImpl();
-        }
-
-        return INSTANCE;
-    }
-
-    private final BankService bankService = BankServiceImpl.getInstance();
-
-    private final BankOfficeRepository bankOfficeRepository = BankOfficeRepository.getInstance();
+    @Autowired
+    private BankOfficeRepository bankOfficeRepository;
 
     private static final Random RANDOM = new Random();
     private static final double MONEY_DISPERSION = 0.1d;
     private static final double MIN_MONEY = 0.2d;
     private static int number = 0;
+
     public BankOffice createBankOffice(Bank bank) {
         final BigDecimal rent = BigDecimal.valueOf(10.5d);
         final boolean isWorking = true;

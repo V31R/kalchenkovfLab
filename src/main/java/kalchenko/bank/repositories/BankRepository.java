@@ -1,29 +1,14 @@
 package kalchenko.bank.repositories;
 
 import kalchenko.bank.entity.Bank;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-/**
- * Класс-одиночка
- */
+@Component
 public class BankRepository {
 
-    private static BankRepository INSTANCE;
-
-    private BankRepository() {
-    }
-
-    public static BankRepository getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new BankRepository();
-        }
-
-        return INSTANCE;
-    }
-
     private final EntityRepository repository = new EntityRepository();
-
 
     /**
      * Добавляет bank в репозиторий и возвращает добавленный объект,

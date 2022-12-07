@@ -1,18 +1,15 @@
 package kalchenko.bank.services.impl;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import kalchenko.bank.entity.Bank;
-import kalchenko.bank.entity.CreditAccount;
-import kalchenko.bank.entity.PaymentAccount;
+import kalchenko.bank.entity.*;
 import kalchenko.bank.exceptions.*;
 import kalchenko.bank.repositories.*;
 import kalchenko.bank.services.BankService;
-import kalchenko.bank.services.CreditAccountService;
-import kalchenko.bank.services.PaymentAccountService;
 import kalchenko.bank.utils.BankComparator;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Component;
 
 import java.io.*;
 import java.math.BigDecimal;
@@ -21,26 +18,33 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-/**
- * Класс-одиночка
- */
+@Component
 public class BankServiceImpl implements BankService {
 
-    private static BankServiceImpl INSTANCE;
+    @Autowired
+    private BankRepository bankRepository;
 
-    private BankServiceImpl() {
-        objectMapper.registerModule(new JavaTimeModule());
-    }
+    @Autowired
+    private UserRepository userRepository;
 
-    public static BankServiceImpl getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new BankServiceImpl();
-        }
+    @Autowired
+    private BankAtmRepository bankAtmRepository;
 
-        return INSTANCE;
-    }
+    @Autowired
+    private BankOfficeRepository bankOfficeRepository;
 
-    private final BankRepository bankRepository = BankRepository.getInstance();
+    @Autowired
+    private EmployeeRepository employeeRepository;
+
+    @Autowired
+    private PaymentAccountRepository paymentAccountRepository;
+
+    @Autowired
+    private CreditAccountRepository creditAccountRepository;
+
+    @Autowired
+    private ApplicationContext ctx;
+
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     private static final String TRANSFER_PATH = "/tmp/transfer.txt";
@@ -53,6 +57,10 @@ public class BankServiceImpl implements BankService {
     private static final double MAX_INTEREST_RATE = 20.d;
     private static final BigDecimal MAX_SALARY_PART = BigDecimal.valueOf(0.3d);
     private static final int MAX_MONEY = 1_000_000;
+
+    public BankServiceImpl(){
+        objectMapper.registerModule(new JavaTimeModule());
+    }
 
     public Bank createBank() {
         var rate = RANDOM.nextInt(MAX_RATE);
@@ -120,9 +128,10 @@ public class BankServiceImpl implements BankService {
         return false;
     }
 
-
     @Override
     public void outputBankInfo(Long bankId, OutputStream outputStream) {
+
+        BankOfficeServiceImpl bankOfficeService = (BankOfficeServiceImpl) ctx.getBean("bankOfficeServiceImpl");
 
         PrintStream printStream = new PrintStream(outputStream);
 
@@ -133,11 +142,7 @@ public class BankServiceImpl implements BankService {
         printStream.printf("Bank data about %s\n", bank.getName());
         printStream.println(bank);
 
-        BankAtmRepository bankAtmRepository = BankAtmRepository.getInstance();
-        EmployeeRepository employeeRepository = EmployeeRepository.getInstance();
-        UserRepository userRepository = UserRepository.getInstance();
-
-        var bankOffices = BankOfficeServiceImpl.getInstance().getAllBankOfficesByBankId(bankId);
+        var bankOffices = bankOfficeService.getAllBankOfficesByBankId(bankId);
         if (bankOffices.size() > 0) {
             printStream.println("Bank offices:");
             bankOffices.forEach(printStream::println);
@@ -188,10 +193,18 @@ public class BankServiceImpl implements BankService {
 
     @Override
     public Long issueLoan(Long userId, BigDecimal creditSum) throws LendingTermsException {
+
+        PaymentAccountServiceImpl paymentAccountService = (PaymentAccountServiceImpl) ctx.getBean("paymentAccountServiceImpl");
+        CreditAccountServiceImpl creditAccountService = (CreditAccountServiceImpl) ctx.getBean("creditAccountServiceImpl");
+        BankAtmServiceImpl bankAtmService = (BankAtmServiceImpl) ctx.getBean("bankAtmServiceImpl");
+        BankOfficeServiceImpl bankOfficeService = (BankOfficeServiceImpl) ctx.getBean("bankOfficeServiceImpl");
+        EmployeeServiceImpl employeeService = (EmployeeServiceImpl) ctx.getBean("employeeServiceImpl");
+
+
         if(BigDecimal.ZERO.compareTo(creditSum) >= 0){
             throw new NegativeSumException();
         }
-        var user = UserServiceImpl.getInstance().getUserById(userId);
+        var user = userRepository.findById(userId);
 
         //получем список банков, отсортированных по правилу из лабораторной работы. Последний банк - самый лучший
         var banks = bankRepository.findAll().stream().sorted(new BankComparator()).toList();
@@ -199,19 +212,18 @@ public class BankServiceImpl implements BankService {
             if( banks.get(i).getBankRate() > 50 && user.getCreditRate() < 500){
                 continue;
             }
-            var offices = BankOfficeServiceImpl.getInstance().getAllBankOfficesByBankId(banks.get(i).getId());
+            var offices = bankOfficeService.getAllBankOfficesByBankId(banks.get(i).getId());
             for(int j = 0; j < offices.size(); j++) {
                 if(!offices.get(j).isLoansAvailable() || offices.get(j).getMoneyAmount().compareTo(creditSum) < 0){
                     continue;
                 }
-                var employee = EmployeeServiceImpl.getInstance()
-                        .getEmployeeInOfficeWhichCanApplyLoan(offices.get(j).getId());
+                var employee = employeeService.getEmployeeInOfficeWhichCanApplyLoan(offices.get(j).getId());
 
                 if(employee == null){
                     continue;
                 }
 
-                var atms = BankAtmServiceImpl.getInstance().getAllBankAtmsByOffice(offices.get(j).getId());
+                var atms = bankAtmService.getAllBankAtmsByOffice(offices.get(j).getId());
                 for(int k = 0; k < atms.size(); k++) {
                     if(!atms.get(k).isPaymentAvailable() || atms.get(k).getMoneyAmount().compareTo(creditSum) < 0){
                         continue;
@@ -222,13 +234,12 @@ public class BankServiceImpl implements BankService {
                         monthNumber = MIN_LOAN_TERM_IN_MONTH;
                     }
 
-                    var paymentAccount = PaymentAccountServiceImpl.getInstance().paymentAccountRegistration(banks.get(i), user);
+                    var paymentAccount = paymentAccountService.paymentAccountRegistration(banks.get(i), user);
 
-                    var creditAccountService = CreditAccountServiceImpl.getInstance();
                     var creditAccount = creditAccountService.createCreditAccount(banks.get(i), user,
                             paymentAccount, employee, creditSum, monthNumber);
 
-                    BankAtmServiceImpl.getInstance().withdrawMoney(atms.get(k).getId(), creditSum);
+                    bankAtmService.withdrawMoney(atms.get(k).getId(), creditSum);
 
                     return creditAccountService.addCreditAccount(creditAccount).getId();
 
@@ -242,11 +253,14 @@ public class BankServiceImpl implements BankService {
 
     @Override
     public void exportBankAccounts(Long bankId, String filename) throws IOException {
-        var bank = bankRepository.findById(bankId);
-        var paymentAccounts = PaymentAccountServiceImpl.getInstance().getAllPaymentAccountsByBank(bank);
-        var creditAccounts = CreditAccountServiceImpl.getInstance().getAllCreditAccountsByBank(bank);
+        PaymentAccountServiceImpl paymentAccountService = (PaymentAccountServiceImpl) ctx.getBean("paymentAccountServiceImpl");
+        CreditAccountServiceImpl creditAccountService = (CreditAccountServiceImpl) ctx.getBean("creditAccountServiceImpl");
 
-        AccountsRepository accountsRepository = new AccountsRepository(paymentAccounts,creditAccounts);
+        var bank = bankRepository.findById(bankId);
+        var paymentAccounts = paymentAccountService.getAllPaymentAccountsByBank(bank);
+        var creditAccounts = creditAccountService.getAllCreditAccountsByBank(bank);
+
+        AccountsRepository accountsRepository = new AccountsRepository(paymentAccounts, creditAccounts);
 
         File file = new File(filename);
         objectMapper.writeValue(file, accountsRepository);
@@ -255,6 +269,9 @@ public class BankServiceImpl implements BankService {
 
     @Override
     public void importBankAccounts(Long bankId, String filename) throws IOException {
+        PaymentAccountServiceImpl paymentAccountService = (PaymentAccountServiceImpl) ctx.getBean("paymentAccountServiceImpl");
+        CreditAccountServiceImpl creditAccountService = (CreditAccountServiceImpl) ctx.getBean("creditAccountServiceImpl");
+
         var bank = bankRepository.findById(bankId);
         File file = new File(filename);
         AccountsRepository accountsRepository = objectMapper.readValue(file, AccountsRepository.class);
@@ -262,9 +279,6 @@ public class BankServiceImpl implements BankService {
         var creditAccounts = accountsRepository.creditAccounts;
 
         creditAccounts.forEach(creditAccount -> creditAccount.setBankName(bank.getName()));
-
-        PaymentAccountService paymentAccountService = PaymentAccountServiceImpl.getInstance();
-        CreditAccountService creditAccountService = CreditAccountServiceImpl.getInstance();
 
         List<PaymentAccount> newPaymentAccounts = new ArrayList<>();
         for(var paymentAccount: paymentAccounts){
@@ -283,22 +297,26 @@ public class BankServiceImpl implements BankService {
 
     @Override
     public void transferBankAccounts(Long srcBankId, Long dstBankId) throws IOException {
+
+        PaymentAccountServiceImpl paymentAccountService = (PaymentAccountServiceImpl) ctx.getBean("paymentAccountServiceImpl");
+        CreditAccountServiceImpl creditAccountService = (CreditAccountServiceImpl) ctx.getBean("creditAccountServiceImpl");
+
         var srcBank = bankRepository.findById(srcBankId);
         var dstBank = bankRepository.findById(dstBankId);
-        var paymentAccounts = PaymentAccountServiceImpl.getInstance().getAllPaymentAccountsByBank(srcBank);
-        var creditAccounts = CreditAccountServiceImpl.getInstance().getAllCreditAccountsByBank(srcBank);
+        var paymentAccounts = paymentAccountService.getAllPaymentAccountsByBank(srcBank);
+        var creditAccounts = creditAccountService.getAllCreditAccountsByBank(srcBank);
 
         this.exportBankAccounts(srcBankId, TRANSFER_PATH);
 
-        creditAccounts.forEach(paymentAccount ->  CreditAccountRepository.getInstance().deleteById(paymentAccount.getId()));
-        paymentAccounts.forEach(paymentAccount ->  PaymentAccountRepository.getInstance().deleteById(paymentAccount.getId()));
+        creditAccounts.forEach(paymentAccount ->  creditAccountRepository.deleteById(paymentAccount.getId()));
+        paymentAccounts.forEach(paymentAccount ->  paymentAccountRepository.deleteById(paymentAccount.getId()));
 
         for(var paymentAccount: paymentAccounts){
-            var user = UserServiceImpl.getInstance().getUserById(paymentAccount.getUser().getId());
+            var user = userRepository.findById(paymentAccount.getUser().getId());
             var banks = user.getBanks();
             banks.removeIf(bank -> bank.getName().equals(srcBank.getName()));
             user.setBanks(banks);
-            UserServiceImpl.getInstance().updateUser(user);
+            userRepository.update(user);
         }
 
         this.importBankAccounts(dstBankId, TRANSFER_PATH);

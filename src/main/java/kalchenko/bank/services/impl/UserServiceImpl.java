@@ -3,11 +3,13 @@ package kalchenko.bank.services.impl;
 import kalchenko.bank.entity.Bank;
 import kalchenko.bank.entity.User;
 import kalchenko.bank.exceptions.*;
+import kalchenko.bank.repositories.BankRepository;
 import kalchenko.bank.repositories.CreditAccountRepository;
 import kalchenko.bank.repositories.PaymentAccountRepository;
 import kalchenko.bank.repositories.UserRepository;
-import kalchenko.bank.services.BankService;
 import kalchenko.bank.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.OutputStream;
 import java.io.PrintStream;
@@ -16,26 +18,20 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Random;
 
-/**
- * Класс-одиночка
- */
+@Component
 public class UserServiceImpl implements UserService {
 
-    private static UserServiceImpl INSTANCE;
+    @Autowired
+    private UserRepository userRepository;
 
-    private UserServiceImpl() {
-    }
+    @Autowired
+    private BankRepository bankRepository;
 
-    public static UserServiceImpl getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new UserServiceImpl();
-        }
+    @Autowired
+    private PaymentAccountRepository paymentAccountRepository;
 
-        return INSTANCE;
-    }
-
-    private final UserRepository userRepository = UserRepository.getInstance();
-    private final BankService bankService = BankServiceImpl.getInstance();
+    @Autowired
+    private CreditAccountRepository creditAccountRepository;
 
     private static int number = 0;
     private static final Random RANDOM = new Random();
@@ -70,9 +66,9 @@ public class UserServiceImpl implements UserService {
             userRepository.deleteById(id);
             var banks = user.getBanks();
             for (var bank : banks) {
-                var tempBank = bankService.getBankById(bank.getId());
+                var tempBank = bankRepository.findById(bank.getId());
                 tempBank.setUserNumber(tempBank.getUserNumber() - 1);
-                bankService.update(tempBank);
+                bankRepository.update(tempBank);
             }
 
             return true;
@@ -100,9 +96,9 @@ public class UserServiceImpl implements UserService {
 
         var banks = user.getBanks();
         for (var bank : banks) {
-            var tempBank = bankService.getBankById(bank.getId());
+            var tempBank = bankRepository.findById(bank.getId());
             tempBank.setUserNumber(tempBank.getUserNumber() + 1);
-            bankService.update(tempBank);
+            bankRepository.update(tempBank);
         }
 
         return newUser;
@@ -122,8 +118,6 @@ public class UserServiceImpl implements UserService {
         printStream.printf("User data about %s\n", user.getFullName());
         printStream.println(user);
 
-        PaymentAccountRepository paymentAccountRepository = PaymentAccountRepository.getInstance();
-        CreditAccountRepository creditAccountRepository = CreditAccountRepository.getInstance();
         var paymentAccounts = paymentAccountRepository.findAll().stream()
                 .filter(paymentAccount -> paymentAccount.getUser().getId().compareTo(userId) == 0)
                 .toList();

@@ -1,26 +1,12 @@
 package kalchenko.bank.repositories;
 
 import kalchenko.bank.entity.BankOffice;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-/**
- * Класс-одиночка
- */
+@Component
 public class BankOfficeRepository {
-
-    private static BankOfficeRepository INSTANCE;
-
-    private BankOfficeRepository() {
-    }
-
-    public static BankOfficeRepository getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new BankOfficeRepository();
-        }
-
-        return INSTANCE;
-    }
 
     private final EntityRepository repository = new EntityRepository();
 
