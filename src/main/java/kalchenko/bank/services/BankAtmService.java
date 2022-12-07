@@ -4,7 +4,6 @@ import kalchenko.bank.entity.BankAtm;
 import kalchenko.bank.entity.BankOffice;
 import kalchenko.bank.entity.Employee;
 import kalchenko.bank.exceptions.IdException;
-import kalchenko.bank.exceptions.NegativeSumException;
 import kalchenko.bank.exceptions.NotExistedObjectException;
 
 import java.util.List;

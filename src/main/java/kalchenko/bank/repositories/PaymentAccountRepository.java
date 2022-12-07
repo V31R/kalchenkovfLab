@@ -1,26 +1,12 @@
 package kalchenko.bank.repositories;
 
 import kalchenko.bank.entity.PaymentAccount;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-/**
- * Класс-одиночка
- */
+@Component
 public class PaymentAccountRepository {
-
-    private static PaymentAccountRepository INSTANCE;
-
-    private PaymentAccountRepository() {
-    }
-
-    public static PaymentAccountRepository getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new PaymentAccountRepository();
-        }
-
-        return INSTANCE;
-    }
 
     private final EntityRepository repository = new EntityRepository();
 

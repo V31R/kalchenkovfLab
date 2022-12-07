@@ -1,26 +1,12 @@
 package kalchenko.bank.repositories;
 
 import kalchenko.bank.entity.Employee;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-/**
- * Класс-одиночка
- */
+@Component
 public class EmployeeRepository {
-
-    private static EmployeeRepository INSTANCE;
-
-    private EmployeeRepository() {
-    }
-
-    public static EmployeeRepository getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new EmployeeRepository();
-        }
-
-        return INSTANCE;
-    }
 
     private final EntityRepository repository = new EntityRepository();
 

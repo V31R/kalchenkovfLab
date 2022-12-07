@@ -1,26 +1,13 @@
 package kalchenko.bank.repositories;
 
 import kalchenko.bank.entity.User;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-/**
- * Класс-одиночка
- */
+
+@Component
 public class UserRepository {
-
-    private static UserRepository INSTANCE;
-
-    private UserRepository() {
-    }
-
-    public static UserRepository getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new UserRepository();
-        }
-
-        return INSTANCE;
-    }
 
     private final EntityRepository repository = new EntityRepository();
 
