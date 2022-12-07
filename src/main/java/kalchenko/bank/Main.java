@@ -58,7 +58,7 @@ public class Main {
         userService.getAllUsers().forEach(user -> System.out.printf("User id = %d  name = %s\n",user.getId(), user.getFullName()));
         Long userId = 0L;
         Scanner input = new Scanner(System.in);
-        while(userId.compareTo(0L) == 0 || userId.compareTo((long)usersNumber) == 1) {
+        while(userId.compareTo(0L) <= 0 || userId.compareTo((long)usersNumber) == 1) {
             System.out.println("Enter user id:");
             userId = input.nextLong();
         }
