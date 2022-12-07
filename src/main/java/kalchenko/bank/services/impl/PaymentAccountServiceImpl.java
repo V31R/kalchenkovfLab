@@ -40,9 +40,10 @@ public class PaymentAccountServiceImpl implements PaymentAccountService {
         var userHasBank = paymentAccount.getUser().getBanks().contains(bank.get());
 
         if(!userHasBank){
-            var user = paymentAccount.getUser();
+            var user = UserServiceImpl.getInstance().getUserById(paymentAccount.getUser().getId());
             user.addBank(bank.get());
-            userRepository.update(user);
+            paymentAccount.setUser(userRepository.update(user));
+
         }
 
         return paymentAccountRepository.add(paymentAccount);

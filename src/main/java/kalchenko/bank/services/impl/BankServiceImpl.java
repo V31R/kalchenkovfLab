@@ -262,11 +262,8 @@ public class BankServiceImpl implements BankService {
 
         AccountsRepository accountsRepository = new AccountsRepository(paymentAccounts, creditAccounts);
 
-        FileWriter writer = new FileWriter(filename, false);
-
-        String accountsJson = objectMapper.writeValueAsString(accountsRepository);
-        writer.write(accountsJson);
-        writer.flush();
+        File file = new File(filename);
+        objectMapper.writeValue(file, accountsRepository);
 
     }
 
