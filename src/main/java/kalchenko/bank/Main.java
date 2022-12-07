@@ -8,6 +8,7 @@ import kalchenko.bank.services.impl.*;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Random;
+import java.util.Scanner;
 
 public class Main {
 
@@ -54,7 +55,16 @@ public class Main {
             }
         }
 
-        var userId = userService.getAllUsers().get(0).getId();
+        System.out.println("Available users:");
+        userService.getAllUsers().forEach(user -> System.out.printf("User id = %d  name = %s\n",user.getId(), user.getFullName()));
+        var usersNumberId =  userService.getAllUsers().size();
+        Long userId = 0L;
+        Scanner input = new Scanner(System.in);
+        while(userId.compareTo(0L) <= 0 || userId.compareTo((long)usersNumberId) == 1) {
+            System.out.println("Enter user id:");
+            userId = input.nextLong();
+        }
+
         try {
             var creditId = bankService.issueLoan(userId, BigDecimal.valueOf(RANDOM.nextDouble() * CREDIT_SUM_DISPERSION + MIN_CREDIT_SUM));
             System.out.println("Managed to get a loan #" + creditId);
